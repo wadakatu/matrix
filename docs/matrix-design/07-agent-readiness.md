@@ -80,8 +80,9 @@ token taxonomy, do and don't, one input and output example:
 The format: an `H1`, a blockquote summary, then sections of links to Markdown, with an
 `Optional` section for what can be skipped. TOMBO already publishes one and generates
 `llms-full.txt` with a freshness check (`scripts/build_agent_docs.py --check`); both habits
-carry over. The proposal allows the file at any path, covering the pages under it, so
-`/matrix/llms.txt` can sit beside the portfolio's own `/llms.txt` on the same domain.
+carry over. It is published at the root of the Storybook's own origin,
+`https://matrix.wadakatu.dev/llms.txt` (06), so it cannot be confused with the portfolio's
+`/llms.txt` on `www.wadakatu.dev`.
 
 - Links point at the Markdown mirrors published beside Storybook (`/docs/*.md`), not at
   `raw.githubusercontent.com` as TOMBO's do, so they do not depend on the repository's name.
@@ -94,7 +95,8 @@ TOMBO's agent guide has to tell agents to "match the documentation to your vendo
 release", because its docs live on `main` and its consumers copy files out of a tag.
 
 matrix removes the problem: `docs/`, `llms.txt`, `llms-full.txt`, `components.json`, the
-token sources and the skill are files in the npm tarball. An agent in the consuming
+token sources and the skill are files in the package tarball (the one attached to each
+GitHub Release, 01). An agent in the consuming
 repository reads `node_modules/@wadakatu/matrix/llms.txt`, which is by construction the
 documentation of the version that is installed, with no network.
 

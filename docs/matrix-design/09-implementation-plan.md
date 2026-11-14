@@ -24,13 +24,15 @@ descriptions say what must exist and how to tell that it works.
 1. Never push to `main`. Branch from `main`, open a pull request, merge when CI is green.
 2. Commits are English Conventional Commits, without `Co-Authored-By` (this repository's
    existing rule, from its earlier plans).
-3. Do not run `gh repo rename`. Do not change Pages settings, DNS, npm account settings or
-   repository protection. Steps that need them are marked **[wadakatu]**.
+3. Do not run `gh repo rename`. Do not change Pages settings, DNS or repository protection;
+   steps that need them are marked **[wadakatu]**. Never publish to npm (decision Q2).
 4. Do not edit `/Users/koyoisono/dev/wadakatu.github.io-design` or any checkout of
    wadakatu.github.io the user works in. To run the prototype, add a separate worktree of
    that repository at `93ca12d` in a scratch directory and remove it afterwards.
 5. Approved values do not change. Colours, sizes and timings come from 02 and the
-   prototype. A change to any of them is a design change and needs wadakatu.
+   prototype; where they differ, 02 is right. Today that is one value, `text-muted` in
+   phosphor-night, lifted by decision Q9. A change to any other is a design change and
+   needs wadakatu.
 6. No runtime dependency is added to the package. A new development dependency is named
    and justified in the pull request that adds it.
 7. Tools run at the versions pinned in `mise.toml` and the lockfile; print the version in
@@ -62,23 +64,41 @@ Created in Phase 1 and used by name afterwards.
 | `npm run test:visual` / `:update` | Playwright in the pinned Docker image |
 | `npm run test:specimens` | Playwright on the specimen pages: no-JS, keyboard, print, forced colours |
 
-## Decisions needed first
+## Decisions already made
 
-From the README's open questions. Each has a default, so only the ones marked "blocks"
-stop work.
+wadakatu answered the README's ten questions on 2026-11-15. None of them is open, and no
+task waits for an answer. What each one means for this plan:
 
-| Q | Decision | Default if unanswered | Blocks |
-| --- | --- | --- | --- |
-| Q1 | Storybook hosting | A: `/matrix/` | Nothing until 6.5 |
-| Q2 | Publish to npm | Release tarballs only | Nothing until 7.2 |
-| Q3 | Logo file in this repository; the amber tint | **No default** | 2.3 (a labelled placeholder is used until answered) |
-| Q4 | Palette persistence | As approved: carried by the address | — |
-| Q5 | `brace` and `bits` switch drawings | Not in 1.0 | — |
-| Q6 | Motion code | Web Animations API, decided by spike S3 | — |
-| Q7 | TOMBO's public pages | Not kept; stub only | 6.5 |
-| Q8 | Japanese chrome strings; language twins | Ship `en` and `ja` strings; `ja` reviewed by wadakatu | 1.0 release |
-| Q9 | `text-muted` at night under APCA | Keep colour; minimum size rule | — |
-| Q10 | Storybook 10 or 11 | Whatever is `latest` on npm when S1 starts | — |
+| Q | Decision | In this plan |
+| --- | --- | --- |
+| Q1 | Storybook at `matrix.wadakatu.dev` from the start | 6.5, behind the DNS gate below. S1 tests a build served from the root of an origin |
+| Q2 | No npm publish; GitHub Releases only | `"private": true` in 1.2; the Release in 7.1 is the distribution; there is no npm task |
+| Q3 | The logo may live in this repository under a not-MIT, no-reuse notice | The file and its notice arrive in 1.2; 2.3 uses the real mark |
+| Q4 | The palette is not persisted; the address carries it | 2.3, as specified in 03 |
+| Q5 | `brace` and `bits` are removed | 3.5 ports the rain and capsule drawings only, and no `?switch=` flag |
+| Q6 | Browser-standard animation; GSAP only if that proves insufficient | S3 decides whether it is sufficient |
+| Q7 | TOMBO's pages stop being published; no stub, no redirect | 1.1; nothing for `/tombo/` in the portfolio migration |
+| Q8 | English at the root, Japanese under `/ja/`; a post only in its own language | 2.6 ships `en` and `ja` strings; the routes are the portfolio's (7.2) |
+| Q9 | `text-muted` at night slightly brighter | 1.3 builds the value in 02; 1.4's golden values are table M2 as amended |
+| Q10 | The latest stable Storybook when implementation starts | S1 records the version it used |
+
+### Gates that need wadakatu
+
+Not questions: the decision is made, and the step is his to take or to approve.
+
+| Gate | Needed for | Ask |
+| --- | --- | --- |
+| Push and protect the `tombo` branch; retire TOMBO's Pages site | 1.1, before 1.2 merges | At the start |
+| **The DNS record for `matrix.wadakatu.dev`** (Q1): his OK, the custom domain saved in Pages settings, then the `CNAME` (06, "Gate: the DNS record") | 6.5 | Early, in Phase 2. Nothing else waits on it, and the Storybook can then be public while components are reviewed |
+| The repository rename | Nothing. Best before 7.2 (08, "When to rename") | — |
+| Review of the Japanese chrome strings | 7.3 (`1.0.0`) | When 2.6 is done |
+| Approval of draft components | 7.3 (`1.0.0`) | When 5.3 is shown |
+
+### One open item
+
+N1 in the README: whether `#80c194` is the right amount of lift for `text-muted` in
+phosphor-night. It blocks nothing. Build the value in 02; if the answer changes it, the
+change is one token value, table M2 and the affected visual baselines, in one pull request.
 
 ## Phase 0 — Spikes
 
@@ -86,9 +106,11 @@ Throwaway branches. Nothing merges except a short written result per spike in
 `docs/matrix-design/spikes/`. Their purpose is to turn the three riskiest assumptions in
 this design into facts before anything is built on them.
 
-- [ ] **S1 — Storybook renders Astro components, statically, under a sub-path.**
-  Read 06 ("Spike S1"). Pass: all seven points observed. Fail: adopt the fallback in 06 and
-  amend 06 and this plan in the same pull request as the result.
+- [ ] **S1 — Storybook renders Astro components, in a static build.**
+  Read 06 ("Spike S1"). Use the Storybook version that is `latest` on npm the day the spike
+  starts (decision Q10) and write it in the result. Pass: all seven points observed.
+  Fail: adopt the fallback in 06 and amend 06 and this plan in the same pull request as
+  the result.
 - [ ] **S2 — Tokens compile to the shape in 03.** ∥
   A minimal DTCG 2025.10 set (two colours with alpha, one dimension, one duration, one font
   family, one alias) and the four-context resolver. Pass: `tz check` accepts it; the output
@@ -103,8 +125,9 @@ this design into facts before anything is built on them.
   Animations API against the prototype's markup, in a scratch worktree. Pass: the six
   rapid-press patterns in `MATRIX-NOTES.md` ("extra.mjs … Rapid changes") settle correctly;
   reduced motion switched on mid-change ends it cleanly; nothing is left styled, scrambled
-  or `aria-busy`. Time box: if it is not passing after the second working session, record
-  why and choose bundled GSAP (05).
+  or `aria-busy`. Time box: if it is not passing after the second working session, the
+  browser's own mechanisms have proved insufficient in the sense of decision Q6: record
+  why and choose bundled GSAP (05). That is the only route to GSAP.
 
 **Exit:** three written results; 06 and 02 amended if a fallback was taken.
 
@@ -112,21 +135,25 @@ this design into facts before anything is built on them.
 
 Goal: an empty but real package. Tokens build, gates run, CI is green, TOMBO is frozen.
 
-- [ ] **1.1 Freeze TOMBO.** Read 08 ("Freezing TOMBO").
+- [ ] **1.1 Freeze TOMBO and retire its pages.** Read 08 ("Freezing TOMBO").
   Create branch `tombo` at the current `main`; add the closing paragraph to its README.
-  Pushing the branch needs wadakatu's go-ahead. **[wadakatu]** then protects it and points
-  Pages at it, and confirms `https://www.wadakatu.dev/tombo/` still loads.
-  Accept: the branch exists on the remote at the expected commit; the page loads with the
-  Pages source showing the `tombo` branch.
+  Pushing the branch needs wadakatu's go-ahead. **[wadakatu]** then protects it, changes
+  the Pages source from `main` to "GitHub Actions" and unpublishes the site (decision Q7:
+  no stub, no redirect).
+  Accept: the branch exists on the remote at the expected commit; the Pages source is no
+  longer a branch; `https://www.wadakatu.dev/tombo/` no longer serves TOMBO.
 - [ ] **1.2 Clear `main` and scaffold.** Depends on 1.1 being confirmed.
   Remove TOMBO's shipped files, examples, scripts and tests from `main` (they remain on the
   `tombo` branch). Move `docs/superpowers/` and TOMBO's reference docs to
   `docs/history/tombo/` with a one-paragraph index. Create the layout in 01, `package.json`
-  (`@wadakatu/matrix`, `1.0.0-alpha.0`, not private, `engines.node >=22.12`, repository
-  fields written as `wadakatu/matrix`), `mise.toml`, `LICENSE` with the logo carve-out,
-  `README.md`, `AGENTS.md` and `CLAUDE.md` (07), `CHANGELOG.md`.
+  (`@wadakatu/matrix`, `1.0.0-alpha.0`, `"private": true` because nothing is published to
+  npm, `engines.node >=22.12`, repository fields written as `wadakatu/matrix`), `mise.toml`,
+  `LICENSE` with the logo carve-out, `assets/logo/` (the designer's file copied byte for
+  byte from the portfolio, its sha256, and the notice of decision Q3: not MIT, not for
+  reuse), `README.md`, `AGENTS.md` and `CLAUDE.md` (07), `CHANGELOG.md`.
   Accept: `npm ci` on a clean clone succeeds; `npm pack --dry-run` lists only intended
-  files; `AGENTS.md` is under 100 lines and every command in it runs.
+  files, and the logo is not among them; `AGENTS.md` is under 100 lines and every command
+  in it runs; after the merge `https://www.wadakatu.dev/tombo/` still serves nothing.
 - [ ] **1.3 Tokens.** Read 02 in full.
   Author `base.tokens.json`, the four context files and the resolver with every token and
   value in 02, each with a `$description` and its contrast declaration. Build
@@ -154,7 +181,8 @@ Goal: an empty but real package. Tokens build, gates run, CI is green, TOMBO is 
   browser jobs are added by the tasks that create them.
   Accept: a pull request with a raw colour in a component file fails CI.
 
-**Exit:** `npm run build` and `npm run check` green in CI; `/tombo/` still serves TOMBO.
+**Exit:** `npm run build` and `npm run check` green in CI; TOMBO is frozen on its branch
+and `/tombo/` serves nothing.
 
 ## Phase 2 — Storybook and chrome
 
@@ -179,8 +207,9 @@ Goal: the harness every later component uses, and the page frame.
   controller is absent.
   Accept: the flag table in 03 holds, tested for every flag; storage that throws changes
   nothing visible; with the controller blocked, links still carry `palette` and `motion`;
-  no flash of the wrong theme on a `day` reload (trace attached). Logo: until Q3 is
-  answered the Mark uses a labelled placeholder square.
+  no flash of the wrong theme on a `day` reload (trace attached); the palette is in no
+  storage after any sequence of changes (decision Q4). The Mark uses the real logo from
+  `assets/logo/`.
 - [ ] **2.4 Header, Mark, Logo, Nav, Menu, Control, the two toggles, Hold rain, Footer.** ∥ Read 04, 05.
   Accept: header is 69px at 1440 and 53px at 320–719 in both readings (the prototype's
   measured heights); the menu's behaviours in `MATRIX-NOTES.md` ("The phone header …
@@ -190,7 +219,8 @@ Goal: the harness every later component uses, and the page frame.
   Accept: definition of done for each.
 - [ ] **2.6 Chrome strings.** `strings/en.ts` and `strings/ja.ts` for every string in the
   chrome. Accept: no component contains a literal user-facing string; the `Japanese`
-  stories render with no English chrome.
+  stories render with no English chrome. The `ja` strings are then shown to wadakatu; his
+  review is needed before `1.0.0`, not before later tasks.
 
 **Exit:** a specimen page with header, panels and footer passes accessibility, visual and
 no-JavaScript checks in all four contexts and both languages.
@@ -212,9 +242,9 @@ Goal: the things that make it matrix. Read 04 ("Signature", and the specificatio
   `h1` in every reading.
 - [ ] **3.4 Stream and Streams.** ∥ Accept: rows and wall; hover and focus hold a stream;
   the whole stream is outlined when its link has focus.
-- [ ] **3.5 Switch.** Accept: the three drawings in 04; the compact button is one tab stop
-  named by its destination; forced colours; the drop stops under Hold in both readings
-  (the gap described in 05).
+- [ ] **3.5 Switch.** Accept: the three drawings in 04 (`brace` and `bits` are not ported,
+  decision Q5); the compact button is one tab stop named by its destination; forced
+  colours; the drop stops under Hold in both readings (the gap described in 05).
 - [ ] **3.6 Readings and the change between them.** Uses S3's result. Accept: every way of
   switching in `MATRIX-NOTES.md` arrives at the right address, title, status and focus; the
   six rapid-press patterns; the shortcut's guards and its off switch, reachable in both
@@ -286,27 +316,34 @@ and passes every automated row of the verification matrix in 05.
   `llms.txt`, `llms-full.txt`; the skill; the consumer stylelint config; all freshness checks.
   Accept: a fresh agent session given only `AGENTS.md` can answer "which component renders
   a key and value list, and which tokens does it read" from the files.
-- [ ] **6.5 Publish the Storybook.** Depends on the rename. **[wadakatu]** switches Pages to
-  GitHub Actions. The deploy workflow publishes Storybook with `llms.txt`, the Markdown
-  mirrors and the token files beside it (06).
-  Accept: the public address loads from a clean browser profile, and from a profile that
-  has the portfolio's service worker installed; `/llms.txt` and one `.md` mirror resolve.
+- [ ] **6.5 Publish the Storybook.** Depends on the DNS gate, not on the rename. Read 06
+  ("Hosting"). **[wadakatu]** OKs the record, saves `matrix.wadakatu.dev` as the custom
+  domain in Pages settings, then creates the `CNAME`. Only then is the deploy job added to
+  the workflow. It publishes Storybook with `llms.txt`, the Markdown mirrors and the token
+  files beside it (06).
+  Accept: `https://matrix.wadakatu.dev/` loads over HTTPS from a clean browser profile;
+  `/llms.txt` and one `.md` mirror resolve; no deployment of this repository is reachable
+  under `www.wadakatu.dev`.
 
 **Exit:** every automated check green; the manual report committed; Storybook public.
 
 ## Phase 7 — Release and adoption
 
 - [ ] **7.1 Release candidate.** Tag `v1.0.0-rc.1`; CI builds, checks, packs and attaches
-  the tarball and the Storybook archive to a GitHub Release.
-- [ ] **7.2 npm.** Depends on the rename and Q2. **[wadakatu]** configures trusted
-  publishing for `wadakatu/matrix`. CI publishes with provenance.
-- [ ] **7.3 Portfolio migration.** A separate issue and pull requests in wadakatu.github.io,
-  following 08 ("How wadakatu.github.io consumes matrix"): dependency and layout first
-  under `/proto/matrix/`, then production routes, then deletions, service worker, agent
-  files, the `/tombo/` stub. Anything matrix lacks is fixed in matrix and released, not
-  patched in the site.
-- [ ] **7.4 `1.0.0`.** When the portfolio is live on a release candidate and no component
-  is still `draft` without wadakatu's approval. **[wadakatu]** tags.
+  the tarball and the Storybook archive to a GitHub Release. That Release is the
+  distribution (decision Q2); nothing is published to npm.
+  Accept: `npm install <the tarball's URL>` in an empty project succeeds and the lockfile
+  records its integrity hash.
+- [ ] **7.2 Portfolio migration.** A separate issue and pull requests in wadakatu.github.io,
+  following 08 ("How wadakatu.github.io consumes matrix"): the tarball dependency and
+  layout first under `/proto/matrix/`, then production routes (English at the root,
+  Japanese under `/ja/`, decision Q8), then deletions, service worker and agent files.
+  Nothing is added for `/tombo/` (decision Q7). Best started after the rename, so that the
+  tarball URL it pins is the final one. Anything matrix lacks is fixed in matrix and
+  released, not patched in the site.
+- [ ] **7.3 `1.0.0`.** When the portfolio is live on a release candidate, no component is
+  still `draft` without wadakatu's approval, and he has reviewed the Japanese chrome
+  strings. **[wadakatu]** tags.
 
 ## Dependencies at a glance
 
@@ -315,7 +352,8 @@ S1 ─┐
 S2 ─┼─ Phase 1 ── Phase 2 ─┬─ Phase 3 ── Phase 4 ─┐
 S3 ─┘                      └─ Phase 5 ────────────┼─ Phase 6 ── Phase 7
                                                   │
-rename [wadakatu] ─────────────── must precede 6.5 and 7.2
+DNS gate [wadakatu] ───────────── must precede 6.5
+rename [wadakatu] ─────────────── any time after 1.1; best before 7.2
 ```
 
 Phases 3 and 5 can run at the same time after Phase 2. Phase 4 needs 3.6 (the readings)
@@ -331,5 +369,6 @@ Recorded so that whoever executes it knows when to stop and come back to the des
 - Real-device testing shows the one-viewport shell is not usable with an on-screen
   keyboard. The prototype never ran on a phone.
 - A screen reader finds the shell's log or the takeover unusable. Not yet tested by anyone.
-- wadakatu answers Q3 with "the logo may not be in this repository at all", in which case
-  Storybook's logo stories need a different source.
+- The DNS record for `matrix.wadakatu.dev` is not approved. The Storybook then has no
+  public address, because the path under `www.wadakatu.dev` was decided against (Q1), and
+  hosting comes back to wadakatu.

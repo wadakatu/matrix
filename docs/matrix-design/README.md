@@ -3,7 +3,8 @@
 The design for turning this repository (today `tombo`) into **matrix**, wadakatu's personal
 design system and the source of truth for wadakatu.dev.
 
-- **Status:** proposed, 2026-11-15. Awaiting wadakatu's review of the open questions below.
+- **Status:** proposed design, 2026-11-15. wadakatu answered all ten open questions the same
+  day; they are recorded below as settled decisions. One narrow follow-up (N1) is open.
 - **Scope of this step:** design documents only. No implementation code, no rename, no
   push, no pull request. Nothing outside `docs/` in this repository was changed, and the
   prototype worktree was only read.
@@ -23,7 +24,7 @@ design system and the source of truth for wadakatu.dev.
 | 03 | [Theming](03-theming.md) | Palette, theme, reading, motion and language at runtime; the head script |
 | 04 | [Components](04-components.md) | The inventory with status, the complex specifications, the rename maps |
 | 05 | [Accessibility and motion](05-a11y-motion.md) | The rules, the motion catalogue, what must be measured before 1.0 |
-| 06 | [Storybook](06-storybook.md) | Stack, organisation, testing, and the hosting options |
+| 06 | [Storybook](06-storybook.md) | Stack, organisation, testing, and hosting at `matrix.wadakatu.dev` |
 | 07 | [Agent readiness](07-agent-readiness.md) | `AGENTS.md`, the skill, `llms.txt`, drift control |
 | 08 | [Migration](08-migration.md) | Freezing TOMBO, the rename, the `/tombo/` address, how the portfolio consumes matrix |
 | 09 | [Implementation plan](09-implementation-plan.md) | Spikes and seven phases, with acceptance criteria, for a later agent |
@@ -41,9 +42,9 @@ A person deciding whether to approve this needs 00, this page, and the hosting s
 5. Theme is switched by `color-scheme` and **`light-dark()`** (TOMBO's mechanism, kept); palette by an attribute. Night and phosphor are the defaults whatever the OS says.
 6. Each text token **declares its own contrast floor**, and CI enforces it in all four contexts. Rain has a contrast *ceiling*.
 7. **Every effect has a still**, one Hold control stops all endless motion, and no code is fetched from a third party at runtime.
-8. A public **Storybook renders the real Astro components**; it starts at `www.wadakatu.dev/matrix/` and can move to a sub-domain with one variable.
+8. A public **Storybook renders the real Astro components**, at `matrix.wadakatu.dev`, an origin of its own.
 9. Agents get docs **inside the installed package**, so documentation always matches the version in use, plus lint rules that fail on a raw colour.
-10. TOMBO is frozen on a branch, matrix versions start at `1.0.0-alpha`, and the portfolio migrates in its own pull requests.
+10. TOMBO is frozen on a branch and its public pages are retired; matrix versions start at `1.0.0-alpha` and ship as GitHub Release tarballs, not on npm; the portfolio migrates in its own pull requests.
 
 ## How the approved direction is honoured
 
@@ -55,25 +56,42 @@ A person deciding whether to approve this needs 00, this page, and the hosting s
 | Machine-first terminal top | The "Machine-first landing" pattern and the Terminal component (04); the route table (08) |
 | 人間用 at `/human/` | The "Twin routes" pattern (04); `data-reading` (03) |
 | Readable blog pages, no rain over the article body | Law L2; Prose and the `band` rain (04) |
-| JA and EN as separate pages | Law L6; `:lang()` typography and chrome strings in both languages (03) |
-| A public Storybook | 06, with hosting options that do not assume a sub-domain |
+| JA and EN as separate pages | Law L6; English at the root, Japanese under `/ja/` (08); `:lang()` typography and chrome strings in both languages (03) |
+| A public Storybook | 06, hosted at `matrix.wadakatu.dev` |
 
-## Open questions for wadakatu
+## Settled decisions
 
-Each has a recommendation. Work can start with the defaults; only Q3 has none.
+The ten questions this design asked, as answered by wadakatu on 2026-11-15. They are
+decisions now; the pages named in the last column were brought into line with them.
 
-| # | Question | Recommendation | Default if unanswered |
+| # | Question | Decision | Recorded in |
 | --- | --- | --- | --- |
-| **Q1** | **Where is the Storybook hosted?** A: `www.wadakatu.dev/matrix/` (no approval needed). B: `matrix.wadakatu.dev` (needs a DNS `CNAME`). C: Chromatic. D: another host. See [06](06-storybook.md#hosting) | Start on A, move to B. B is a separate origin, so the portfolio's service worker and storage cannot touch it, and the address survives a rename | A |
-| **Q2** | **Publish `@wadakatu/matrix` to npm?** Needs a one-time trusted-publisher setting on your npm account, after the rename | Yes | GitHub Release tarballs, installed by URL |
-| **Q3** | **The logo.** May Chisato Satoh's file live in this public repository under a "not MIT, not for reuse" notice (it is already public in the portfolio repository)? Has she seen the amber tint used in operator-night? Are downscaled copies for the header acceptable? | Ask her; keep the file out of the npm package either way | None. A labelled placeholder is used until answered |
-| **Q4** | **Should the palette be remembered?** Approved behaviour: never stored, carried by the address, which needs link-rewriting machinery. Alternative: remember it for the tab (`sessionStorage`) and reflect it in the address; simpler, slightly different semantics | Keep the approved behaviour unless the simpler one appeals | As approved |
-| **Q5** | **Drop the `brace` and `bits` switch drawings?** Rain is the default and they are used nowhere | Drop from 1.0; they stay in the prototype's history | Dropped |
-| **Q6** | **Replace GSAP with the Web Animations API?** Removes the CDN request and a non-open-source licence | Yes, if the port passes the rapid-press tests (spike S3); otherwise bundle GSAP from npm | As recommended |
-| **Q7** | **Do TOMBO's public pages stay online?** After the rename `/tombo/` stops resolving (GitHub does not redirect project sites) | A stub at `/tombo/` served by the portfolio; TOMBO preserved as a frozen branch and tags | Stub only |
-| **Q8** | **Japanese and English.** Which pages get a twin in the other language, and at what addresses? Should chrome on Japanese pages be Japanese? | English at the root, Japanese under `/ja/`, articles at one address in their own language; Japanese chrome strings shipped and reviewed by you | As recommended |
-| **Q9** | **`text-muted` at night** passes WCAG 2 at 9.18:1 but is light for 13px text by APCA (Lc −59) | Keep the colour; forbid it below 13px or under regular weight | As recommended |
-| **Q10** | **Storybook 10 or 11?** 11 is in beta, targeted for December | Whichever is `latest` when work starts; the Astro framework supports both | As recommended |
+| **Q1** | Where is the Storybook hosted? | `matrix.wadakatu.dev`, from the start. The DNS record is a gate (below), not a question | [06](06-storybook.md#hosting), 08, 09 |
+| **Q2** | Publish `@wadakatu/matrix` to npm? | No. Distribution is GitHub Releases only: the release tarball, installed by URL | [01](01-architecture.md#distribution-and-versioning), 08, 09 |
+| **Q3** | May the logo file live in this public repository? | Yes, with a notice that it is not MIT-licensed and may not be reused | [08](08-migration.md#the-logo), 09 |
+| **Q4** | Should the palette be remembered? | No. It is never stored; the address carries it, as in the prototype | [03](03-theming.md#palette-carried-by-the-address) |
+| **Q5** | Drop the `brace` and `bits` switch drawings? | Yes, removed. Neither is ported | [04](04-components.md#switch) |
+| **Q6** | Replace GSAP? | Animations use the browser's own mechanisms (Web Animations API, CSS). GSAP is bundled only if that proves insufficient | [05](05-a11y-motion.md#no-third-party-motion-code), 09 (S3) |
+| **Q7** | Do TOMBO's public pages stay online? | No. `/tombo/` stops being published; no stub and no redirect | [08](08-migration.md#freezing-tombo), 09 |
+| **Q8** | Japanese and English addresses | English at the root, Japanese under `/ja/`. A blog post exists only in the language it was written in | [08](08-migration.md#production-routes), 03, 04 |
+| **Q9** | `text-muted` at night is light for small text | Made slightly brighter. The value chosen is in 02; the amount is N1 below | [02](02-tokens.md#changed-from-the-prototype), 05, 10 |
+| **Q10** | Storybook 10 or 11? | The latest stable version when implementation starts | [06](06-storybook.md#stack), 09 (S1) |
+
+### Gate, not a question
+
+- **DNS for `matrix.wadakatu.dev`.** The record needs wadakatu's OK before the Storybook
+  goes live, and he creates it. Until then the Storybook is reviewed locally and from CI
+  artefacts and nothing is deployed. The order of the steps is in
+  [06](06-storybook.md#gate-the-dns-record); the plan's task 6.5 waits on it.
+
+### New open question
+
+One, raised by the answer to Q9. It does not reopen Q9: that the colour is lifted is
+settled. The answer gives a direction and not a value, so the amount is new.
+
+| # | Question | What the docs assume until answered |
+| --- | --- | --- |
+| **N1** | **Is `#80c194` the right lift for `text-muted` in phosphor-night** (was `#7cbd90`)? Only lightness moves (OKLCH L .742 to .755; chroma and hue kept). On `ground` it goes from 9.18:1, Lc −58.9 to 9.59:1, Lc −61.1; on `panel` from Lc −58.5 to −60.7. The line used is Lc 60, APCA's minimum for content text that is not body text. Operator-night (Lc −62.1, −61.7) and both day contexts already clear it and are unchanged. APCA attaches larger sizes than 13px to that level, so no small lift makes 13px meet its size table; the next level, Lc 75, would need about `#99dbac`, which closes much of the gap to `text` (Lc −92.2). Measurements: [10](10-verification-log.md#m8--the-lifted-text-muted-decision-q9) | `#80c194`. Work is not blocked: it is one token value, shown on the Storybook colour page (09, task 2.1), and changing it is a one-line change plus the golden values |
 
 Content decisions that belong to the portfolio (the `tombo` project entry, TOMBO jokes in
 the shell, the About page, alt text) are listed in [08](08-migration.md#decisions-the-site-needs-from-wadakatu).
@@ -110,14 +128,19 @@ Said here rather than discovered later. Details are in [10](10-verification-log.
 - **Nobody has used the prototype with a screen reader, in Safari or Firefox, or on a real
   phone.** matrix inherits no accessibility claim from it; 05 lists what must be measured.
 - **The one-viewport shell at high zoom** is handled by a new rule with a guessed threshold.
-- **The logo's terms of use** are not known to this design.
+- **The logo's written terms of use** have not been seen by this design. Where the file
+  lives and under what notice is wadakatu's decision (Q3), and the design relies on it.
 - Several prototype files were described from the build notes rather than read line by
   line, which is why the prototype, not this set, is the behavioural specification.
 - **This set has not had an independent review.** One was started and did not finish. What
-  was checked mechanically before committing: every colour in 02 against the prototype's
-  cascade in all four contexts, every `--mx-*` name against the tokens in 02, every
-  question, decision, law, spike and task reference, table structure, internal links, and
-  that all 63 external links resolve.
+  was checked mechanically before the first commit: every colour in 02 against the
+  prototype's cascade in all four contexts, every `--mx-*` name against the tokens in 02,
+  every question, decision, law, spike and task reference, table structure, internal
+  links, and that all 63 external links resolved.
+- **The revision that recorded the answers** changed one colour (N1) and re-measured it with
+  the tools of the first pass, and re-checked internal links and question and task
+  references. It was not reviewed independently either. What it looked up is in
+  [10](10-verification-log.md#checks-made-when-recording-the-answers).
 
 ## Where this sits in the repository
 
