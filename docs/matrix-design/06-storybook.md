@@ -17,7 +17,7 @@ runs on, how stories are organised, how it is tested, and where it is hosted.
 
 | Piece | Choice | Version checked 2026-11-15 |
 | --- | --- | --- |
-| Storybook | Current stable line at the time work starts | `storybook` 10.6.7 is `latest`; 11.0.0-beta.3 is `next`. The 11 beta post (2026-11-09) targets a December release |
+| Storybook | The latest stable version when implementation starts (decision Q10): whatever npm's `latest` tag is on the day spike S1 begins, recorded in the spike's result. Never a beta | `storybook` 10.6.7 is `latest`; 11.0.0-beta.3 is `next`. The 11 beta post (2026-11-09) targets a December release |
 | Framework | `@storybook-astro/framework` | 1.16.0 (2026-11-11). Peers: `storybook ^10 \|\| ^11.0.0-beta.0`, `astro ^5.5.3 \|\| ^6 \|\| ^7`, `vite ^6.4.1 \|\| ^7 \|\| ^8` |
 | Docs | `@storybook/addon-docs` | — |
 | Accessibility | `@storybook/addon-a11y` | — |
@@ -57,7 +57,7 @@ One Astro component with a slot, one `mx-*` element and one token stylesheet, in
 throwaway branch. It passes when all of these are observed, not assumed:
 
 1. The story renders in `storybook dev` and in a static `storybook build`.
-2. The static build works when served from a sub-path (`/matrix/`) and from a root.
+2. The static build works when served from the root of an origin, which is how `matrix.wadakatu.dev` serves it.
 3. The custom element upgrades inside the preview iframe, and after a control changes an argument.
 4. A toolbar global changes `data-theme` and `data-palette` on the preview's root and the story follows.
 5. The accessibility addon runs on the story and a deliberate violation fails the Vitest run.
@@ -96,7 +96,7 @@ The sidebar follows the inventory in 04 one to one.
 ## Toolbar globals
 
 Each global maps to one root attribute (03). No story sets these itself, and no story reads
-storage: the Storybook may share an origin with the site, so the toolbar is the only state.
+storage: the toolbar is the only state, so a story looks the same for every visitor.
 
 | Global | Values | Sets |
 | --- | --- | --- |
@@ -154,54 +154,66 @@ JavaScript disabled, print, forced colours, the head script, and full keyboard j
 
 ## Hosting
 
-The Storybook is a static site (`storybook build` writes `storybook-static`). Where it is
-served is a decision for wadakatu; a sub-domain needs a DNS change and is not assumed.
+The Storybook is a static site (`storybook build` writes `storybook-static`).
 
-### Facts that constrain the choice
+**Decision (Q1): it is hosted at `https://matrix.wadakatu.dev/` from the start.** It is
+this repository's GitHub Pages site with a custom domain, deployed by GitHub Actions. It is
+never published under `www.wadakatu.dev/matrix/`, not even temporarily.
 
-- This repository's Pages site is `https://www.wadakatu.dev/tombo/`, built from `main` at
-  the repository root (`gh api repos/wadakatu/tombo/pages`, 2026-11-15). After the rename
-  its default address becomes `https://www.wadakatu.dev/matrix/`.
-- A project site's address is not redirected when its repository is renamed
-  ([GitHub docs](https://docs.github.com/en/repositories/creating-and-managing-repositories/renaming-a-repository)).
+### Why an origin of its own
+
 - A path on `www.wadakatu.dev` is the same origin as the portfolio. The portfolio registers
   a service worker at `/sw.js` (scope `/`) that serves every stylesheet, script and image
-  cache-first for 30 days (`public/sw.js` in wadakatu.github.io). A reader who has visited
-  the portfolio would get Storybook files from that cache: any file whose name does not
-  change between builds can be stale for a month. The same origin also shares `localStorage`.
-- A sub-domain is a separate origin: no shared service worker, no shared storage, and an
-  address that survives a repository rename (GitHub's own advice for renamed Pages sites).
+  cache-first for 30 days (`public/sw.js` in wadakatu.github.io), so a returning visitor
+  could be shown a month-old Storybook, and the two sites would share `localStorage`.
+- A sub-domain is a separate origin: no shared service worker and no shared storage.
+- The address does not depend on the repository's name. A project site's default address
+  is not redirected when its repository is renamed, and GitHub's advice for a repository
+  with a Pages site is a custom domain
+  ([GitHub docs](https://docs.github.com/en/repositories/creating-and-managing-repositories/renaming-a-repository)).
 
-### Options
+The build's base path is `/`. The preview never registers a service worker.
 
-| | Address | Needs from wadakatu | For | Against |
-| --- | --- | --- | --- | --- |
-| **A** | `https://www.wadakatu.dev/matrix/` (project Pages, deployed by Actions) | Nothing new. Pages source switches from "branch" to "GitHub Actions" | Works on day one; no DNS; no new service | Same origin as the portfolio: needs the service-worker exclusion below. Address is tied to the repository name |
-| **B** | `https://matrix.wadakatu.dev/` (the same Pages site with a custom domain) | A DNS `CNAME` from `matrix` to `wadakatu.github.io`, and the custom domain saved in the repository's Pages settings first ([docs](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site)) | Clean origin; rename-proof; reads as a product | Needs the DNS approval |
-| **C** | A `*.chromatic.com` address | A Chromatic account and a project token as a repository secret | Versioned Storybooks per branch; hosted visual review ([docs](https://storybook.js.org/docs/sharing/publish-storybook)) | An external service and a secret, for features a one-person system does not need yet |
-| **D** | Another static host (Cloudflare Pages, Netlify) | An account and a deploy token | Preview deployments per pull request | A second deployment system beside GitHub Pages |
+### Gate: the DNS record
 
-### Recommendation
+`matrix.wadakatu.dev` needs a DNS record, and a DNS record on `wadakatu.dev` needs
+wadakatu's OK before it exists. This is a gate on going live (09, task 6.5), not an open
+question about the product. Until it is cleared the Storybook is reviewed locally and from
+CI artefacts, and the deploy job does not run.
 
-**Ship on A, move to B when the DNS record is approved.** B is the better end state for the
-three reasons above; A needs nothing from anyone and the difference between them is
-configuration, not design.
+Everything in this list is done by wadakatu or with his explicit go-ahead; an agent does
+not change Pages settings or DNS (09).
 
-To make that true:
+1. In the repository's Pages settings, save `matrix.wadakatu.dev` as the custom domain.
+   The source is already "GitHub Actions", set when TOMBO's pages were retired (08). This
+   comes before the DNS record. GitHub's
+   documentation says to add the domain to the Pages site before configuring it with the
+   DNS provider, because otherwise someone else could host a site on the sub-domain
+   ([docs](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site)).
+2. Create the DNS record: a `CNAME` from `matrix` to `wadakatu.github.io`.
+3. Let the deploy workflow run. No `CNAME` file is committed: when a site is published from
+   a custom Actions workflow, GitHub ignores that file and does not need it (same page).
+4. Turn on "Enforce HTTPS" when GitHub offers it, which can take up to 24 hours after the
+   DNS change (same page).
 
-1. The build takes its base path from one variable, so A (`/matrix/`) and B (`/`) are the
-   same workflow with a different value. S1 proves both.
-2. Storybook's preview never registers a service worker and never touches `mx-*` storage.
-3. While on A, the portfolio's service worker excludes `/matrix/` from its cache-first
-   routes. This is a change in wadakatu.github.io and is listed in its migration (08).
-   Until it ships, a stale Storybook is possible for returning portfolio visitors; that is
-   the known cost of starting on A.
-4. Moving to B: save the custom domain in Pages settings, add the DNS record, set the base
-   to `/`. The order matters: GitHub's documentation warns to add the domain in the
-   repository before creating the DNS record, to prevent a takeover of the sub-domain.
+The deploy job is added only once step 1 is done, and must not run before it. Without a
+custom domain of its own, a project
+site is served under the account's domain, here `www.wadakatu.dev/<repository>/`
+([docs](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/about-custom-domains-and-github-pages)),
+which is the shared origin this decision avoids.
 
-C and D are not recommended now. Chromatic can be added later without changing anything
-here, if hosted review becomes worth an account.
+Recommended at the same time, also wadakatu's: verify `wadakatu.dev` for GitHub Pages on
+the account if it is not verified already, which stops another GitHub user from claiming
+the domain
+([docs](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/verifying-your-custom-domain-for-github-pages)).
+
+### Not chosen
+
+| Option | Why not |
+| --- | --- |
+| `https://www.wadakatu.dev/matrix/` (project Pages at its default address) | Same origin as the portfolio, and the address is tied to the repository name |
+| A `*.chromatic.com` address | An external service and a secret, for hosted review a one-person system does not need yet ([docs](https://storybook.js.org/docs/sharing/publish-storybook)). It can be added later without changing anything here |
+| Another static host (Cloudflare Pages, Netlify) | A second deployment system beside GitHub Pages |
 
 ### What is published
 
@@ -218,15 +230,15 @@ static directories.
 
 ### Deployment
 
-- A workflow builds on every push to `main` and deploys with the official Pages actions
-  (`actions/upload-pages-artifact`, `actions/deploy-pages`).
+- A workflow builds on every push to `main` and, once the DNS gate is cleared, deploys with
+  the official Pages actions (`actions/upload-pages-artifact`, `actions/deploy-pages`).
 - Pull requests build Storybook and upload it as a workflow artifact for review; there is
   no preview deployment.
 - Only the latest version is hosted. Each release attaches its `storybook-static` archive
   to the GitHub Release, which is the versioned record.
-- Changing the Pages source from "Deploy from a branch" to "GitHub Actions" is a repository
-  setting. It is an outward-facing change and is done by wadakatu, or with his explicit
-  go-ahead, at the step the plan names (09).
+- The Pages source and the custom domain are repository settings, and the DNS record is
+  outside the repository. All three are outward-facing and are done by wadakatu, or with his
+  explicit go-ahead, in the order given under "Gate: the DNS record".
 
 ## Not doing
 

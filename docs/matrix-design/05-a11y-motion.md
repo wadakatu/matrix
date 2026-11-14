@@ -57,19 +57,23 @@ Negative Lc is light text on a dark ground.
 | --- | --- | --- | --- | --- |
 | `text` on `ground` | −92.2 | −90.5 | 78.5 | 79.0 |
 | `text-lead` on `ground` | −104.3 | −88.1 | 80.2 | 77.2 |
-| `text-muted` on `ground` | −58.9 | −62.1 | 68.5 | 69.5 |
+| `text-muted` on `ground` | −61.1 | −62.1 | 68.5 | 69.5 |
 | `accent` on `ground` | −79.7 | −64.7 | 63.1 | 66.6 |
 
-Two readings of this table, neither of which blocks anything:
+Two readings of this table:
 
 - **`text-lead` at night is very hot** (Lc −104). The APCA guidance in the research is that
   light body text on black is comfortable to about Lc −90, and the `apca-w3` README caps
   large text at Lc 90. The role table in 02 already keeps `text-lead` to short runs; the
   body colour, `text`, sits at −92.
-- **`text-muted` at night is light for small text** (Lc −59) although it passes WCAG 2 at
-  9.18:1. It is used at 13px for meta lines. Proposed handling (Q9): keep the colour, and
-  never set `text-muted` below `font.size.meta` or in a weight under regular. Lifting the
-  colour is the alternative, and it is a visual change.
+- **`text-muted` at night was light for small text**, and has been lifted (decision Q9).
+  In the prototype it measured Lc −58.9 in phosphor-night, although it passes WCAG 2 at
+  9.18:1, and it is used at 13px for meta lines. matrix makes it slightly brighter there:
+  `#80c194`, Lc −61.1 on `ground` and −60.7 on `panel`, which clears Lc 60, APCA's minimum
+  for content text that is not body text. Operator-night already cleared it and is
+  unchanged. The alternative that was offered, keeping the colour and forbidding it below
+  13px, was not taken. The value and its measurements are in 02 ("Changed from the
+  prototype"); whether the amount is right is the README's N1.
 
 APCA stays a report, not a gate: it is not part of WCAG 2.2 and the library is beta
 (<https://github.com/Myndex/apca-w3>).
@@ -289,9 +293,11 @@ swaps, which the Web Animations API covers natively (Baseline widely available s
 2023-03-16, `web-features` 3.46.0): `Animation.finish()`, `.finished` promises and
 `getAnimations()` give the "finish the first change, then start" behaviour directly.
 
-Default: port the three sequences to the Web Animations API (spike S3 in 09). If the port
-cannot pass the rapid-press tests inside its time box, bundle GSAP from npm, loaded lazily
-only when motion is allowed. Either way the CDN, the integrity hash and the load timeout go.
+Settled (decision Q6): animations use the browser's own mechanisms, the Web Animations API
+and CSS. The three sequences are ported to them (spike S3 in 09). GSAP is the fallback
+only: if the port proves insufficient, meaning it cannot pass the rapid-press tests inside
+the spike's time box, GSAP is bundled from npm and loaded lazily only when motion is
+allowed. Either way the CDN, the integrity hash and the load timeout go.
 
 ## Performance as an accessibility requirement
 

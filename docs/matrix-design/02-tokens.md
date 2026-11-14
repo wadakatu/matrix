@@ -3,8 +3,10 @@
 Tokens are the only place a value is written down. This page defines which tokens exist,
 how they are stored, how they are compiled, and what CI refuses.
 
-All colour values below are the prototype's, unchanged
-(`public/styles/proto/matrix.css` at `93ca12d`). This design renames them; it does not retune them.
+All colour values below are the prototype's
+(`public/styles/proto/matrix.css` at `93ca12d`), with one exception: `color.text-muted` in
+phosphor-night, lifted by decision Q9 (see "Changed from the prototype"). Otherwise this
+design renames them; it does not retune them.
 
 ## Model
 
@@ -69,7 +71,7 @@ exist so that a component says what it means: a control border asks for
 | `color.panel` | `#06120b` | `#dee7db` | `#17140f` | `#dbe2d9` |
 | `color.rule` | `#1d4d2f` | `#7f9a86` | `#3d362c` | `#8fa093` |
 | `color.text` | `#c4f2d0` | `#0c2115` | `#ece4d4` | `#111b15` |
-| `color.text-muted` | `#7cbd90` | `#2a4735` | `#c2b496` | `#2f4236` |
+| `color.text-muted` | `#80c194` (prototype: `#7cbd90`) | `#2a4735` | `#c2b496` | `#2f4236` |
 | `color.text-lead` | `#eafff0` | `#03130a` | `#f0e0b4` | `#06281a` |
 | `color.accent` | `#2bf07a` | `#0a5a31` | `#d9b56a` | `#0a4f2f` |
 | `color.rain.tail` | `#0b3d20` | `#b9c9b8` | `#2a251d` | `#b7c3b6` |
@@ -83,6 +85,26 @@ exist so that a component says what it means: a control border asks for
 Two things the prototype computed with `color-mix()` at runtime (`glow`, `scanline`) are
 stored as explicit colours with alpha. DTCG 2025.10 has no colour-modifier syntax, and an
 explicit value can be tested.
+
+### Changed from the prototype
+
+One value, by decision Q9: night-mode muted text is slightly brighter, so that small text
+(meta lines at `font.size.meta`, 13px) is easier to read.
+
+| Token | Context | Prototype | matrix | What moved |
+| --- | --- | --- | --- | --- |
+| `color.text-muted` | phosphor-night | `#7cbd90` | `#80c194` | OKLCH lightness .742 to .755; chroma (.093) and hue (153°) unchanged |
+
+- On `ground`: 9.18:1, Lc −58.9 becomes 9.59:1, Lc −61.1. On `panel`: 8.68:1, Lc −58.5
+  becomes 9.07:1, Lc −60.7 (`10-verification-log.md`, table M8).
+- The line it was lifted to is Lc 60 on both reading surfaces, the level APCA gives as the
+  minimum "for content text that is not body, column, or block text"
+  (<https://git.apcacontrast.com/documentation/APCA_in_a_Nutshell>). The lift moves
+  lightness alone and clears that line on both surfaces by more than half a point of Lc.
+- Operator-night is not changed: its `text-muted` already measures Lc −62.1 on `ground` and
+  −61.7 on `panel`. The two day contexts measure 68.5 and above.
+- `color.control-border` is an alias of `color.text-muted` and moves with it.
+- Whether this amount is the right one is the one open item in this set (README, N1).
 
 ### Contrast contract
 

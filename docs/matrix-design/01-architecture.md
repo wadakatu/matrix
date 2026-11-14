@@ -4,7 +4,9 @@ How matrix is built, packaged and consumed. One repository, one package, four la
 
 ## Shape in one paragraph
 
-matrix is a single npm package, `@wadakatu/matrix`, built from this repository. Design
+matrix is a single package, `@wadakatu/matrix`, built from this repository. It has the
+shape of an npm package and is installed with npm, but it is distributed as a tarball on
+GitHub Releases and is not published to the npm registry. Design
 tokens are authored as DTCG 2025.10 JSON and compiled to CSS custom properties. Components
 are defined by an HTML contract and styled by plain CSS in cascade layers. Behaviour is
 added by light-DOM custom elements that upgrade server-rendered markup. Astro components
@@ -193,13 +195,14 @@ No CSS preprocessor: native nesting is Baseline widely available (since 2026-06-
 
 ## Distribution and versioning
 
-- **Registry.** Publish `@wadakatu/matrix` to npm from GitHub Actions with trusted publishing
-  (OIDC, no long-lived token: <https://docs.npmjs.com/trusted-publishers>). This needs
-  wadakatu's npm account (open question Q2). Until that is approved, CI attaches the
-  `npm pack` tarball to a GitHub Release and the site installs it by URL, which npm supports
-  and pins by integrity hash in the lockfile
-  (<https://docs.npmjs.com/cli/v11/using-npm/package-spec/>). The two paths produce the same
-  tarball; publishing is one more job.
+- **GitHub Releases only; no npm publish** (decision Q2). CI attaches the `npm pack`
+  tarball to a GitHub Release, and the site installs it by its URL, which npm supports and
+  pins by integrity hash in the lockfile
+  (<https://docs.npmjs.com/cli/v11/using-npm/package-spec/>). `package.json` sets
+  `"private": true`, so that an accidental `npm publish` is refused
+  ([npm docs](https://docs.npmjs.com/cli/v11/configuring-npm/package-json#private));
+  `npm pack` is not affected by it. The name `@wadakatu/matrix` is kept because it is the
+  directory under `node_modules/` and the specifier in every import.
 - **Versions start at 1.0.0-alpha.** This repository already carries TOMBO's tags `v0.1.0`
   to `v0.14.1`. matrix is the breaking successor in the same repository, so its tags start
   at `v1.0.0-alpha.1` and can never collide with or be mistaken for a TOMBO release.
@@ -208,9 +211,9 @@ No CSS preprocessor: native nesting is Baseline widely available (since 2026-06-
   component, or a deliberate visual change (with before/after stills in the release notes).
   Patch: a fix that restores documented behaviour. Until 1.0.0 the alphas may break freely.
 - **Releases are tag-driven and hand-written.** `npm version` creates the tag; CI builds,
-  runs every gate, packs, publishes and creates the GitHub Release. `CHANGELOG.md` and
-  `docs/upgrading.md` are written by hand, because an upgrade note for a design system is
-  prose a person needs, not a list of commit subjects.
+  runs every gate, packs and creates the GitHub Release with the tarball attached.
+  `CHANGELOG.md` and `docs/upgrading.md` are written by hand, because an upgrade note for a
+  design system is prose a person needs, not a list of commit subjects.
 
 ## Standard practice, and where this design departs from it
 
@@ -220,9 +223,9 @@ No CSS preprocessor: native nesting is Baseline widely available (since 2026-06-
 | Token tiers | primitive → semantic → component ([Primer](https://primer.style/product/primitives/), Material 3) | Semantic roles and context-free scales; no colour primitive tier | The four contexts are hand-tuned sets, not steps on a shared ramp; a primitive tier would add about 48 single-use names (02) |
 | Component tech for Astro | Astro components, optionally web components ([Astro docs](https://docs.astro.build/en/guides/framework-components/)) | Astro components + light-DOM custom elements over an HTML contract | No-JS parity and runtime-printed output (above) |
 | Versioning tool | Changesets, as the research suggests ([docs](https://changesets.dev/guide/getting-started)) | Tag-driven release, hand-written changelog | One package, one maintainer; a changeset file per change is process without a reader. Revisit when there is a second contributor |
-| Distribution | npm package | npm package; release tarball until the account step is approved | Removes the approval from the critical path |
+| Distribution | A package on the npm registry | The same package as a GitHub Release tarball, installed by URL; nothing on the registry | wadakatu's decision (Q2). One consumer, which pins an exact version either way |
 | Vendoring (TOMBO's rule) | TOMBO was vendored on purpose: one CSS file, no registry | Not carried over | matrix is tokens + CSS + elements + Astro components + fonts; copying that by hand out of a tag is the drift TOMBO's sha256 pin existed to catch |
-| Motion library | The prototype loads GSAP from a CDN with SRI | No third-party runtime request; Web Animations API first (05) | Removes a failure mode and a licence that is not open source (GSAP: "Standard 'no charge' license", per `npm view gsap license`) |
+| Motion library | The prototype loads GSAP from a CDN with SRI | No third-party runtime request. The Web Animations API and CSS; GSAP bundled from npm only if they prove insufficient (decision Q6, 05) | Removes a failure mode and a licence that is not open source (GSAP: "Standard 'no charge' license", per `npm view gsap license`) |
 
 ## Risks carried by this architecture
 

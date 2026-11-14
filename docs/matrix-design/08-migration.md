@@ -1,7 +1,9 @@
 # 08 — Migration from TOMBO
 
 How this repository stops being TOMBO and becomes matrix: what is kept, what is renamed,
-what breaks at the rename, and how wadakatu.github.io moves onto the package.
+what breaks at the rename, and how wadakatu.github.io moves onto the package. It records
+five of wadakatu's decisions of 2026-11-15: Q1 (the Storybook's address), Q2 (no npm), Q3
+(the logo), Q7 (TOMBO's pages) and Q8 (languages).
 
 Nothing on this page has been done. In particular the repository has not been renamed;
 that is wadakatu's separate step, and this page says what depends on it.
@@ -29,13 +31,13 @@ found, not a proof.
 | Identity | Registration marks, shu, "measure everything" | An operator's station at night (00) |
 | Repository | `wadakatu/tombo` | `wadakatu/matrix` (after the rename) |
 | Artefact | One `tombo.css`, optional `tombo.js` | `@wadakatu/matrix`: tokens, CSS, elements, Astro components (01) |
-| Distribution | Copy files out of a tag, pin by sha256 | Install a package, pin by lockfile |
+| Distribution | Copy files out of a tag, pin by sha256 | Install the release tarball from GitHub Releases by URL, pin by lockfile. Not on npm (decision Q2) |
 | Versions | `0.1.0` – `0.14.1` | Start at `1.0.0-alpha.1` |
 | Namespace | `--tombo-*`, `.tombo-*`, `data-tombo-*`, `window.Tombo` | `--mx-*`, `.mx-*`, `mx-*` elements, root `data-*` |
 | Themes | `tombo` (light, default follows the OS), `hotaru` (dark) | `night` (default, always), `day` |
 | Palettes | One | `phosphor`, `operator` |
 | Type | Instrument Sans, M PLUS 2, Martian Mono, from Google Fonts | IBM Plex Mono, M PLUS 1 Code, DotGothic16, self-hosted |
-| Public site | An introduction page and four example pages at `/tombo/` | Storybook at `/matrix/` (06) |
+| Public site | An introduction page and four example pages at `/tombo/` | Storybook at `https://matrix.wadakatu.dev/` (06). `/tombo/` is retired |
 | Storage key | `tombo-theme` | `mx-theme` |
 
 ### What is carried over
@@ -70,13 +72,31 @@ TOMBO stays reachable in git, exactly as released.
 2. Add one paragraph to that branch's README: TOMBO is complete at v0.14.1 and continues as matrix.
 3. Vendored copies are unaffected: they are copies, and their tag still resolves.
 
-Whether TOMBO's public pages stay online is open question Q7:
+### Its public pages are retired
 
-- **Default: they do not.** The frozen branch and the tags are the archive. `/tombo/`
-  becomes a stub (below) that points to matrix and to the `tombo` branch on GitHub.
-- **Alternative: keep them as an archive.** The `tombo` branch's static files are copied
-  into the Pages artefact under `/matrix/tombo/`, and the stub forwards there. It is cheap
-  (static files, no build) and keeps a past project visible.
+Decision Q7: the old `/tombo/` pages stop being published. No stub and no redirect takes
+their place. The frozen branch and the tags are the archive.
+
+- **How.** Two repository settings, both wadakatu's. First the Pages source is changed from
+  the `main` branch to "GitHub Actions"; then the site is unpublished. GitHub's
+  documentation says that unpublishing removes the current deployment and the site is no
+  longer available, while repository settings and content are not affected; and that with
+  branch publishing a commit to the publishing source creates a new deployment
+  ([docs](https://docs.github.com/en/pages/getting-started-with-github-pages/unpublishing-a-github-pages-site)).
+  That second point is why the source is changed first: unpublishing alone would last only
+  until the next commit to `main`. With the source on "GitHub Actions" and no deploy
+  workflow yet, nothing is published until the Storybook is (06).
+- **When.** After the `tombo` branch exists and before `main` is cleared (09, tasks 1.1 and
+  1.2). Pages builds from `main` today, so clearing `main` while it is still the publishing
+  source would put matrix's unfinished files at `/tombo/`.
+- **Afterwards** `https://www.wadakatu.dev/tombo/` and every address under it are not served
+  by this repository. The portfolio adds nothing for them, so they get whatever the
+  portfolio answers for an unknown path, its 404 page.
+- **The portfolio links there today.** Its project entry points at
+  `https://www.wadakatu.dev/tombo/`, and that link is dead from the moment the site is
+  unpublished. What the entry becomes is the first of the site's own decisions below;
+  it is best made before or together with the unpublishing.
+- The Pages site is used again later, for the Storybook, at a different address (06).
 
 ## The namespace
 
@@ -110,23 +130,26 @@ From GitHub's documentation
 
 - Redirected: web traffic to the repository, issues, wikis, stars, followers, and
   `git clone` / `fetch` / `push` to the old address.
-- **Not redirected: the project site's URL.** `https://www.wadakatu.dev/tombo/` stops
-  resolving and the site appears at `https://www.wadakatu.dev/matrix/`.
+- **Not redirected: the project site's URL.** By default the site would leave
+  `https://www.wadakatu.dev/tombo/` and appear at `https://www.wadakatu.dev/matrix/`. Neither
+  matters here: TOMBO's pages are already unpublished (Q7), and the Storybook is at
+  `matrix.wadakatu.dev` (Q1), which does not contain the repository's name.
 - If a new repository is ever created under the old name, the redirects stop. `tombo` must
   not be reused as a repository name.
-- GitHub's advice for a repository with a Pages site is a custom domain, which is option B
-  in 06.
+- GitHub's advice for a repository with a Pages site is a custom domain, which is what 06
+  does.
+- The page does not say whether release-asset download URLs are redirected. See the
+  dependency row below.
 
 ### What depends on the name
 
 | Thing | Bound to the name? | Action at the rename |
 | --- | --- | --- |
 | Local clones | Redirected | `git remote set-url` when convenient |
-| Pages address | Yes | Becomes `/matrix/`; see the stub below |
-| Repository "Website" field | Yes | Set to the new address |
+| Pages address | No | `matrix.wadakatu.dev` is a custom domain (06); the setting belongs to the repository and does not contain its name |
+| Repository "Website" field | No | Set to `https://matrix.wadakatu.dev/` when the Storybook is live |
 | `package.json` `repository`, `homepage`, `bugs` | Yes | Written as `wadakatu/matrix` from the start; correct once the rename happens |
-| npm trusted publisher | Yes: it names the repository and workflow file | Configure it for `wadakatu/matrix`. Do not publish to npm before the rename (09) |
-| Storybook base path (option A) | Yes | One variable (06) |
+| The release tarball's URL, as pinned by the portfolio | Yes: `github.com/wadakatu/<name>/releases/download/…` | The portfolio's first install comes after the rename, so the URL it pins is the final one. If it comes earlier, update the URL at the rename; whether GitHub redirects the old one is not verified (10) |
 | README badges and links | Yes | Written for `matrix` |
 | TOMBO's `llms.txt` (raw GitHub URLs on `main`) | Yes | Replaced by matrix's, which links to the published site instead |
 | Portfolio's project entry and `CLAUDE.md` | Yes | Portfolio change (below) |
@@ -134,26 +157,18 @@ From GitHub's documentation
 
 ### When to rename
 
-The implementation plan works with the rename at any point after TOMBO is frozen. Earlier
-is better: the Storybook is then published at its final address from the first component,
-and npm publishing is configured once. The plan marks the two steps that must wait for it.
+The implementation plan works with the rename at any point after TOMBO is frozen. No step
+has to wait for it any more: the Storybook's address does not contain the repository's name
+(Q1) and nothing is published to npm (Q2). Before the portfolio's first install is still
+better, because the tarball URL in its `package.json` and lockfile names the repository.
 
 ### The `/tombo/` address
 
-After the rename nothing serves `https://www.wadakatu.dev/tombo/`. Because project sites
-and the user site share the domain, the portfolio repository can serve that path itself:
+Nothing serves it, by decision (Q7, "Its public pages are retired" above). The portfolio
+does not add a stub page or a refresh for it, and deep links such as
+`/tombo/examples/docs.html` end at the portfolio's 404 page like any other unknown address.
 
-- wadakatu.github.io adds `public/tombo/index.html` and `public/tombo/ja/index.html`: the
-  `Moved` pattern (04), a short page with a visible link, a canonical link, and a refresh.
-- It can be merged before the rename. While the `tombo` repository still has a Pages site,
-  that site is expected to answer for the path; the stub becomes visible when the rename
-  removes it. Which of the two wins while both exist has not been verified and does not
-  need to be: check the address right after the rename.
-- Deep links (`/tombo/examples/docs.html`) get the portfolio's 404 page, which should
-  mention the move for a while.
-
-**Reserved paths on `www.wadakatu.dev`:** `/matrix/` (the project site, while option A is in
-use) and `/tombo/` (the stub). The portfolio must not create routes under either.
+matrix needs no path on `www.wadakatu.dev`: the Storybook has its own origin (06).
 
 ## How wadakatu.github.io consumes matrix
 
@@ -162,10 +177,10 @@ matrix has a release candidate. It is described here so that matrix is designed 
 
 ### Dependency
 
-- `@wadakatu/matrix` at an exact version, from npm; or, until publishing is approved, the
-  release tarball's URL (01). The lockfile pins the content hash either way.
-- Updates arrive as an ordinary dependency pull request, and the portfolio's own checks
-  (build, Lighthouse, its visual tests) decide whether to take it.
+- `@wadakatu/matrix` at an exact version, as the URL of that release's tarball on GitHub
+  Releases (01; decision Q2). The lockfile pins the content hash.
+- An update is a pull request that changes that URL to the next release's, and the
+  portfolio's own checks (build, Lighthouse, its visual tests) decide whether to take it.
 - Working on both at once: `npm install ../matrix` (or a packed tarball) locally. Nothing
   about that is committed.
 
@@ -195,8 +210,8 @@ matrix has a release candidate. It is described here so that matrix is designed 
 ### What the site changes
 
 - **Service worker** (`public/sw.js`): remove the `tombo.css` precache entries; list the
-  bundled assets Astro emits; while Storybook is at `/matrix/`, exclude that path from the
-  cache-first routes (06); bump the cache version.
+  bundled assets Astro emits; bump the cache version. Nothing is needed for the Storybook,
+  which is on another origin (06).
 - **Agent files**: `CLAUDE.md` and `.claude/rules/frontend-design.md` describe matrix
   instead of TOMBO; the skill is linked from the package (07).
 - **Lint**: the site's CI runs `@wadakatu/matrix/stylelint`, so a raw colour in site CSS fails.
@@ -214,30 +229,34 @@ The prototype lives under `/proto/matrix/`. At launch its tree moves to the root
 | `/human/` | 人間用 Home | — |
 | `/human/projects/` | 人間用 Projects | — |
 | `/blog/` | Blog index | Same address |
-| `/blog/<slug>/` | Article | Same address; no redirect needed |
+| `/blog/<slug>/` | Article, in the language it was written in; no `/ja/` twin | Same address; no redirect needed |
 | `/about/` | Not designed yet (04, gaps) | TOMBO page |
 | `/404`, `/offline/` | Restyled | TOMBO pages |
 | `/proto/*` | Removed | Prototype, `noindex` |
-| `/tombo/` | The stub | (the TOMBO project site) |
+| `/ja/…` | The same tree in Japanese (decision Q8, below) | — |
+| `/tombo/` | Not served; the portfolio's 404 (decision Q7) | (the TOMBO project site) |
 
 `human/` routes are canonical to their short twins; articles are canonical to themselves;
 `noindex` comes off (all from `MACHINE-FIRST-AND-BLOG.md`).
+
+**Languages (decision Q8).** English is at the root and Japanese is at the same path under
+`/ja/`. A blog post exists only in the language it was written in, at its one address under
+`/blog/`. Twins link to each other with `hreflang` and the language link (04); an article
+has no twin and no language link.
 
 ### Decisions the site needs from wadakatu
 
 These are content and information-architecture decisions, not design-system ones. They are
 listed so that nobody discovers them at launch.
 
-1. **The TOMBO project entry.** The project list has a `tombo` entry. After the rename
-   there is no TOMBO repository. Does the entry become `matrix`, stay as a retired project
-   pointing at the frozen branch, or go?
+1. **The TOMBO project entry.** The project list has a `tombo` entry whose link is
+   `https://www.wadakatu.dev/tombo/`. That address stops being served when TOMBO's pages
+   are unpublished (Q7), and after the rename there is no TOMBO repository. Does the entry
+   become `matrix`, stay as a retired project pointing at the frozen branch, or go?
 2. **TOMBO in the shell.** `php artisan inspire` prints TOMBO's three rules, and one
    title-to-commit reward pairs `tombo` with a real commit. Keep as history, or replace.
-3. **Japanese and English pages** (Q8). Which pages get a twin in the other language, and
-   the address scheme. matrix supports either; its assumption is English at the root,
-   Japanese under `/ja/`, and articles at one address in the language they were written in.
-4. **About.** Needs a design in this world.
-5. **Alt text.** The five Japanese alt texts the prototype wrote need the author's eye
+3. **About.** Needs a design in this world.
+4. **Alt text.** The five Japanese alt texts the prototype wrote need the author's eye
    (`MATRIX-NOTES.md`, "Alt text added by the prototype").
 
 ## The logo
@@ -245,17 +264,19 @@ listed so that nobody discovers them at launch.
 - The mark is by Chisato Satoh and is used on wadakatu.dev with credit. The file is already
   public in the portfolio repository, along with smaller derivatives the production site
   uses (`logo-400.webp`, `logo-48.webp`, `logo-80.webp`).
-- matrix is MIT-licensed code. **The logo is not covered by that licence.** It is kept in
-  `assets/logo/` with its own notice (author, used with permission, not licensed for reuse),
-  the `LICENSE` file says so, and the package's `files` list leaves it out. The site keeps
-  serving its own copy and passes the address to the components.
+- matrix is MIT-licensed code. **The logo is not covered by that licence.**
+- **Decision Q3: the logo may live in this public repository, with a notice that it is not
+  MIT-licensed and may not be reused.** It is kept in `assets/logo/` beside that notice
+  (author, used with permission, not MIT, not for reuse), and the `LICENSE` file says the
+  same and points to it.
+- The package's `files` list leaves the logo out, so the release tarball does not carry it.
+  The site keeps serving its own copy and passes the address to the components.
 - matrix records the canonical file's sha256, so the two copies can be checked against each other.
-- Two things need a person, not a design (Q3): whether the designer has seen and accepts
-  the amber tint used in operator-night, and whether she is content with the file sitting
-  in a second public repository under that notice.
+- The amber tint in operator-night stays as designed: recolouring as a palette treatment
+  is in the approved direction (law L5), and the answer to Q3 puts no further condition on it.
 - Derivatives: the header needs 44px and 32px at up to 3×. Downscaled copies of the
-  designer's file are proposed, generated by script, never redrawn. Production already
-  does this; it is stated here so that it is a decision and not an accident.
+  designer's file are generated by script and never redrawn, as production already does.
+  They live beside the original under the same notice.
 
 ## Order of operations
 
@@ -263,26 +284,28 @@ Owner is who must act. "Agent" steps are in the implementation plan (09).
 
 | # | Step | Owner | Reversible |
 | --- | --- | --- | --- |
-| 1 | Answer the open questions (README) | wadakatu | — |
-| 2 | Create and protect the `tombo` branch | Agent, with go-ahead to push a branch | Yes |
-| 3 | Point Pages at the `tombo` branch, so `/tombo/` keeps working while `main` changes | wadakatu (repository setting) | Yes |
-| 4 | Build matrix on `main` through the plan's phases; Storybook is reviewed locally and from CI artefacts | Agent | Yes |
-| 5 | Rename the repository | wadakatu | Yes, until the old name is reused |
-| 6 | Switch Pages to GitHub Actions; the Storybook deploys to `/matrix/` | wadakatu (setting), then CI | Yes |
-| 7 | Merge the `/tombo/` stub in the portfolio (can be earlier) | Portfolio pull request | Yes |
-| 8 | Configure npm trusted publishing for `wadakatu/matrix`; publish `1.0.0-alpha` | wadakatu, then CI | A published version cannot be reused |
-| 9 | Migrate the portfolio onto the package; launch | Portfolio pull requests | Yes (revert) |
-| 10 | Release `1.0.0` | Agent prepares, wadakatu tags | — |
-| 11 | Optional: move the Storybook to `matrix.wadakatu.dev` (06, option B) | wadakatu (DNS) | Yes |
+| 1 | Create and protect the `tombo` branch | Agent, with go-ahead to push a branch; wadakatu protects it | Yes |
+| 2 | Retire TOMBO's pages (Q7), before `main` is cleared: Pages source to "GitHub Actions", then unpublish | wadakatu (repository settings) | Yes: a new deployment brings a site back |
+| 3 | Build matrix on `main` through the plan's phases; Storybook is reviewed locally and from CI artefacts | Agent | Yes |
+| 4 | The DNS gate (Q1): OK the record; custom domain saved in Pages settings; then the `CNAME` for `matrix.wadakatu.dev` (06) | wadakatu | Yes |
+| 5 | The Storybook deploys to `https://matrix.wadakatu.dev/` | CI | Yes |
+| 6 | Rename the repository | wadakatu | Yes, until the old name is reused |
+| 7 | Release candidates: tag, GitHub Release with the tarball (Q2) | Agent prepares, CI builds | A tag a consumer has installed must not be moved |
+| 8 | Migrate the portfolio onto the release tarball; launch | Portfolio pull requests | Yes (revert) |
+| 9 | Release `1.0.0` | Agent prepares, wadakatu tags | — |
 
-Steps 5 and 6 can move before step 4. Step 8 must come after step 5.
+Steps 4 and 5 can happen any time after step 2, and earlier is better: the Storybook is
+then public while components are still being reviewed. Step 6 can happen any time after
+step 1; before step 8 is simplest (see "When to rename").
 
 ## Rollback
 
-- Before step 5 nothing public has changed except the Pages source, which can be pointed
-  back at `main` (once `main` is reverted) or left on the `tombo` branch indefinitely.
+- Retiring TOMBO's pages is the first public change. It is undone by setting the Pages
+  source back to a branch and committing to it: `main` until `main` is cleared, the `tombo`
+  branch afterwards.
 - The rename can be undone by renaming back, as long as no repository has taken the old name.
 - The portfolio's migration is a set of ordinary pull requests on a site that keeps its
   current vendored TOMBO until they merge. Its rollback is a revert.
-- The only thing that cannot be taken back is a published npm version number. Alphas are
-  published first for that reason.
+- Nothing is published to a registry, so no version number is spent for good. The one rule
+  is that a release tag the portfolio has installed is never moved or re-cut: its lockfile
+  pins that tarball's hash. A bad release is followed by a new one.

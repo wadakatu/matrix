@@ -11,7 +11,7 @@ set them, and each one has a value that is correct with no script at all.
 | Attribute | Values | Default (in the markup) | Set by | Persisted |
 | --- | --- | --- | --- | --- |
 | `data-theme` | `night`, `day` | `night` | Head script; the Daylight control; the shell's `theme` command | `localStorage['mx-theme']`, only after the reader chooses |
-| `data-palette` | `phosphor`, `operator` | absent (= `phosphor`) | Head script from `?palette=`; the Operator control; `palette` command | Never. The address carries it (law L7; open question Q4) |
+| `data-palette` | `phosphor`, `operator` | absent (= `phosphor`) | Head script from `?palette=`; the Operator control; `palette` command | Never. The address carries it (law L7; decision Q4) |
 | `data-motion` | `off` | absent | Head script from `?motion=0` or the OS setting; live changes of the OS setting | No |
 | `data-reading` | `machine`, `human` | Set by each static route | The route; the in-place change | No. The address is the state |
 | `data-rain` | `held` | absent | The Hold rain checkbox | No |
@@ -122,15 +122,16 @@ day is a variant a reader asks for.
 
 ## Palette: carried by the address
 
-As approved: phosphor unless the address says `?palette=operator`. Nothing is stored. The
+Settled (decision Q4): phosphor unless the address says `?palette=operator`. Nothing is
+stored, in `localStorage` or in `sessionStorage`. The
 Operator control rewrites the address with `history.replaceState`, and same-site links
 carry the flag, so the address bar is always the shareable state.
 
 The cost of that decision is a piece of machinery: a controller must keep every in-site
 link's query in step with the current flags, and the head script must do the same when the
 controller fails to load. matrix ships both (`mx-root`, and the head script's fallback), and
-they are the most intricate behaviour in the chrome. Open question Q4 offers a simpler
-mechanism with slightly different semantics; the default is the approved one.
+they are the most intricate behaviour in the chrome. Remembering the palette for the tab
+in `sessionStorage` would have been simpler; it was offered as Q4 and not taken.
 
 Flags that travel on links: `palette`, `motion`. Flags that are spent after one load and
 are never written back: `theme`, `boot`, `run`, `mode`.
@@ -188,6 +189,10 @@ extra markup beyond the `lang` it needs anyway.
 - Chrome strings come from `@wadakatu/matrix/strings` in `en` and `ja`, chosen by the page's
   language, so a Japanese page can be Japanese throughout (law L6). 人間用 and 機械用 are
   names and are the same in both.
+- Addresses (decision Q8): English at the root, Japanese at the same path under `/ja/`. A
+  blog post exists only in the language it was written in, at one address, so an article
+  has no twin and shows no language link. The routes are the site's (08); matrix only needs
+  each page to state its `lang`.
 
 ## Before the first paint
 
@@ -213,11 +218,12 @@ Requirements on that script:
 
 ## Storage and same-origin neighbours
 
-`mx-theme` is the only persistent key. Storybook may be served from the same origin as the
-site (06), so the Storybook preview never reads or writes `mx-*` storage; its toolbar holds
-the state instead. TOMBO's `tombo-theme` key is removed once on first load after migration
-and is not mapped to a matrix theme: a stored "light" from the old site is not a request
-for day in the new one.
+`mx-theme` is the only persistent key. The Storybook is served from `matrix.wadakatu.dev`
+(06), a different origin from the site, so the two share no storage and no service worker.
+The Storybook preview still never reads or writes `mx-*` storage: its toolbar is the only
+state, so a story looks the same for every visitor. TOMBO's `tombo-theme` key is removed
+once on first load after migration and is not mapped to a matrix theme: a stored "light"
+from the old site is not a request for day in the new one.
 
 ## Adding a palette later
 

@@ -3,7 +3,9 @@
 What was checked while writing this design, how, and what was not. Every measured number in
 the other pages comes from a table here.
 
-Date of all checks: 2026-11-15. Prototype: `/Users/koyoisono/dev/wadakatu.github.io-design`,
+Date of all checks: 2026-11-15, in two passes: the design itself, and later the same day
+the revision that recorded wadakatu's answers (table M8 and "Checks made when recording the
+answers"). Prototype: `/Users/koyoisono/dev/wadakatu.github.io-design`,
 branch `design/explore`, head `93ca12d`, read only. The scripts used for the measurements
 were scratch files outside the repository and are not committed (this step ships no code);
 each table states its method so that the Phase 1 gates can reproduce it.
@@ -38,7 +40,7 @@ Method: `culori` 4.0.2, `oklch()` of each hex in `matrix.css`.
 | panel | .168 / .023 / 158 | .193 / .011 / 81 | .918 / .019 / 138 | .905 / .014 / 139 |
 | rule | .378 / .073 / 154 | .337 / .020 / 77 | .660 / .042 / 153 | .688 / .027 / 153 |
 | text | .920 / .066 / 153 | .921 / .023 / 85 | .226 / .036 / 157 | .210 / .019 / 158 |
-| text-muted | .742 / .093 / 153 | .774 / .044 / 86 | .369 / .047 / 156 | .359 / .032 / 157 |
+| text-muted | .742 / .093 / 153 (prototype); .755 / .093 / 153 (matrix, M8) | .774 / .044 / 86 | .369 / .047 / 156 | .359 / .032 / 157 |
 | text-lead | .981 / .030 / 155 | .909 / .060 / 90 | .168 / .031 / 159 | .248 / .047 / 162 |
 | accent | .839 / .218 / 151 | .789 / .103 / 84 | .412 / .099 / 154 | .379 / .085 / 157 |
 | rain.tail | .319 / .073 / 153 | .267 / .016 / 80 | .819 / .029 / 144 | .804 / .022 / 143 |
@@ -53,14 +55,16 @@ differs from phosphor day"). This is the basis for not introducing a primitive t
 
 Method: `culori` 4.0.2 `wcagContrast()` for WCAG 2 ratios; `apca-w3` 0.1.9
 `APCAcontrast(sRGBtoY(text), sRGBtoY(background))` for Lc. Solid colours, no scan lines.
-These are the golden values for the Phase 1 gate.
+These are the golden values for the Phase 1 gate. The two `text-muted` cells for
+phosphor-night are matrix's lifted value (decision Q9, table M8); every other cell is the
+prototype's value.
 
 | Pair (foreground on background) | phosphor-night | phosphor-day | operator-night | operator-day |
 | --- | --- | --- | --- | --- |
 | text on ground | 16.31 (Lc −92.2) | 11.36 (78.5) | 15.25 (−90.5) | 11.81 (79.0) |
 | text on panel | 15.43 (−91.8) | 13.31 (88.0) | 14.53 (−90.0) | 13.34 (86.1) |
-| text-muted on ground | 9.18 (−58.9) | 6.89 (68.5) | 9.42 (−62.1) | 7.21 (69.5) |
-| text-muted on panel | 8.68 (−58.5) | 8.07 (77.9) | 8.98 (−61.7) | 8.14 (76.6) |
+| text-muted on ground | 9.59 (−61.1) | 6.89 (68.5) | 9.42 (−62.1) | 7.21 (69.5) |
+| text-muted on panel | 9.07 (−60.7) | 8.07 (77.9) | 8.98 (−61.7) | 8.14 (76.6) |
 | text-lead on ground | 19.30 (−104.3) | 12.83 (80.2) | 14.71 (−88.1) | 10.61 (77.2) |
 | text-lead on panel | 18.25 (−103.9) | 15.03 (89.6) | 14.02 (−87.6) | 11.98 (84.3) |
 | accent on ground | 13.32 (−79.7) | 5.61 (63.1) | 9.88 (−64.7) | 6.48 (66.6) |
@@ -75,10 +79,11 @@ These are the golden values for the Phase 1 gate.
 | reading.human on panel | 8.76 | 5.26 | 8.42 | 5.05 |
 | reading.machine on panel | 6.31 | 5.15 | 6.06 | 4.95 |
 
-Cross-check: where the prototype's notes report a figure for the same pair, these agree
-(for example 8.68 and 5.61 as the phosphor minima, 8.98 and 6.48 for operator, and the
-article table's 15.43, 12.60, 13.31, 6.57). The notes' figures were measured from rendered
-pages by their authors; they were not re-run here.
+Cross-check: where the prototype's notes report a figure for the same pair, the prototype's
+values agree (for example 8.68 and 5.61 as the phosphor minima, 8.98 and 6.48 for operator,
+and the article table's 15.43, 12.60, 13.31, 6.57). The 8.68 is `text-muted` on `panel` in
+phosphor-night before the lift; it is kept in table M8. The notes' figures were measured
+from rendered pages by their authors; they were not re-run here.
 
 ## M3 — Fonts
 
@@ -176,7 +181,48 @@ Method: `npm view <package> version dist-tags`.
 | `gsap` | 3.15.1 | Licence field: "Standard 'no charge' license" |
 | `apca-w3` | 0.1.9 | — |
 | `web-features` | 3.46.0 | — |
-| `@wadakatu/matrix` | not found (404) | The name is free |
+| `@wadakatu/matrix` | not found (404) | The name is free on the registry. matrix does not publish there (decision Q2) |
+
+## M8 — The lifted `text-muted` (decision Q9)
+
+Method: the M1 and M2 tools at the same versions (`culori` 4.0.2, `apca-w3` 0.1.9), run
+again when the answers were recorded. The run first reproduced the eight prototype
+`text-muted` figures of M2 exactly, then measured candidates made by raising OKLCH
+lightness from `#7cbd90` with chroma and hue held.
+
+| `color.text-muted`, phosphor-night | OKLCH | On `ground` `#020805` | On `panel` `#06120b` |
+| --- | --- | --- | --- |
+| `#7cbd90` (prototype) | L .742 C .093 H 153 | 9.18 (Lc −58.9) | 8.68 (Lc −58.5) |
+| `#80c194` (matrix) | L .755 C .093 H 153 | 9.59 (Lc −61.1) | 9.07 (Lc −60.7) |
+| `#99dbac` (first candidate at Lc 75 on `panel`; not chosen) | L .834 C .094 H 153 | 12.59 (Lc −75.7) | 11.90 (Lc −75.4) |
+| `color.text` `#c4f2d0`, for scale | L .920 C .066 H 153 | 16.31 (Lc −92.2) | 15.43 (Lc −91.8) |
+
+- Two smaller lifts also reach Lc 60 on `panel` (`#7ec092` at −60.0, `#7fc093` at −60.1).
+  `#80c194` was taken for the margin; the choice is a judgement, and it is N1 in the README.
+- The contract's minima in 02 do not move: the lowest `text-muted` ratio is still 6.89, in
+  phosphor-day.
+- Not measured: the lifted colour on a rendered page, under scan lines, or by eye.
+
+## Checks made when recording the answers
+
+2026-11-15. Pages were read through a fetch tool, and the quotations are as it returned them.
+
+| Statement used | Where | Source |
+| --- | --- | --- |
+| Unpublishing removes the current deployment; "Any existing repository settings or content will not be affected"; with branch publishing, "Commit to your publishing source to create a new deployment" | 08 | <https://docs.github.com/en/pages/getting-started-with-github-pages/unpublishing-a-github-pages-site> |
+| "Make sure you add your custom domain to your GitHub Pages site before configuring your custom domain with your DNS provider" | 06 | <https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site> |
+| "If you are publishing from a custom GitHub Actions workflow, no `CNAME` file is created, and any existing `CNAME` file is ignored and is not required" | 06 | Same page |
+| Enforce HTTPS: "It can take up to 24 hours before this option is available" | 06 | Same page |
+| A user site's custom domain "will be used for all project sites owned by the same account"; a repository's own custom domain overrides it | 06 | <https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/about-custom-domains-and-github-pages> |
+| "Verifying your domain stops other GitHub users from taking over your custom domain and using it to publish their own GitHub Pages site" | 06 | <https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/verifying-your-custom-domain-for-github-pages> |
+| The rename page lists what is redirected and does not mention release assets | 08 | <https://docs.github.com/en/repositories/creating-and-managing-repositories/renaming-a-repository> |
+| "If you set `"private": true` in your package.json, then npm will refuse to publish it" | 01 | <https://docs.npmjs.com/cli/v11/configuring-npm/package-json#private> |
+| `npm pack --dry-run` succeeds for a package with `"private": true` | 01 | Run locally in a scratch directory. A refused publish was not tried, since trying means publishing |
+| Lc 60: "The minimum level recommended for content text that is not body, column, or block text", with sizes from 24px at normal weight; Lc 75 "may be used with non-body text with a font no smaller than 15px/400" | 02, 05, README N1 | <https://git.apcacontrast.com/documentation/APCA_in_a_Nutshell>, "Use-Case & Size Ranges" |
+| The `apca-w3` README has no such list in text; its font look-up tables are images | — | <https://github.com/Myndex/apca-w3> |
+
+So 13px muted text is under the sizes APCA names for Lc 60 and for Lc 75. The lift is to
+the Lc 60 line as a level, not a claim that 13px text conforms to APCA's size table.
 
 ## Claims in the research, as checked
 
@@ -213,7 +259,7 @@ checked, the result is here; a correction is a note for the reader, not an edit 
 | The shortcut's off switch cannot be reached from 機械用 | `MATRIX-NOTES.md`, "機械用 as a shell", Accessibility and Still weak | 04 (Readings) |
 | `--rule` is 1.5–2.4:1 and is the border of some controls (chips, pager, the guide's ×) | M2; `matrix.css` | 05 (colour rule 4) |
 | `--green` is amber in Operator | `matrix.css` | 02 (`accent`) |
-| A same-origin Storybook would be cached by the portfolio's service worker | `public/sw.js`: scope `/`, cache-first for `style`, `script`, `image`, 30 days | 06, 08 |
+| A same-origin Storybook would be cached by the portfolio's service worker | `public/sw.js`: scope `/`, cache-first for `style`, `script`, `image`, 30 days | 06: the Storybook has its own origin (decision Q1) |
 | Fonts and GSAP are third-party requests | `ProtoMatrixLayout.astro` | 01, 05 |
 | The frozen boot can show half-decoded Japanese | `MATRIX-NOTES.md`, "Still weak" | 05 (The boot) |
 | Root-level state lives in six classes set by different scripts (`js`, `enhanced`, `term`, `term-off`, `kb`, `cmatrix`) | `matrix.css`, layout head script | 01, 04 (rename map) |
@@ -225,16 +271,27 @@ Stated plainly so that nothing below is mistaken for a checked fact.
 - Any behaviour in Safari, Firefox, on a phone, or with a screen reader. The prototype's
   own notes say the same of everything they report.
 - The prototype's test results. They are quoted as the notes' results.
-- Whether the project site or the user site answers for a path while both exist (08).
-- Whether `www.wadakatu.dev/matrix/` forwards to a custom sub-domain once one is set (06).
+- Whether the project site's old address under `www.wadakatu.dev` forwards to
+  `matrix.wadakatu.dev` once the custom domain is set. GitHub's page on custom domains
+  does not say. Task 6.5 checks that nothing of this repository is reachable there.
+- Whether the custom domain can be saved in Pages settings while the site is unpublished
+  and before any deployment exists (06, the gate's first step).
+- What the Pages settings and API show after a site is unpublished.
+- Whether a release asset's download URL follows a repository rename (08).
 - Whether `raw.githubusercontent.com` URLs follow a repository rename.
 - Whether Terrazzo's `a11y/min-contrast` evaluates every resolver context, and whether its
   CSS plugin can emit `light-dark()` by configuration (spike S2).
 - That the Storybook MCP addon really exposes Astro components (spike S1).
 - The share of wadakatu.dev's readers on engines without `light-dark()`.
 - The statement in the X research that light body text on black is comfortable to about
-  Lc −90; and APCA's per-size thresholds, which the `apca-w3` README gives as images.
+  Lc −90; and APCA's full per-size table, which the `apca-w3` README gives as images. The
+  general levels were read from another APCA page ("Checks made when recording the
+  answers").
+- Whether APCA's levels are meant to be compared with the absolute value of a negative Lc.
+  Neither page says so in text; this set compares magnitudes.
 - That wadakatu.github.io is TOMBO's only consumer. It is the only one GitHub's code
   search returned.
-- The licence terms under which the logo is used. This design only records that the file
-  is credited and already public in the portfolio repository.
+- The licence terms under which the logo is used. This design records that the file is
+  credited and already public in the portfolio repository, and wadakatu's decision (Q3)
+  that it may live in this repository under a not-MIT, no-reuse notice. It has seen no
+  written terms.
