@@ -46,6 +46,13 @@
         color: var(--mx-color-on-accent);
       }
       .mx-menu[open] > summary::before { background-size: 0 0, 100% 2px, 0 0; }
+      /* Forced colours drop gradient images, so the figure keeps its own and draws in system
+         colours; open is Highlight, as a pressed control is (05). */
+      @media (forced-colors: active) {
+        .mx-menu > summary::before { forced-color-adjust: none; color: ButtonText; }
+        .mx-menu[open] > summary, .mx-menu[open] > summary:hover { background: Highlight; border-color: Highlight; }
+        .mx-menu[open] > summary::before { color: HighlightText; }
+      }
       .mx-menu:not([open]) :is(.mx-nav, .mx-controls .mx-control, .mx-lang) { display: none; }
       /* Unfolded: the nav as a list of 44px lines, then the controls, after the row in the header's own box. */
       .mx-header .mx-nav, .mx-controls :is(.mx-control, .mx-lang) { order: 1; }

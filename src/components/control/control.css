@@ -21,6 +21,10 @@
     border-color: var(--mx-color-accent);
     color: var(--mx-color-on-accent);
   }
+  /* Forced colours would flatten the pressed fill into the ground (05). */
+  @media (forced-colors: active) {
+    .mx-control[aria-pressed="true"] { background: Highlight; border-color: Highlight; color: HighlightText; }
+  }
   .mx-control input { accent-color: var(--mx-color-accent); margin: 0; }
   /* Hold rain: the label is outlined when its checkbox has focus (05, "Focus"). */
   .mx-control:has(input:focus-visible) {

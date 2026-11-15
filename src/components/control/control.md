@@ -49,6 +49,8 @@ works through `:has()`, and the two toggles are absent.
 Buttons expose `aria-pressed`. The Hold rain label is outlined when its checkbox has focus
 (the replacement for the checkbox's own ring, 05). Keyboard: Tab to each; Space toggles; Enter
 presses a button. Every control is at least 24px tall, 44px in the phone menu.
+In forced colours a pressed button is `Highlight` with `HighlightText`; the checkbox shows its
+own state.
 
 ## Do / Don't
 

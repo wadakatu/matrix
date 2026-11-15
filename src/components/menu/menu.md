@@ -52,6 +52,8 @@ prototype's one-off numbers.
 A native disclosure: the summary is a button named by its (visually hidden) word, with its
 expanded state. Keyboard: Tab to the button; Enter or Space opens; Tab moves through the nav
 and controls; Escape closes and returns focus to the button.
+In forced colours the three rules stay, in `ButtonText`; open, the button is `Highlight` and
+its rule `HighlightText`.
 
 ## Do / Don't
 
