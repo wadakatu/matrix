@@ -14,5 +14,5 @@
     "rootDir": "src",
     "outDir": "dist"
   },
-  "include": ["src/elements.ts", "src/head/head.ts", "src/strings/*.ts"]
+  "include": ["src/elements.ts", "src/head/head.ts", "src/strings/*.ts", "src/lib/index.ts"]
 }
