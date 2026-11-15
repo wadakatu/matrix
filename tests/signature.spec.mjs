@@ -827,9 +827,21 @@ test.describe("3.8 rewards", () => {
       expect(await s.getAttribute("data-reward")).toBeNull();
       await page.waitForTimeout(2600);
       await expect(page.locator(".mx-ghost")).toHaveCount(0);
+      // Any frame of Decode or of the doubling counts, not only what is left once they would have ended.
+      const watch = (sel, o) => page.evaluate(([sel, o]) => {
+        const seen = (window.__mx ??= []);
+        const m = new MutationObserver((r) => seen.push(...r.map((x) => x.attributeName ?? x.target.textContent)));
+        for (const el of document.querySelectorAll(sel)) m.observe(el, o);
+      }, [sel, o]);
+      await watch(".mx-header .mx-switch-label", { childList: true, characterData: true, subtree: true });
+      await watch(".mx-name", { attributes: true, attributeFilter: ["data-double"] });
       await page.locator('.mx-header a[data-to="machine"]').click();
+      await page.waitForTimeout(q ? 50 : 1900);
+      // The way back is where the headings settle; the way out dissolves them into hex, which stays.
+      await watch('mx-readings > [data-reading="human"] :is(h2, .mx-stream-name a)', { childList: true, characterData: true, subtree: true });
       await page.locator('.mx-header a[data-to="human"]').click();
       await page.waitForTimeout(q ? 50 : 1900);
+      expect(await page.evaluate(() => window.__mx)).toEqual([]);
       expect((await state(page)).doubled).toBe(0);
     });
   }
