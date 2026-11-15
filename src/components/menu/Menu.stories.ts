@@ -4,7 +4,7 @@ import md from "./menu.md?raw";
 import { contexts, docs, japanese, narrow } from "../../fixtures/stories.ts";
 
 const slots = (lang: "en" | "ja") => ({ default: { component: MenuContent, props: { lang } } });
-export default { title: "Chrome/Menu", component: Menu, ...docs(md) };
+export default { title: "Chrome/Menu", component: Menu, ...docs(md, { chrome: true }) };
 
 export const Default = { args: { slots: slots("en") } };
 export const Narrow = { args: { slots: slots("en") }, ...narrow };
