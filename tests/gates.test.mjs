@@ -125,6 +125,8 @@ test("Baseline ledger: a feature that is not widely available fails until it is 
 test("unknown token: a --mx-* property that is neither a token nor declared fails", () => {
   assert.deepEqual(gate.unknownTokens({ "a.css": ":root { --mx-pad: 1px; } .a { padding: var(--mx-pad); color: var(--mx-color-text); }" }, built()), []);
   assert.deepEqual(gate.unknownTokens({ "a.css": ".a { color: var(--mx-color-txet); }" }, built()), ["a.css: --mx-color-txet is not a token or a declared property"]);
+  // A property an element sets at runtime counts as declared.
+  assert.deepEqual(gate.unknownTokens({ "a.css": "body { height: var(--mx-vvh); }", "a.ts": 'd.style.setProperty("--mx-vvh", h)' }, built()), []);
 });
 
 test("freshness: a stale generated doc fails", () => {
