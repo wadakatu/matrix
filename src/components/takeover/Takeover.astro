@@ -1,0 +1,17 @@
+---
+/**
+ * A full-screen view inside the screen (the site's `vim`); the prompt below it is its command line
+ * (04, "Takeover"). Hidden until an interpreter asks for it; `mx-terminal` fills it. `open`, `lines`
+ * and `message` draw it open at build time, for stories.
+ */
+interface Props {
+  open?: boolean;
+  lines?: string[];
+  message?: string;
+}
+const { open = false, lines = [], message = "" } = Astro.props;
+---
+<div class="mx-takeover" hidden={!open}>
+  <pre class="mx-takeover-buffer">{lines.map((l) => `${l}\n`).join("")}{open && <span data-tone="dim">{"~\n".repeat(60)}</span>}</pre>
+  <p class="mx-takeover-message" role="status">{message}</p>
+</div>

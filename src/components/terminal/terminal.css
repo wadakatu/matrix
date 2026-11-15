@@ -1,0 +1,86 @@
+@layer mx.components {
+  /* One shell. Without scripts the recorded session is an ordinary scrolling page; the parts that
+     need the live shell (the prompt, its hint, the chips, the guide's ×, the clock) are absent. */
+  mx-terminal { display: block; }
+  :root:not([data-shell="live"]) :is(.mx-prompt, .mx-chips, .mx-guide-live, .mx-guide-hide, .mx-modeline-time, .mx-prompt-hint) { display: none; }
+  :root[data-reading="machine"] { scroll-padding-bottom: 56px; }
+  /* The fixed status line covers the last rows of a scrolling page; this keeps them above it. */
+  :root[data-reading="machine"] mx-root:has(.mx-modeline) { padding-bottom: 36px; }
+
+  /* The session. One .mx-ln per line, wrapping the way a terminal wraps. */
+  .mx-terminal { font-size: var(--mx-font-size-ui); line-height: var(--mx-font-leading-terminal); }
+  .mx-terminal-screen { padding-block: var(--mx-space-4) var(--mx-space-6); }
+  .mx-terminal-screen:focus-visible { outline-offset: -2px; }
+  .mx-ln { min-height: 1.6em; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .mx-ln [data-tone="dim"] { color: var(--mx-color-text-muted); }
+  .mx-ln [data-tone="hi"] { color: var(--mx-color-accent); }
+  .mx-ln [data-tone="dir"] { color: var(--mx-color-text-lead); font-weight: var(--mx-font-weight-medium); }
+  .mx-ln a { color: var(--mx-color-text-lead); }
+  .mx-ln-echo { margin-top: var(--mx-space-1-5); color: var(--mx-color-text-lead); }
+  .mx-ln-echo .mx-prompt-ps { color: var(--mx-color-accent); }
+
+  /* With scripts running, 機械用 is one viewport: the header, the screen, the keys, the status line.
+     The session scrolls inside the screen and the window does not scroll. --mx-vvh is the visible
+     height, which the live shell keeps in step with a phone's on-screen keyboard. If the live shell
+     has not started by motion.shell.fallback, the head script sets data-shell="recorded" and this
+     lets go; a shell that starts later sets "live" and takes it back. The lock also lets go whenever
+     the window is under 480px tall (zoom, a short window): a keyboard shrinks only the visual
+     viewport, never the layout viewport this query reads (05, "lets go when it cannot fit"). */
+  @media (scripting: enabled) and (height >= 480px) {
+    :root[data-reading="machine"]:not([data-shell="recorded"]):has(mx-terminal) {
+      overflow: hidden;
+      & body { height: var(--mx-vvh, 100dvh); overflow: hidden; }
+      & mx-root { display: flex; flex-direction: column; height: 100%; padding-bottom: 0; }
+      & .mx-header { flex: none; }
+      /* Every grid here has one column that may shrink: wide output wraps or scrolls inside the screen, never widens the page. */
+      & main { flex: 1 1 0; display: grid; grid-template: minmax(0, 1fr) / minmax(0, 1fr); min-height: 0; }
+      & :is(mx-readings, mx-readings > [data-reading="machine"]) { display: grid; grid-template: minmax(0, 1fr) / minmax(0, 1fr); min-height: 0; }
+      /* Rows are named by position, so a hidden guide line leaves an empty row and nothing else moves up into it. */
+      & mx-terminal { display: grid; grid-template: auto minmax(0, 1fr) auto auto / minmax(0, 1fr); min-height: 0; }
+      & .mx-guide { grid-row: 1; padding-inline: var(--mx-pad); background: var(--mx-color-panel); }
+      & .mx-terminal-screen {
+        grid-row: 2;
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+        padding: var(--mx-space-3) var(--mx-pad) var(--mx-space-4);
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        scrollbar-width: thin;
+        scrollbar-color: var(--mx-color-rule) transparent;
+      }
+      & :is(.mx-terminal-tty, .mx-prompt) { flex: none; }
+      & .mx-takeover { min-height: 0; }
+      & .mx-chips { grid-row: 3; }
+      & .mx-modeline { grid-row: 4; position: relative; }
+      /* The name is still the page's h1; the prompt is the line on screen now. */
+      & .mx-name { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+      & .mx-footer { display: none; }
+      /* The on-screen keyboard is up: every row counts. The header's switch is still the way back.
+         Below 720px the window list is already folded into the menu and costs no row. */
+      &:has(mx-terminal[data-keyboard]) :is(.mx-modeline, .mx-guide) { display: none; }
+      @media (width >= 720px) { &:has(mx-terminal[data-keyboard]) .mx-header .mx-nav { display: none; } }
+    }
+  }
+  /* The two colour buttons give way to the commands that do the same (theme, palette): on a phone, as
+     in the prototype, and below 1360px, so that the shortcut's off switch fits the one header row
+     (69px at 1100) beside Hold rain. From 1360px everything fits and they stay. */
+  @media (width < 1360px) {
+    :root[data-reading="machine"][data-shell="live"] .mx-controls :is([data-action="theme"], [data-action="palette"]) { display: none; }
+  }
+}
+@layer mx.effects {
+  /* The overlay (cmatrix): the page's own rain over the whole window, under the status line that says
+     how to stop it. In this layer, because the rain's own rule hides it in 機械用 there. */
+  :root[data-reading="machine"]:has(mx-terminal[data-overlay="rain"]) .mx-rain { display: block; z-index: var(--mx-layer-overlay); background: var(--mx-color-ground); }
+}
+@layer mx.utilities {
+  /* The frame's own rules are utilities; in the one viewport its auto margins would shrink a flex
+     item to its content, and the screen carries the inline padding itself. */
+  @media (scripting: enabled) and (height >= 480px) {
+    :root[data-reading="machine"]:not([data-shell="recorded"]):has(mx-terminal) {
+      & .mx-frame { margin-inline: 0; }
+      & main.mx-frame { padding-inline: 0; }
+    }
+  }
+}

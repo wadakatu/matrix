@@ -1,0 +1,28 @@
+@layer mx.components {
+  /* The first row of 機械用, and the plain way to 人間用 for a reader who did not ask for a shell. On a
+     phone the sentence is kept for assistive technology only, so the row is one 44px link and the ×. */
+  .mx-guide {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--mx-space-1-5) var(--mx-space-3);
+    margin: 0;
+    padding-block: var(--mx-space-2);
+    border-bottom: var(--mx-border-width-hair) dashed var(--mx-color-rule);
+    color: var(--mx-color-text-muted);
+    font-size: var(--mx-font-size-meta);
+  }
+  .mx-guide[hidden] { display: none; }
+  .mx-guide-say { margin-right: auto; }
+  .mx-guide kbd { color: var(--mx-color-text); }
+  .mx-guide .mx-control { font-size: var(--mx-font-size-meta); padding-block: var(--mx-space-0-5); }
+  .mx-guide-way { border-color: var(--mx-color-accent); color: var(--mx-color-text-lead); }
+  .mx-guide-way:hover { background: var(--mx-color-accent); color: var(--mx-color-on-accent); }
+  .mx-guide-hide { justify-content: center; min-width: 32px; padding-inline: 0; border-color: var(--mx-color-rule); color: var(--mx-color-text-muted); }
+  @media (width < 720px) {
+    .mx-guide { flex-wrap: nowrap; gap: var(--mx-space-2); }
+    .mx-guide-say { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+    .mx-guide-way { flex: 1; justify-content: center; min-height: var(--mx-size-target); }
+    .mx-guide-hide { flex: none; width: var(--mx-size-target); min-height: var(--mx-size-target); }
+  }
+}

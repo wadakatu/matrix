@@ -1,0 +1,8 @@
+@layer mx.components {
+  /* A full-screen view inside the screen; the field below it is its command line. */
+  .mx-takeover { display: flex; flex-direction: column; flex: 1; min-height: 40vh; }
+  .mx-takeover[hidden], .mx-terminal-screen:has(> .mx-takeover:not([hidden])) .mx-terminal-tty { display: none; }
+  .mx-takeover-buffer { flex: 1 1 0; min-height: 0; margin: 0; overflow: hidden; font: inherit; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .mx-takeover-buffer [data-tone="dim"] { color: var(--mx-color-text-muted); }
+  .mx-takeover-message { min-height: 1.6em; margin: 0; color: var(--mx-color-text-lead); white-space: pre-wrap; }
+}

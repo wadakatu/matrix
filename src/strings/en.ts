@@ -14,4 +14,17 @@ export default {
   status: { machine: "Machine reading", human: "Human reading" },
   moved: { title: "Moved", text: "This page moved." },
   other: { lang: "ja", label: "日本語" },
+  guide: { live: { before: " Type ", after: ", or tap a command below." }, way: "Read it as an ordinary page: ", hide: "Hide this note" },
+  terminal: {
+    label: "Terminal",
+    command: "Command",
+    hint: "Type help and press Enter to list the commands. Tab completes when the line has text. On an empty line, or after Escape, Tab moves focus. Type exit to leave. While this field has focus, Ctrl+L, Ctrl+U, Ctrl+A, Ctrl+E and Ctrl+D act on the line, and Ctrl+C copies when text is selected.",
+    recorded: "This is a recorded session. The live prompt needs JavaScript.",
+    where: "recorded session",
+    chips: "Keys and suggested commands",
+    keys: { tab: "Complete", up: "Previous command", down: "Next command", cancel: "Cancel" },
+    newTab: " (opens in a new tab)",
+    login: "who am I?",
+    rain: { where: "any key stops the rain", still: "any key stops the rain (held still: motion is off)", say: "Rain. Press any key to stop.", sayStill: "Rain, held still because motion is off. Press any key to stop." },
+  },
 } as const;

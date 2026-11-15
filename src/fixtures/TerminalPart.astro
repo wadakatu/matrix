@@ -1,0 +1,51 @@
+---
+/**
+ * One part of the terminal on its own, inside the terminal's frame (screen and session), for its stories:
+ * the prompt, the chips, the guide, the status line, the takeover, a fetch card, the login card, the
+ * swatches, a line with runs. The part's own Astro component renders it; the frame only gives it the
+ * terminal's type and spacing.
+ */
+import Prompt from "../components/prompt/Prompt.astro";
+import Chips from "../components/chips/Chips.astro";
+import Guide from "../components/guide/Guide.astro";
+import Modeline from "../components/modeline/Modeline.astro";
+import Takeover from "../components/takeover/Takeover.astro";
+import Fetch from "../components/fetch/Fetch.astro";
+import Login from "../components/login/Login.astro";
+import Swatches from "../components/swatch/Swatches.astro";
+import Run from "../components/run/Run.astro";
+import { isCard, type Card } from "../lib/index.ts";
+import { chips, demo, login, world } from "./terminal.ts";
+import type { Lang } from "../strings/index.ts";
+interface Props {
+  part: "prompt" | "chips" | "guide" | "modeline" | "takeover" | "fetch" | "login" | "swatches" | "run";
+  lang?: Lang;
+  /** Login: open; status line: live text. */
+  open?: boolean;
+  live?: boolean;
+  /** For the four-scope frame: a field id per copy. */
+  id?: string;
+}
+const { part, lang = "en", open, live, id = "fixture-command" } = Astro.props;
+const sh = demo();
+const card = sh.exec("neofetch").out.find(isCard) as Card;
+const ja = lang === "ja";
+const view = ja ? world.files["posts/fixture-post-one.md"] : world.files["about.txt"];
+---
+<div class="mx-terminal mx-frame">
+  {part === "guide" && <Guide human="#human" lang={lang} />}
+  {!["guide", "chips", "modeline"].includes(part) && (
+    <div class="mx-terminal-screen">
+      <div class="mx-terminal-tty">
+        {part === "fetch" && <Fetch card={card} lang={lang} />}
+        {part === "login" && <Login prompt={sh.prompt()} command="neofetch" card={card} name={login} lang={lang} open={open} />}
+        {part === "swatches" && <Swatches />}
+        {part === "run" && <Run line={[{ text: "Type ", tone: "dim" }, { text: "help", run: "help" }, { text: " or open a file: ", tone: "dim" }, { text: ja ? "見本の記事.md" : "about.txt", run: "cat about.txt" }, "  ", { text: "projects/", tone: "dir", run: "ls -l projects" }]} />}
+      </div>
+      {part === "takeover" && <Takeover open lines={view.trim().split("\n")} message={`"${ja ? "見本の記事.md" : "about.txt"}" [readonly]`} />}
+      {(part === "prompt" || part === "takeover") && <Prompt id={id} prompt={sh.prompt()} lang={lang} />}
+    </div>
+  )}
+  {part === "chips" && <Chips commands={chips} lang={lang} />}
+  {part === "modeline" && <Modeline human="#human" lang={lang} where={live ? "0:sh* ~" : undefined} time={live ? "12:00 JST" : undefined} />}
+</div>

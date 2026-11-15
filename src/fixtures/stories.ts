@@ -1,5 +1,6 @@
 // What every component's stories share (06, "Required stories").
 import { fixture } from "./corpus.ts";
+import { demo } from "./terminal.ts";
 
 export { fixture };
 
@@ -48,3 +49,12 @@ export const hovered = (selector: string): Play => ({
     canvasElement.querySelector(selector)?.setAttribute("data-sb-hover", "");
   },
 });
+
+/** The live shell: the play function gives every terminal in the story the demo interpreter (4.2). */
+export const live: Play = {
+  play: ({ canvasElement }) => {
+    for (const t of canvasElement.querySelectorAll<HTMLElement & { interpreter: unknown }>("mx-terminal")) t.interpreter = demo();
+  },
+};
+/** A part that only shows in a live shell (the prompt, the chips, the guide's ×): the root says it is live. */
+export const shell = { parameters: { shell: "live" } };

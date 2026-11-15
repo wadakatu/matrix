@@ -1,0 +1,9 @@
+---
+/** A tappable command in output: a button outside the tab order (04, "Run"). Printed by the terminal's one renderer. */
+import { render, type Line } from "../../lib/index.ts";
+interface Props {
+  line: Line;
+}
+const { line } = Astro.props;
+---
+<Fragment set:html={render([line], { newTab: "" })} />

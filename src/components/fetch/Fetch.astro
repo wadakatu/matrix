@@ -1,0 +1,11 @@
+---
+/** The mark beside key and value lines, neofetch's card (04, "Fetch card"). Printed by the terminal's one renderer. */
+import { render, type Card } from "../../lib/index.ts";
+import { strings, type Lang } from "../../strings/index.ts";
+interface Props {
+  card: Card;
+  lang?: Lang;
+}
+const { card, lang = "en" } = Astro.props;
+---
+<Fragment set:html={render([card], { newTab: strings[lang].terminal.newTab })} />

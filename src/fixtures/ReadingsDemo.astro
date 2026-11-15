@@ -4,7 +4,8 @@ import Readings from "../components/readings/Readings.astro";
 import Name from "../components/name/Name.astro";
 import Switch from "../components/switch/Switch.astro";
 import Panel from "../components/panel/Panel.astro";
-import MachineFixture from "./MachineFixture.astro";
+import Terminal from "../components/terminal/Terminal.astro";
+import { chips, demo, sessions } from "./terminal.ts";
 import { fixture, signature } from "./corpus.ts";
 interface Props {
   lang?: "en" | "ja";
@@ -17,6 +18,6 @@ const to = { human: "#human", machine: "#machine" };
   <Readings titles={{ human: "fixture_, human reading", machine: "fixture_" }} lang={lang}>
     <Name slot="name" lines={signature.commits}>fixture_</Name>
     <Panel slot="human" title={fixture[lang].panel.title}><p>{fixture[lang].panel.text}</p></Panel>
-    <MachineFixture slot="machine" page="projects" human={to.human} />
+    <Terminal slot="machine" interpreter={demo("projects")} session={sessions.projects.slice(0, 2)} chips={chips} human={to.human} lang={lang} />
   </Readings>
 </div>
