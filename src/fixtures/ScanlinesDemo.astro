@@ -1,0 +1,11 @@
+---
+/** What the scan lines lie over in 機械用: text, the mark and a filled control, which are lifted. */
+import Logo from "../components/logo/Logo.astro";
+import Control from "../components/control/Control.astro";
+import { fixture } from "./corpus.ts";
+---
+<div class="mx-frame">
+  <p>{fixture.en.panel.text}</p>
+  <Logo src={fixture.en.mark.logo} />
+  <Control pressed>Fixture pressed</Control>
+</div>

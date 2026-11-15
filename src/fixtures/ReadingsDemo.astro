@@ -1,0 +1,22 @@
+---
+/** Readings with a Name and two fixture readings, and the header switch that changes them. */
+import Readings from "../components/readings/Readings.astro";
+import Name from "../components/name/Name.astro";
+import Switch from "../components/switch/Switch.astro";
+import Panel from "../components/panel/Panel.astro";
+import MachineFixture from "./MachineFixture.astro";
+import { fixture, signature } from "./corpus.ts";
+interface Props {
+  lang?: "en" | "ja";
+}
+const { lang = "en" } = Astro.props;
+const to = { human: "#human", machine: "#machine" };
+---
+<header class="mx-header mx-frame"><Switch to={to} current="human" lang={lang} /></header>
+<div class="mx-frame">
+  <Readings titles={{ human: "fixture_, human reading", machine: "fixture_" }} lang={lang}>
+    <Name slot="name" lines={signature.commits}>fixture_</Name>
+    <Panel slot="human" title={fixture[lang].panel.title}><p>{fixture[lang].panel.text}</p></Panel>
+    <MachineFixture slot="machine" page="projects" human={to.human} />
+  </Readings>
+</div>

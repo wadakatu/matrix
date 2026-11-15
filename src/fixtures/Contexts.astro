@@ -1,5 +1,12 @@
 ---
-/** The `Contexts` story's frame: the story four times, one theme scope per context (06). */
+/**
+ * The `Contexts` story's frame: the story four times, one theme scope per context (06). `framed`: each
+ * scope is the containing block of a fixed layer (rain, boot, curtain, scan lines) and has a height.
+ */
+interface Props {
+  framed?: boolean;
+}
+const { framed } = Astro.props;
 const html = await Astro.slots.render("default");
 const scopes = [
   ["phosphor", "night"],
@@ -10,7 +17,7 @@ const scopes = [
 ---
 <div class="fixture-contexts">
   {scopes.map(([palette, theme]) => (
-    <div class="fixture-scope" data-palette={palette} data-theme={theme}>
+    <div class="fixture-scope" data-palette={palette} data-theme={theme} data-framed={framed ? "" : undefined}>
       <p class="fixture-scope-name" lang="en">{palette}-{theme}</p>
       <Fragment set:html={html} />
     </div>
