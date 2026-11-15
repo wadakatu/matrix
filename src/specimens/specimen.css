@@ -1,0 +1,14 @@
+/* Page compositions of the specimens (04, "Patterns"): how a page arranges components. Not components,
+   and not in the package; the site owns its own. Values are the prototype's (`.about`, `.station`, `.wall`). */
+@layer mx.components {
+  .specimen-about { display: grid; gap: var(--mx-space-3) var(--mx-space-12); margin-top: 0; padding-block: var(--mx-space-5); }
+  .specimen-role { font-size: var(--mx-font-size-lead); line-height: 1.6; color: var(--mx-color-text-lead); }
+  .specimen-brief { max-width: 60ch; }
+  .specimen-wall.mx-panel { padding: var(--mx-space-4) clamp(16px, 2.2vw, 24px) var(--mx-space-5); }
+  .specimen-wall .mx-inline-list[data-variant="after"] { margin-top: var(--mx-space-3); }
+  .specimen-station { display: grid; gap: 0 var(--mx-space-6); }
+  @media (width >= 720px) {
+    .specimen-about { grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); align-items: end; }
+    .specimen-station { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+}

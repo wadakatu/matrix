@@ -68,3 +68,51 @@ export const fixture = {
     meta: "見本 · 2026-11-15",
   },
 };
+
+/**
+ * What the Signature components are made of (L1, inside Storybook): the fixture's own phrases,
+ * commit subjects, projects and posts. Shared by both languages, because a corpus is data, not chrome.
+ */
+const projects = [
+  { name: "fixture-one", href: "https://example.com/fixture-one", lang: "TypeScript", blurb: "A fixture tool that lays out a station from a data file.", docs: "https://docs.example.com/fixture-one" },
+  { name: "fixture-two", href: "https://example.com/fixture-two", lang: "PHP", blurb: "A fixture library for checking that tests are written first." },
+  { name: "fixture-three", href: "https://example.com/fixture-three", lang: "Go", blurb: "A fixture command that prints a recorded session." },
+  { name: "fixture-four", href: "https://example.com/fixture-four", lang: "CSS", blurb: "A fixture stylesheet for a terminal at night. 見本の配色", site: "https://example.com/fixture-four/site" },
+  { name: "fixture-five", href: "https://example.com/fixture-five", lang: "Astro", blurb: "A fixture site built from two readings of one source." },
+];
+const posts = [
+  { title: "見本の記事: 二つの表示を一つのデータから作る", date: "2026-11-01", category: "見本", href: "/blog/fixture-post-one/" },
+  { title: "見本の記事: 雨を止めるボタンについて", date: "2026-10-15", category: "見本", href: "/blog/fixture-post-two/" },
+];
+const commits = [
+  "feat: add the fixture station",
+  "fix: keep the fixture panel solid",
+  "docs: describe the fixture corpus",
+  "feat(fixture-one): lay out the station from data",
+  "refactor: name the fixture roles",
+  "test: check the fixture readings",
+  "chore: update the fixture lockfile",
+  "fix(fixture-four): park the rain in the still",
+];
+export const signature = {
+  person: { heading: "fixture_", role: "Fixture developer", location: "Fixture City", line1: "Builds fixture stations from data files.", line2: "Writes about them in fixture posts." },
+  projects,
+  posts,
+  commits,
+  /** A title that really has a commit in the log, for the title-to-commit reward. */
+  pairs: { "fixture-one": "feat(fixture-one): lay out the station from data", "fixture-four": "fix(fixture-four): park the rain in the still" } as Record<string, string>,
+  /** The rain's corpus: commit subjects, file paths, project lines and post titles, in both scripts. */
+  phrases: [
+    ...commits,
+    ...projects.flatMap((p) => [p.name, p.blurb]),
+    ...posts.map((p) => p.title),
+    "src/fixtures/corpus.ts",
+    "src/specimens/human-home.astro",
+    "見本の局を追加",
+    "見本のパネルを塗りつぶしたままにする",
+    "見本のコーパスを説明する",
+    "見本の雨は見本の言葉でできている",
+    "見本の端末を夜に読む",
+    "二つの表示、一つの見本",
+  ],
+};

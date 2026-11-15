@@ -1,15 +1,19 @@
-// The chrome specimen in all four contexts and both languages, at 1440 and 390 (the Phase 2 exit).
+// The chrome specimen in all four contexts and both languages, at 1440 and 390 (the Phase 2 exit), and
+// the Signature specimens, Human home and Projects in 人間用, as stills (`motion=0`), in all four (Phase 3).
 import { expect, test } from "@playwright/test";
 import { ORIGIN, serve } from "../support/serve.mjs";
 
 const CONTEXTS = { "phosphor-night": "", "phosphor-day": "theme=day", "operator-night": "palette=operator", "operator-day": "palette=operator&theme=day" };
-for (const page of ["chrome", "chrome.ja"]) {
+const PAGES = { chrome: "", "chrome.ja": "", "human-home": "motion=0", "human-projects": "motion=0" };
+for (const [page, still] of Object.entries(PAGES)) {
   for (const [context, query] of Object.entries(CONTEXTS)) {
     for (const width of [1440, 390]) {
       test(`${page} ${context} at ${width}`, async ({ page: p }) => {
         const requests = await serve(p, { "/assets/": "assets", "/": "dist-specimens" });
+        await p.addInitScript(() => sessionStorage.setItem("mx-boot", "1"));
         await p.setViewportSize({ width, height: width === 390 ? 844 : 900 });
-        await p.goto(`${ORIGIN}/${page}.html${query && `?${query}`}`);
+        const q = [still, query].filter(Boolean).join("&");
+        await p.goto(`${ORIGIN}/${page}.html${q && `?${q}`}`);
         await p.evaluate(() => document.fonts.ready);
         await expect(p).toHaveScreenshot(`specimens/${page}-${context}-${width}.png`, { fullPage: true });
         expect(requests.filter((u) => !u.startsWith(ORIGIN))).toEqual([]);
