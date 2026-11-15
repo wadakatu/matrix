@@ -826,6 +826,39 @@ test.describe("3.8 rewards", () => {
     expect((await state(page)).doubled).toBe(0);
   });
 
+  // Hold checked on the way back to 人間用, while the headings decode and then while the name doubles.
+  for (const at of ["decode", "double"]) {
+    test(`held mid-${at}: it stops at once, nothing left running`, async ({ page }) => {
+      await open(page, PAGES.machine.home);
+      await ready(page);
+      const H = 'mx-readings > [data-reading="human"] :is(h2, .mx-stream-name a)';
+      const final = await page.evaluate((H) => [...document.querySelectorAll(H)].map((e) => e.textContent), H);
+      await press(page);
+      await page.waitForFunction(([H, final, at]) => at === "double"
+        ? document.querySelector(".mx-name[data-double]")
+        : [...document.querySelectorAll(H)].some((e, i) => e.textContent !== final[i]), [H, final, at], { timeout: 3000, polling: "raf" });
+      // Checked and read in one task: "at once" is before any further frame.
+      const now = await page.evaluate((H) => {
+        document.querySelector('[data-action="hold"] input').click();
+        return {
+          texts: [...document.querySelectorAll(H)].map((e) => e.textContent),
+          doubled: document.querySelectorAll(".mx-name[data-double]").length,
+        };
+      }, H);
+      expect(now).toEqual({ texts: final, doubled: 0 });
+      // Nothing restarts: no heading changes and no doubling after Hold, and the change still ends.
+      await page.evaluate((H) => {
+        const seen = (window.__mx = []);
+        const m = new MutationObserver((r) => seen.push(...r.map((x) => x.attributeName ?? x.target.textContent)));
+        for (const el of document.querySelectorAll(H)) m.observe(el, { childList: true, characterData: true, subtree: true });
+        m.observe(document.querySelector(".mx-name"), { attributes: true, attributeFilter: ["data-double"] });
+      }, H);
+      await page.waitForTimeout(1200);
+      expect(await page.evaluate(() => window.__mx)).toEqual([]);
+      expect(await state(page)).toMatchObject({ reading: "human", busy: 0, scripted: 0, doubled: 0, styled: 0 });
+    });
+  }
+
   test("decode: the side just taken settles out of corpus glyphs, then reads its name", async ({ page }) => {
     await open(page, PAGES.human.home);
     await ready(page);
