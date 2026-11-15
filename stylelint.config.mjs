@@ -14,6 +14,9 @@ const baseline = {
     "forced-color-adjust": ["none"], // Only inside @media (forced-colors: active), whose engines all have it: the menu's figure keeps its gradient lines in system colours (menu.css)
     "content-visibility": ["/.*/"], // Newly available. Only inside @supports selector(::details-content), whose engines all have it: keeps the menu's content shown while closed from 720px
     "background-clip": ["text"], // Newly available. The rain's drops are text clipped to a gradient; where it is missing they are not drawn (decoration, aria-hidden). The switch's drip is inside @supports
+    "scrollbar-width": ["/.*/"], // Newly available. The chips' row and the shell's screen keep a thin or no scrollbar; elsewhere the browser's own (chips.css, terminal.css)
+    "scrollbar-color": ["/.*/"], // Newly available. The screen's thin scrollbar in rule; elsewhere the browser's own colours (terminal.css)
+    "overscroll-behavior": ["/.*/"], // Newly available. Scrolling the session does not chain to the locked window; without it the window is still locked (terminal.css)
     "word-break": ["auto-phrase"], // Limited (Chromium). Japanese headings break by phrase where supported; elsewhere the default breaking applies (03)
   },
 };
@@ -39,10 +42,14 @@ export default {
     },
     // Breakpoints (02, "Space, size, border"): media queries can't read custom properties, so the four are literals.
     "media-feature-name-value-allowed-list": Object.fromEntries(
-      ["width", "min-width", "max-width"].map((f) => [f, ["600px", "720px", "1100px", "1360px"]]),
+      [
+        ...["width", "min-width", "max-width"].map((f) => [f, ["600px", "720px", "1100px", "1360px"]]),
+        // The one height: below it the live shell lets go of the one viewport (05, "lets go when it cannot fit").
+        ["height", ["480px"]],
+      ],
     ),
     // ...and no other size feature to set one by another name.
-    "media-feature-name-disallowed-list": ["/^(min-|max-)?(device-width|device-height|height|inline-size|block-size)$/"],
+    "media-feature-name-disallowed-list": ["/^(min-|max-)?(device-width|device-height|inline-size|block-size)$/", "/^(min|max)-height$/"],
     "declaration-property-value-disallowed-list": {
       // A size inside the font shorthand is a raw font size too.
       font: ["/\\d(px|rem|em|pt|%)/"],

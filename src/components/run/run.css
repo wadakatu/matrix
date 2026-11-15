@@ -1,0 +1,18 @@
+@layer mx.components {
+  /* A command you can tap: a file name in a listing, a suggestion in a message. */
+  .mx-run {
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    font: inherit;
+    color: var(--mx-color-accent);
+    text-align: left;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    vertical-align: top;
+  }
+  .mx-run:hover { text-decoration: underline; text-underline-offset: 4px; }
+}

@@ -1,0 +1,13 @@
+@layer mx.components {
+  /* The eight theme colours: panel, rule, rain tail, rain body, muted, text, lead, accent. Decoration. */
+  .mx-swatch { display: inline-block; width: 3ch; height: 1.2em; vertical-align: middle; }
+  .mx-swatch[data-swatch="panel"] { background: var(--mx-color-panel); }
+  .mx-swatch[data-swatch="rule"] { background: var(--mx-color-rule); }
+  .mx-swatch[data-swatch="rain-tail"] { background: var(--mx-color-rain-tail); }
+  .mx-swatch[data-swatch="rain-body"] { background: var(--mx-color-rain-body); }
+  .mx-swatch[data-swatch="muted"] { background: var(--mx-color-text-muted); }
+  .mx-swatch[data-swatch="text"] { background: var(--mx-color-text); }
+  .mx-swatch[data-swatch="lead"] { background: var(--mx-color-text-lead); }
+  .mx-swatch[data-swatch="accent"] { background: var(--mx-color-accent); }
+  @media (forced-colors: active) { .mx-swatches { forced-color-adjust: none; } }
+}

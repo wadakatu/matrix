@@ -8,6 +8,7 @@ export const THEME_KEY = "mx-theme";
 /** Once per tab (05, "The boot"). */
 export const BOOT_KEY = "mx-boot";
 const FAILSAFE = parseInt(tokens["phosphor-night"]["motion.boot.failsafe"]);
+const FALLBACK = parseInt(tokens["phosphor-night"]["motion.shell.fallback"]);
 
 const ground = Object.fromEntries(Object.entries(tokens).map(([c, t]) => [c, t["color.ground"]]));
 
@@ -31,6 +32,7 @@ const meta = document.querySelector('meta[name="theme-color"]');
 if (meta) meta.content = ground[(d.dataset.palette || "phosphor") + "-" + (d.dataset.theme || "night")];
 ${site}
 ${boot ? bootScript() : ""}
+setTimeout(() => d.dataset.shell !== "live" && document.querySelector("mx-terminal") && (d.dataset.shell = "recorded"), ${FALLBACK});
 addEventListener("DOMContentLoaded", () => {
   if (customElements.get("mx-root")) return;
   const flags = [];

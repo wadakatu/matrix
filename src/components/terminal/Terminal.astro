@@ -1,0 +1,52 @@
+---
+/**
+ * 機械用: one shell in one viewport (04, "Terminal"). The site supplies an interpreter; this prints a
+ * recorded session with it at build time, through the same renderer the live shell uses, so a reader
+ * without scripts gets the same facts as a scrolling document. `<mx-terminal>` takes it over once the
+ * site gives it an interpreter in the browser (`element.interpreter = …`).
+ */
+import Guide from "../guide/Guide.astro";
+import Prompt from "../prompt/Prompt.astro";
+import Takeover from "../takeover/Takeover.astro";
+import Chips from "../chips/Chips.astro";
+import Modeline from "../modeline/Modeline.astro";
+import { isCard, render, renderEcho, renderLogin, type Interpreter } from "../../lib/index.ts";
+import { strings, type Lang } from "../../strings/index.ts";
+interface Props {
+  /** Run at build time for the recorded session; the browser gets its own (state is not shared). */
+  interpreter: Interpreter;
+  /** The recorded session's commands. The first is the login command, which the live shell runs too. */
+  session: string[];
+  /** Suggested commands, after the key chips. */
+  chips: string[];
+  /** The static twin in 人間用: the guide's and the status line's way back. */
+  human: string;
+  /** Who the login card is about, read after its summary. With it, a first command that prints a card is the login card. */
+  login?: string;
+  lang?: Lang;
+  /** The field's id; unique on the page. */
+  id?: string;
+}
+const { interpreter: sh, session, chips, human, login, lang = "en", id = "mx-command" } = Astro.props;
+const t = strings[lang].terminal;
+const o = { newTab: t.newTab };
+const start = sh.prompt();
+let tty = render(sh.motd(), o) + render([{ text: t.recorded, tone: "dim" }], o);
+session.forEach((cmd, i) => {
+  const p = sh.prompt();
+  const { out } = sh.exec(cmd);
+  const block = renderEcho(p, cmd) + render(out, o);
+  tty += i === 0 && login && out.some(isCard) ? renderLogin(t.login, `${t.login} ${login}`, block) : block;
+});
+---
+<mx-terminal class="mx-terminal" data-cwd={start.cwd} data-first={session[0]} data-login={login}>
+  <Guide human={human} lang={lang} />
+  <!-- Focusable, so the scrollback can be read and scrolled with the keyboard alone. -->
+  <div class="mx-terminal-screen" tabindex="0" role="group" aria-label={t.label}>
+    <div class="mx-terminal-tty" set:html={tty} />
+    <Takeover />
+    <Prompt id={id} prompt={start} lang={lang} />
+  </div>
+  <Chips commands={chips} lang={lang} />
+  <Modeline human={human} lang={lang} />
+</mx-terminal>

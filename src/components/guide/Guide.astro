@@ -1,0 +1,19 @@
+---
+/**
+ * The first row of 機械用: what this is, in plain words, and the way to 人間用 (04, "Guide"). It is the
+ * page's, not the shell's: `clear` leaves it and it does not scroll. The × needs the live shell.
+ */
+import { strings, type Lang } from "../../strings/index.ts";
+interface Props {
+  /** The static twin in 人間用. */
+  human: string;
+  lang?: Lang;
+}
+const { human, lang = "en" } = Astro.props;
+const t = strings[lang];
+---
+<p class="mx-guide">
+  <span class="mx-guide-say">{t.boot.note}<span class="mx-guide-live">{t.guide.live.before}<kbd>help</kbd>{t.guide.live.after}</span></span>
+  <a class="mx-control mx-guide-way" data-to="human" href={human}>{t.guide.way}<span lang="ja">人間用</span></a>
+  <button class="mx-control mx-guide-hide" type="button" aria-label={t.guide.hide}>×</button>
+</p>

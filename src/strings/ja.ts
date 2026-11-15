@@ -15,4 +15,17 @@ export default {
   status: { machine: "機械用で表示中", human: "人間用で表示中" },
   moved: { title: "移動しました", text: "このページは移動しました。" },
   other: { lang: "en", label: "English" },
+  guide: { live: { before: " ", after: " と入力するか、下のコマンドを押してください。" }, way: "普通のページとして読む: ", hide: "この案内を隠す" },
+  terminal: {
+    label: "端末",
+    command: "コマンド",
+    hint: "help と入力して Enter を押すと、コマンドの一覧が出ます。行に文字があるとき、Tab は補完します。空の行、または Escape の後では、Tab でフォーカスが移ります。exit と入力すると出られます。この欄にフォーカスがある間、Ctrl+L、Ctrl+U、Ctrl+A、Ctrl+E、Ctrl+D は行の操作に使い、文字を選んでいるときの Ctrl+C はコピーです。",
+    recorded: "これは記録したセッションです。実際に入力するには JavaScript が必要です。",
+    where: "記録したセッション",
+    chips: "キーと試せるコマンド",
+    keys: { tab: "補完", up: "前のコマンド", down: "次のコマンド", cancel: "取り消し" },
+    newTab: "（新しいタブで開きます）",
+    login: "自己紹介",
+    rain: { where: "キーを押すと雨が止まります", still: "キーを押すと雨が止まります（動きがオフなので静止中）", say: "雨。キーを押すと止まります。", sayStill: "雨。動きがオフなので静止しています。キーを押すと止まります。" },
+  },
 } satisfies Strings;

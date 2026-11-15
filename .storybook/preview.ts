@@ -51,11 +51,14 @@ export default {
   ],
   // Each global is one root attribute (03). Astro decorators run on the server, so this is where
   // the iframe's <html> is set; it runs again on every toolbar change (S1).
-  beforeEach: ({ globals, parameters }: { globals: Record<string, string>; parameters: { boot?: string } }) => {
+  beforeEach: ({ globals, parameters }: { globals: Record<string, string>; parameters: { boot?: string; shell?: string } }) => {
     const root = document.documentElement;
     // The boot's still is a root attribute too (03); only its stories set it.
     if (parameters.boot) root.dataset.boot = parameters.boot;
     else delete root.dataset.boot;
+    // So is the live shell's (4.3): the stories of its parts that only show in a live shell set it.
+    if (parameters.shell) root.dataset.shell = parameters.shell;
+    else delete root.dataset.shell;
     root.dataset.palette = globals.palette;
     root.dataset.theme = globals.theme;
     root.dataset.reading = globals.reading;

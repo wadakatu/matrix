@@ -21,7 +21,8 @@ import Readings from "../components/readings/Readings.astro";
 import Rain from "../effects/rain/Rain.astro";
 import Boot from "../effects/boot/Boot.astro";
 import Curtain from "../effects/curtain/Curtain.astro";
-import MachineFixture from "../fixtures/MachineFixture.astro";
+import Terminal from "../components/terminal/Terminal.astro";
+import { chips, demo, login, sessions } from "../fixtures/terminal.ts";
 import { fixture, signature } from "../fixtures/corpus.ts";
 import { corpus, splitJa } from "../lib/index.ts";
 interface Props {
@@ -121,10 +122,13 @@ const lines = commits.flatMap((c, i) => (i % 3 === 2 ? [c, posts[((i / 3) | 0) %
         </section>
       )}
     </Fragment>
-    <Fragment slot="machine"><MachineFixture page={page} human={here.human} /></Fragment>
+    <Fragment slot="machine"><Terminal interpreter={demo(page === "projects" ? "projects" : "")} session={sessions[page]} chips={chips} human={here.human} login={page === "home" ? login : undefined} /></Fragment>
   </Readings>
   {page === "home" && <Curtain slot="curtain" phrases={phrases} />}
   <script>
     import "../elements.ts";
+  </script>
+  <script>
+    import "../fixtures/start-terminal.ts";
   </script>
 </Layout>

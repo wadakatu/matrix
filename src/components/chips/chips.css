@@ -1,0 +1,31 @@
+@layer mx.components {
+  /* Keys a phone keyboard lacks, then commands worth trying. One row; it scrolls sideways in itself. */
+  .mx-chips {
+    display: flex;
+    gap: var(--mx-space-1-5);
+    padding: var(--mx-space-2) var(--mx-pad);
+    overflow-x: auto;
+    scrollbar-width: none;
+    border-top: var(--mx-border-width-hair) dashed var(--mx-color-rule);
+  }
+  /* A chip's border is decoration (rule): its label identifies it (05, "Colour and contrast", 4). */
+  .mx-chip {
+    flex: none;
+    padding: var(--mx-space-0-5) 10px;
+    border: var(--mx-border-width-hair) solid var(--mx-color-rule);
+    border-radius: var(--mx-radius-control);
+    background: var(--mx-color-ground);
+    cursor: pointer;
+    font: inherit;
+    font-size: var(--mx-font-size-meta);
+    color: var(--mx-color-text-muted);
+    white-space: nowrap;
+  }
+  .mx-chip:hover { color: var(--mx-color-text-lead); border-color: var(--mx-color-accent); }
+  .mx-chip[data-key] { display: none; color: var(--mx-color-accent); border-color: var(--mx-color-control-border); }
+  /* Fingers: bigger chips, and the keys first. */
+  @media (pointer: coarse) {
+    .mx-chip { padding: var(--mx-space-2) var(--mx-space-3); }
+    .mx-chip[data-key] { display: inline-block; }
+  }
+}
