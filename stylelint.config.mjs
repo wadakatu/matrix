@@ -7,8 +7,11 @@ const baseline = {
   available: "widely",
   ignoreSelectors: [
     "selection", // ::selection: cosmetic; degrades to the browser's own selection colours
+    "details-content", // Newly available. The menu lays no box from 720px; without it the menu is a plain native disclosure at every width (menu.css)
   ],
   ignoreProperties: {
+    "accent-color": ["/.*/"], // Newly available. Hold rain's tick in the accent; elsewhere the browser's own checkbox colours
+    "content-visibility": ["/.*/"], // Newly available. Only inside @supports selector(::details-content), whose engines all have it: keeps the menu's content shown while closed from 720px
     "word-break": ["auto-phrase"], // Limited (Chromium). Japanese headings break by phrase where supported; elsewhere the default breaking applies (03)
   },
 };

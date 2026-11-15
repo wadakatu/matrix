@@ -1,0 +1,15 @@
+@layer mx.components {
+  /* One row: 69px at 1440, 53px below 720px (menu.css), in both readings. */
+  .mx-header {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--mx-space-3) var(--mx-space-7);
+    padding-block: var(--mx-space-3);
+    font-size: var(--mx-font-size-ui);
+    background: var(--mx-color-ground);
+    border-bottom: var(--mx-border-width-hair) solid var(--mx-color-rule);
+  }
+  :root[data-reading="machine"] .mx-header { border-bottom-style: dashed; }
+  .mx-controls { display: flex; flex-wrap: wrap; align-items: center; gap: var(--mx-space-2); }
+}

@@ -1,0 +1,35 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="Welcome" />
+
+# matrix
+
+matrix is wadakatu's personal design system: how wadakatu.dev looks, moves and reads. It is one
+world, an operator's station at night: phosphor green on near-black, monospace type, text that
+falls as rain, and a terminal that is the front door. It has a second palette (Operator, an amber
+CRT), a daylight reading of both, and two readings of every fact: 機械用 (the shell) and 人間用
+(the page).
+
+## The seven laws
+
+1. **L1 Only real words fall.** Decoration is made of the site's own data; no placeholder glyphs, no fake metrics.
+2. **L2 Reading text never sits on rain.** Dim text with colour, never `opacity`.
+3. **L3 Two readings, one source.** 機械用 and 人間用 render the same data.
+4. **L4 Every effect has a still.** Motion is stepped, finite, skippable and fails open.
+5. **L5 The mark is whole.** The designer's file, never cropped, rounded, rotated, masked or redrawn.
+6. **L6 One language per page.** A run of the other language carries `lang`.
+7. **L7 Night first, phosphor first.** Components read roles (`accent`), never a hue.
+
+## How to read this Storybook
+
+- **The toolbar is the only state.** Palette, Theme, Motion, Language and Reading each set one
+  attribute on the preview's root, as the site's root does. No story sets them itself and nothing
+  is read from storage, so a story looks the same for every visitor.
+- **Every component has the same stories:** `Default`, one per variant and state, `Contexts`
+  (all four contexts in one frame, the one visual regression captures), `Japanese`, `Still` for
+  anything that moves, and `Narrow` where it changes shape at 390 wide.
+- **The words are a fixture.** Repository names and sentences here are invented; wadakatu's real
+  data lives in the site.
+- **Each Docs page is the component's own `<name>.md`**, the same file that ships in the package.
+- **This is a static build of Astro components.** Each story is rendered once, with the arguments
+  it is written with; the Controls panel has no effect here. Variants are stories of their own.

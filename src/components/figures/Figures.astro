@@ -1,0 +1,18 @@
+---
+/** Keys and values. A value that is a date is given as `datetime` and shown as written. */
+export interface Figure {
+  key: string;
+  value: string | number;
+  /** Machine-readable date for the value; it is then a <time>. */
+  datetime?: string;
+}
+interface Props {
+  items: Figure[];
+}
+const { items } = Astro.props;
+---
+<dl class="mx-figures">
+  {items.map((f) => (
+    <div><dt>{f.key}</dt><dd>{f.datetime ? <time datetime={f.datetime}>{f.value}</time> : f.value}</dd></div>
+  ))}
+</dl>

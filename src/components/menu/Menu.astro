@@ -1,0 +1,15 @@
+---
+/** The header's disclosure: a native <details>, so it opens without scripts. */
+import { strings, type Lang } from "../../strings/index.ts";
+interface Props {
+  lang?: Lang;
+  open?: boolean;
+}
+const { lang = "en", open = false } = Astro.props;
+---
+<mx-menu>
+  <details class="mx-menu" open={open}>
+    <summary class="mx-control"><span class="mx-menu-label">{strings[lang].menu}</span></summary>
+    <slot />
+  </details>
+</mx-menu>

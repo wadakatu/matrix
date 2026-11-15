@@ -1,0 +1,10 @@
+---
+/** The Moved page's body, on its own, for its stories: a whole document cannot be a story. */
+import { strings, type Lang } from "../../strings/index.ts";
+interface Props {
+  to: string;
+  lang?: Lang;
+}
+const { to, lang = "en" } = Astro.props;
+---
+<main class="mx-frame mx-moved"><p>{strings[lang].moved.text} <a href={to}>{to}</a></p></main>

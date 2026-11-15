@@ -1,0 +1,18 @@
+---
+/** The `Contexts` story's frame: the story four times, one theme scope per context (06). */
+const html = await Astro.slots.render("default");
+const scopes = [
+  ["phosphor", "night"],
+  ["phosphor", "day"],
+  ["operator", "night"],
+  ["operator", "day"],
+];
+---
+<div class="fixture-contexts">
+  {scopes.map(([palette, theme]) => (
+    <div class="fixture-scope" data-palette={palette} data-theme={theme}>
+      <p class="fixture-scope-name" lang="en">{palette}-{theme}</p>
+      <Fragment set:html={html} />
+    </div>
+  ))}
+</div>

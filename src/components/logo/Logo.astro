@@ -1,0 +1,13 @@
+---
+/** The mark (L5). The site serves the file and passes its address; it is never in the package. */
+interface Props {
+  /** Address of the designer's file (`logo-400.png`). */
+  src: string;
+  /** Intrinsic size of the file, in pixels. */
+  size?: number;
+  /** Empty where something beside it names the link (the Mark). */
+  alt?: string;
+}
+const { src, size = 400, alt = "" } = Astro.props;
+---
+<img class="mx-logo" src={src} width={size} height={size} alt={alt} />

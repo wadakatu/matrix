@@ -1,0 +1,13 @@
+---
+/** The home link: the logo, then the wordmark, which names the link. */
+import Logo from "../logo/Logo.astro";
+interface Props {
+  href: string;
+  /** The wordmark, e.g. `wadakatu_`. Site data. */
+  label: string;
+  /** Address of the logo file. */
+  logo: string;
+}
+const { href, label, logo } = Astro.props;
+---
+<a class="mx-mark" href={href}><Logo src={logo} />{label}</a>

@@ -174,8 +174,13 @@ const ALLOWED = [
   /^dist\/fonts\/[\w-]+\.LICENSE\.txt$/,
   /^tokens\/(matrix\.resolver|base\.tokens|context\/[\w-]+\.tokens)\.json$/,
   /^src\/css\/[\w-]+\.css$/,
+  /^dist\/(elements|head\/head|strings\/[\w-]+|components\/[\w-]+\/mx-[\w-]+)\.(js|d\.ts)$/,
+  /^src\/components\/[\w-]+\/([\w-]+\.(css|md)|[A-Z]\w*\.astro|mx-[\w-]+\.ts)$/,
+  /^src\/head\/(head\.ts|Head\.astro)$/,
+  /^src\/strings\/[\w-]+\.ts$/,
+  /^src\/astro\.ts$/,
 ];
-const REQUIRED = ["dist/tokens.css", "dist/tokens.json", "dist/tokens.d.ts", "dist/matrix.css", "dist/fonts.css", "tokens/matrix.resolver.json", "LICENSE",
+const REQUIRED = ["dist/elements.js", "dist/head/head.js", "dist/strings/index.js", "src/astro.ts", "dist/tokens.css", "dist/tokens.json", "dist/tokens.d.ts", "dist/matrix.css", "dist/fonts.css", "tokens/matrix.resolver.json", "LICENSE",
   // OFL-1.1: each font's copyright notice and licence ships with its files.
   ...["dotgothic16", "ibm-plex-mono", "m-plus-1-code"].map((f) => `dist/fonts/${f}.LICENSE.txt`)];
 
@@ -183,7 +188,8 @@ const REQUIRED = ["dist/tokens.css", "dist/tokens.json", "dist/tokens.d.ts", "di
 export function packageContents(paths) {
   const errors = [];
   for (const p of paths) {
-    if (p.startsWith("assets/")) errors.push(`${p}: the logo and its notice must not be in the package (decision Q3)`);
+    if (/\.stories\.ts$/.test(p)) errors.push(`${p}: stories are not part of the package`);
+    else if (p.startsWith("assets/")) errors.push(`${p}: the logo and its notice must not be in the package (decision Q3)`);
     else if (!ALLOWED.some((re) => re.test(p))) errors.push(`${p}: not an intended package file`);
   }
   for (const r of REQUIRED) if (!paths.includes(r)) errors.push(`${r}: missing from the package`);

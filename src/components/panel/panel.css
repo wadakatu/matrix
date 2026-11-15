@@ -1,0 +1,16 @@
+@layer mx.components {
+  /* The surface reading text sits on (L2). */
+  .mx-panel {
+    background: var(--mx-color-panel);
+    border: var(--mx-border-width-hair) solid var(--mx-color-rule);
+    padding: var(--mx-space-5) clamp(16px, 2.2vw, 28px) var(--mx-space-7);
+    margin-top: var(--mx-space-6);
+  }
+  .mx-panel > h2 {
+    font-weight: var(--mx-font-weight-medium);
+    font-size: var(--mx-font-size-body);
+    line-height: var(--mx-font-leading-ui);
+    color: var(--mx-color-accent);
+    margin-bottom: var(--mx-space-2);
+  }
+}

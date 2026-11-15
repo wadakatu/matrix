@@ -1,0 +1,8 @@
+@layer mx.components {
+  .mx-meta {
+    color: var(--mx-color-text-muted);
+    font-size: var(--mx-font-size-meta);
+    margin-top: var(--mx-space-1);
+    font-variant-numeric: tabular-nums;
+  }
+}

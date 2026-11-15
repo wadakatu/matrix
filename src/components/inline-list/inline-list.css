@@ -1,0 +1,12 @@
+@layer mx.components {
+  /* A wrapping row of words (default), of a panel's trailing links (after), or of an entry's addresses (links). */
+  .mx-inline-list { display: flex; flex-wrap: wrap; gap: var(--mx-space-1) var(--mx-space-5); }
+  .mx-inline-list[data-variant="after"] { gap: var(--mx-space-1) var(--mx-space-7); margin-top: var(--mx-space-5); }
+  .mx-inline-list[data-variant="links"] {
+    gap: var(--mx-space-1) var(--mx-space-6);
+    margin-top: var(--mx-space-3);
+    font-size: var(--mx-font-size-meta);
+    color: var(--mx-color-text-muted);
+  }
+  .mx-inline-list[data-variant="links"] a { position: relative; overflow-wrap: anywhere; }
+}

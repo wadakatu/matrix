@@ -1,0 +1,18 @@
+@layer mx.components {
+  .mx-footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--mx-space-2) var(--mx-space-7);
+    margin-top: var(--mx-space-18);
+    padding-block: var(--mx-space-5) var(--mx-space-10);
+    background: var(--mx-color-ground);
+    border-top: var(--mx-border-width-hair) solid var(--mx-color-rule);
+    color: var(--mx-color-text-muted);
+    font-size: var(--mx-font-size-meta);
+  }
+  /* A full row before the links: the shortcut's off switch arrives here with task 3.6. */
+  .mx-footer-row { width: 100%; }
+  @media (width < 720px) {
+    .mx-footer { margin-top: var(--mx-space-12); }
+  }
+}

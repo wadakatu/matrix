@@ -1,0 +1,20 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+import data from "../../.storybook/foundations.json";
+
+<Meta title="Foundations/Motion" />
+
+# Motion
+
+Motion is stepped, finite, skippable and fails open, and every effect has a still (L4). The only
+endless motion is the rain in its three forms, and Hold rain stops all of it. The catalogue of
+every motion, with its still, is in `05-a11y-motion.md`; each effect is shown beside its still on
+its own page as it is built. These are the timing and layer tokens.
+
+<table>
+  <thead><tr><th>Token</th><th>Value</th><th>Description</th></tr></thead>
+  <tbody>
+    {data.motion.map((t) => (
+      <tr key={t.id}><td><code>{t.id}</code></td><td><code>{t.value}</code></td><td><small>{t.description}</small></td></tr>
+    ))}
+  </tbody>
+</table>

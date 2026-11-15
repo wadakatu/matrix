@@ -1,0 +1,68 @@
+@layer mx.components {
+  /* A <details> around the nav and the controls. From 720px up it lays no box: the summary is gone
+     and its children are the header's own flex items, open or closed. Below 720px the header is one
+     slim row (the mark, the button, the switch) and the rest unfolds under it. An engine without
+     ::details-content gets a plain native disclosure labelled Menu at every width. */
+  mx-menu { display: contents; }
+  .mx-menu > summary { list-style: none; }
+  .mx-menu > summary::-webkit-details-marker { display: none; }
+  @supports selector(::details-content) {
+    .mx-menu, .mx-menu::details-content { display: contents; }
+    .mx-menu::details-content { content-visibility: visible; }
+    .mx-menu > summary { display: none; }
+    @media (width < 720px) {
+      .mx-header { gap: 0 var(--mx-space-2); padding-block: 3px; }
+      .mx-header:has(.mx-menu[open]) { padding-bottom: var(--mx-space-3); }
+      .mx-controls { display: contents; }
+      /* The same cell as the compact switch beside it: 46px, a 44px target inside a 1px ring. Its
+         word is hidden but still names the button. Three rules closed; one, on the filled face, open. */
+      .mx-menu > summary {
+        display: grid;
+        place-content: center;
+        width: 46px;
+        height: 46px;
+        padding: 0;
+        color: var(--mx-color-text-muted);
+      }
+      .mx-menu-label {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
+      }
+      .mx-menu > summary::before {
+        content: "";
+        width: 16px;
+        height: 12px;
+        background: linear-gradient(currentcolor 0 0) top, linear-gradient(currentcolor 0 0) center, linear-gradient(currentcolor 0 0) bottom;
+        background-size: 100% 2px;
+        background-repeat: no-repeat;
+      }
+      .mx-menu[open] > summary, .mx-menu[open] > summary:hover {
+        background: var(--mx-color-accent);
+        border-color: var(--mx-color-accent);
+        color: var(--mx-color-on-accent);
+      }
+      .mx-menu[open] > summary::before { background-size: 0 0, 100% 2px, 0 0; }
+      .mx-menu:not([open]) :is(.mx-nav, .mx-controls .mx-control, .mx-lang) { display: none; }
+      /* Unfolded: the nav as a list of 44px lines, then the controls, after the row in the header's own box. */
+      .mx-header .mx-nav, .mx-controls :is(.mx-control, .mx-lang) { order: 1; }
+      .mx-header .mx-nav { flex: 0 0 100%; flex-direction: column; gap: 0; margin-top: var(--mx-space-1); }
+      .mx-header .mx-nav a {
+        display: flex;
+        align-items: center;
+        min-height: var(--mx-size-target);
+        border-top: var(--mx-border-width-hair) dotted var(--mx-color-rule);
+      }
+      .mx-controls .mx-control {
+        flex: 1 1 40%;
+        justify-content: center;
+        min-height: var(--mx-size-target);
+        margin-top: var(--mx-space-2);
+      }
+      .mx-controls .mx-control[data-action="hold"] { flex-basis: 100%; }
+    }
+  }
+}

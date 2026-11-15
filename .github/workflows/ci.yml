@@ -31,3 +31,35 @@ jobs:
           name: specimens-report
           path: test-results/
           retention-days: 7
+  stories:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: jdx/mise-action@v5
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run build
+      - run: npm run test:stories
+      - run: npm run build-storybook
+      # Reviewed from the artefact until the DNS gate is cleared (06); there is no deployment.
+      - uses: actions/upload-artifact@v7
+        with:
+          name: storybook-static
+          path: storybook-static/
+          retention-days: 7
+  visual:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - uses: jdx/mise-action@v5
+      - run: npm run test:visual
+      - uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: visual-diff
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7

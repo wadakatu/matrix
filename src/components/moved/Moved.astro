@@ -1,0 +1,36 @@
+---
+/**
+ * A stub for an old address. GitHub Pages cannot answer 301, so this is a refresh, a canonical
+ * link and a visible link; with scripts the query (palette, run, …) and the fragment come along.
+ * It is a whole document: give it `head` content (the stylesheets) in the `head` slot.
+ */
+import MovedLine from "./MovedLine.astro";
+import { strings, type Lang } from "../../strings/index.ts";
+interface Props {
+  /** Where the page is now, as a path. */
+  to: string;
+  /** The absolute address of `to`, for the canonical link. */
+  canonical: string;
+  /** The site's name, after the title. */
+  site: string;
+  lang?: Lang;
+}
+const { to, canonical, site, lang = "en" } = Astro.props;
+const t = strings[lang].moved;
+---
+<!doctype html>
+<html lang={lang} data-theme="night">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>{t.title} | {site}</title>
+    <link rel="canonical" href={canonical} />
+    <script is:inline define:vars={{ to }}>location.replace(to + location.search + location.hash);</script>
+    <meta http-equiv="refresh" content={`0; url=${to}`} />
+    <slot name="head" />
+  </head>
+  <body>
+    <MovedLine to={to} lang={lang} />
+  </body>
+</html>

@@ -1,0 +1,15 @@
+@layer mx.components {
+  .mx-nav { display: flex; gap: var(--mx-space-6); }
+  .mx-nav a { text-decoration: none; color: var(--mx-color-text-muted); }
+  .mx-nav a:hover, .mx-nav a[aria-current] { color: var(--mx-color-text-lead); }
+  .mx-nav a[aria-current] {
+    text-decoration: underline;
+    text-decoration-color: var(--mx-color-accent);
+    text-decoration-thickness: var(--mx-border-width-strong);
+  }
+  /* 機械用: a numbered window list, the current one starred (03, "Readings"). */
+  :root[data-reading="machine"] .mx-nav { counter-reset: win -1; column-gap: 2ch; }
+  :root[data-reading="machine"] .mx-nav a::before { counter-increment: win; content: counter(win) ":" / ""; }
+  :root[data-reading="machine"] .mx-nav a[aria-current] { text-decoration: none; }
+  :root[data-reading="machine"] .mx-nav a[aria-current]::after { content: "*" / ""; color: var(--mx-color-accent); }
+}

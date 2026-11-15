@@ -1,0 +1,16 @@
+---
+/** A solid surface, usually with a heading. Give `id` to name the section by its heading. */
+interface Props {
+  /** The panel's `h2`. */
+  title?: string;
+  /** Id of the heading; the section is then named by it (`aria-labelledby`). */
+  id?: string;
+  /** A name for a panel without a heading. */
+  label?: string;
+}
+const { title, id, label } = Astro.props;
+---
+<section class="mx-panel" aria-labelledby={title && id ? id : undefined} aria-label={label}>
+  {title && <h2 id={id}>{title}</h2>}
+  <slot />
+</section>

@@ -22,13 +22,32 @@
     "./tokens.json": "./dist/tokens.json",
     "./tokens/*": "./tokens/*",
     "./css": "./dist/matrix.css",
+    "./css/*.css": "./src/components/*/*.css",
     "./fonts.css": "./dist/fonts.css",
+    "./elements": {
+      "types": "./dist/elements.d.ts",
+      "default": "./dist/elements.js"
+    },
+    "./astro": "./src/astro.ts",
+    "./head": {
+      "types": "./dist/head/head.d.ts",
+      "default": "./dist/head/head.js"
+    },
+    "./strings": {
+      "types": "./dist/strings/index.d.ts",
+      "default": "./dist/strings/index.js"
+    },
     "./package.json": "./package.json"
   },
   "files": [
     "dist/",
     "tokens/",
     "src/css/",
+    "src/components/",
+    "!src/components/*/*.stories.ts",
+    "src/head/",
+    "src/strings/",
+    "src/astro.ts",
     "docs/tokens.md",
     "AGENTS.md",
     "CHANGELOG.md"
@@ -37,17 +56,47 @@
     "build": "node scripts/build.mjs",
     "docs": "node scripts/tokens-doc.mjs --write",
     "check": "node scripts/check.mjs",
-    "test:specimens": "playwright test"
+    "test:specimens": "astro build && playwright test",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build --quiet",
+    "test:stories": "vitest run",
+    "test:visual": "bash scripts/test_visual.sh",
+    "test:visual:update": "bash scripts/test_visual.sh --update-snapshots",
+    "test:visual:run": "playwright test -c playwright.visual.config.mjs"
   },
   "devDependencies": {
     "@fontsource/dotgothic16": "5.3.1",
     "@fontsource/ibm-plex-mono": "5.3.0",
     "@fontsource/m-plus-1-code": "5.3.1",
     "@playwright/test": "1.65.1",
+    "@storybook-astro/framework": "1.16.0",
+    "@storybook/addon-a11y": "10.6.7",
+    "@storybook/addon-docs": "10.6.7",
+    "@storybook/addon-vitest": "10.6.7",
+    "@storybook/builder-vite": "10.6.7",
     "@terrazzo/cli": "2.10.0",
     "@terrazzo/token-tools": "2.10.0",
+    "@vitest/browser-playwright": "5.1.0",
     "apca-w3": "0.1.9",
+    "astro": "7.4.12",
+    "axe-core": "4.14.0",
+    "playwright": "1.65.1",
+    "storybook": "10.6.7",
     "stylelint": "17.16.0",
-    "stylelint-plugin-use-baseline": "1.4.8"
+    "stylelint-plugin-use-baseline": "1.4.8",
+    "typescript": "6.0.3",
+    "vite": "8.3.8",
+    "vitest": "5.1.0"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true
+  },
+  "peerDependencies": {
+    "astro": "^5.5.3 || ^6 || ^7"
+  },
+  "peerDependenciesMeta": {
+    "astro": {
+      "optional": true
+    }
   }
 }

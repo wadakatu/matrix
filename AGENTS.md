@@ -18,10 +18,11 @@ Tools are pinned in `mise.toml` (Node) and `package-lock.json`.
 | `npm run build` | Tokens, the flattened stylesheet and the fonts, into `dist/` |
 | `npm run check` | Every gate that needs no browser. Needs `npm run build` first |
 | `npm run docs` | Regenerate `docs/tokens.md` after a token change; commit it |
-| `npm run test:specimens` | Playwright on the specimen pages. Needs `npm run build` and `npx playwright install chromium` |
-
-Storybook and the visual tests arrive with Phase 2 (09, tasks 2.1 and 2.2); their commands,
-and how to update baselines, are added here then.
+| `npm run test:specimens` | Astro builds `src/specimens/`, then Playwright: flags, chrome, no-JS, axe. Needs `npm run build` and `npx playwright install chromium` |
+| `npm run storybook` / `npm run build-storybook` | Storybook, development and static (`storybook-static/`). Need `npm run build` |
+| `npm run test:stories` | Every story in Chromium, accessibility at `error`, contracts checked |
+| `npm run test:visual` | Screenshots in the pinned Playwright Docker image; a missing baseline fails |
+| `npm run test:visual:update` | Rewrites baselines, in Docker only. Only for a change you can explain |
 
 ## The seven laws (00)
 

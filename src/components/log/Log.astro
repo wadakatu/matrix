@@ -1,0 +1,8 @@
+---
+/** Commit subjects, newest first. Site data (L1). */
+interface Props {
+  items: string[];
+}
+const { items } = Astro.props;
+---
+<ol class="mx-log">{items.map((c) => <li>{c}</li>)}</ol>

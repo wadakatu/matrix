@@ -1,0 +1,18 @@
+@layer mx.components {
+  .mx-mark {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    margin-right: auto;
+    text-decoration: none;
+    font-weight: var(--mx-font-weight-medium);
+    font-size: var(--mx-font-size-read-compact);
+    line-height: 1.5;
+    color: var(--mx-color-accent);
+  }
+  .mx-mark .mx-logo { width: var(--mx-size-logo-header); }
+  @media (width < 720px) {
+    .mx-mark { gap: 10px; min-height: var(--mx-size-target); }
+    .mx-mark .mx-logo { width: var(--mx-size-logo-header-compact); }
+  }
+}
