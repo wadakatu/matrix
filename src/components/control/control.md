@@ -32,7 +32,8 @@ A plain control is `<button class="mx-control" type="button">` or `<a class="mx-
 - Pressed (`aria-pressed="true"`): filled `accent` with `on-accent` text.
 - `data-action="hold"`: a checkbox in the label, `accent` tick. Hidden when motion is off,
   because then nothing moves. Present in both readings.
-- `data-action="shortcut"`: a checked checkbox; hidden until `mx-root` is defined.
+- `data-action="shortcut"`: a checked checkbox; hidden until `mx-readings` is defined, so a page
+  without two readings, or without scripts, never shows it.
 - `data-action="palette"`, `data-action="theme"`: hidden until `mx-root` is defined; the
   theme toggle is also hidden where `light-dark()` is missing (03).
 
