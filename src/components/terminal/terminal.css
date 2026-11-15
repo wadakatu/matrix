@@ -24,10 +24,10 @@
      height, which the live shell keeps in step with a phone's on-screen keyboard. If the live shell
      has not started by motion.shell.fallback, the head script sets data-shell="recorded" and this
      lets go; a shell that starts later sets "live" and takes it back. The lock also lets go whenever
-     the window is under 480px tall (zoom, a short window): a keyboard shrinks only the visual
-     viewport, never the layout viewport this query reads (05, "lets go when it cannot fit"). */
+     the window is under 480px tall (browser zoom, a short window; this query), and when a pinch zoom
+     leaves under 480 visible CSS px (data-zoom, which a keyboard never sets) (05, "lets go when it cannot fit"). */
   @media (scripting: enabled) and (height >= 480px) {
-    :root[data-reading="machine"]:not([data-shell="recorded"]):has(mx-terminal) {
+    :root[data-reading="machine"]:not([data-shell="recorded"]):has(mx-terminal:not([data-zoom])) {
       overflow: hidden;
       & body { height: var(--mx-vvh, 100dvh); overflow: hidden; }
       & mx-root { display: flex; flex-direction: column; height: 100%; padding-bottom: 0; }
@@ -78,7 +78,7 @@
   /* The frame's own rules are utilities; in the one viewport its auto margins would shrink a flex
      item to its content, and the screen carries the inline padding itself. */
   @media (scripting: enabled) and (height >= 480px) {
-    :root[data-reading="machine"]:not([data-shell="recorded"]):has(mx-terminal) {
+    :root[data-reading="machine"]:not([data-shell="recorded"]):has(mx-terminal:not([data-zoom])) {
       & .mx-frame { margin-inline: 0; }
       & main.mx-frame { padding-inline: 0; }
     }
