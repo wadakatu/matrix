@@ -20,5 +20,11 @@ Unreleased. The foundation: an empty but real package.
   Daylight), Footer, Language link (draft).
 - Surfaces: Panel, Lede, Figures, Inline list, Log, Meta, Status, Moved.
 - Chrome strings in English and Japanese (`@wadakatu/matrix/strings`).
+- Signature: Rain and Hold, Name, Stream and Streams, the reading Switch (`<mx-switch>`; rain,
+  compact and capsule), Readings (`<mx-readings>`) with the in-place change on the Web Animations
+  API and the `\` / `¥` shortcut with its off switch, Boot (`<mx-boot>`) and Curtain, decode and
+  the three rewards, scan lines.
+- `@wadakatu/matrix/lib`: the seeded build-time helpers (rain, strands, curtain, glyph pools,
+  the name mask, decode frames, the film-name filter).
 - `npm run check`: token validity, contrast, golden values, no raw values, unknown tokens,
   freshness, the Baseline ledger, package contents and version consistency.
