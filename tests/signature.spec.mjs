@@ -39,7 +39,7 @@ const state = (page) =>
     doubled: document.querySelectorAll(".mx-name[data-double]").length,
     curtain: document.querySelectorAll(".mx-curtain[data-on]").length,
     current: [...document.querySelectorAll(".mx-header a[data-to][aria-current]")].map((a) => a.dataset.to),
-    focus: document.activeElement?.matches(".mx-header a[data-to]") ? `switch:${document.activeElement.dataset.to}` : document.activeElement?.tagName,
+    focus: document.activeElement?.matches(".mx-header a[data-to]") ? `switch:${document.activeElement.dataset.to}` : document.activeElement?.matches(".mx-prompt-field input") ? "prompt" : document.activeElement?.tagName,
   }));
 const texts = (page) =>
   page.evaluate(() => [...document.querySelectorAll('mx-readings > [data-reading="human"] :is(h2, p, li, .mx-stream-name), .mx-name, .mx-header .mx-switch-label')].map((e) => e.textContent));
@@ -272,7 +272,8 @@ test.describe("3.5 switch", () => {
     await page.keyboard.press("Enter");
     await page.waitForFunction(() => !document.querySelector("[aria-busy]"));
     expect((await state(page)).reading).toBe("machine");
-    await expect(page.getByRole("link", { name: "機械用から人間用へ" })).toBeFocused();
+    // Arriving in the live shell focuses its command field on a fine pointer (05, "Keyboard"; 4.2).
+    expect((await state(page)).focus).toBe("prompt");
   });
 
   // The prototype at 93ca12d: 69px at 1440 and 1100, 53px from 320 to 719, both readings
@@ -372,6 +373,8 @@ test.describe("3.6 readings", () => {
         const { errors } = await open(page, PAGES[from][page_]);
         await ready(page);
         const before = await texts(page);
+        // Arriving in 機械用 focuses the command field, where \ is a character: the shortcut is pressed from outside it.
+        await page.evaluate(() => document.activeElement.blur());
         await act(page);
         await page.waitForTimeout(1900);
         const to = from === "human" ? "machine" : "human";
@@ -381,21 +384,23 @@ test.describe("3.6 readings", () => {
     }
   }
 
-  test("the capsule on 人間用 Home, from inside the reading: focus goes to the header switch", async ({ page }) => {
+  test("the capsule on 人間用 Home, from inside the reading: focus goes to the command field", async ({ page }) => {
     await open(page, PAGES.human.home);
     await ready(page);
     await page.locator('.mx-switch[data-variant="capsule"] a[data-to="machine"]').click();
     await page.waitForTimeout(1900);
-    expect(await settled(page, "home", "machine")).toMatchObject({ focus: "switch:machine" });
+    expect(await settled(page, "home", "machine")).toMatchObject({ focus: "prompt" });
   });
 
-  test("the way back inside 機械用 (guide and status line stand-in), focus to the header switch", async ({ page }) => {
-    await open(page, PAGES.machine.projects);
-    await ready(page);
-    await page.locator('mx-readings > [data-reading="machine"] a[data-to="human"]').click();
-    await page.waitForTimeout(1900);
-    expect(await settled(page, "projects", "human")).toMatchObject({ focus: "switch:human" });
-  });
+  for (const [way, sel] of [["the guide's link", ".mx-guide-way"], ["the status line's link", ".mx-modeline-way"]]) {
+    test(`the way back inside 機械用 (${way}), focus to the header switch`, async ({ page }) => {
+      await open(page, PAGES.machine.projects);
+      await ready(page);
+      await page.locator(`mx-readings > [data-reading="machine"] ${sel}`).click();
+      await page.waitForTimeout(1900);
+      expect(await settled(page, "projects", "human")).toMatchObject({ focus: "switch:human" });
+    });
+  }
 
   test("the shortcut with focus on a stream link hands focus to the switch", async ({ page }) => {
     await open(page, PAGES.human.projects);
@@ -403,7 +408,7 @@ test.describe("3.6 readings", () => {
     await page.locator(".mx-stream-name a").first().focus();
     await page.keyboard.press("Backslash");
     await page.waitForTimeout(1900);
-    expect(await settled(page, "projects", "machine")).toMatchObject({ focus: "switch:machine" });
+    expect(await settled(page, "projects", "machine")).toMatchObject({ focus: "prompt" });
   });
 
   test("flags travel: palette and motion=0 are carried, theme is spent", async ({ page }) => {
@@ -517,19 +522,17 @@ test.describe("3.6 readings", () => {
     expect((await state(page)).reading).toBe("human");
     await page.locator(".mx-header a[data-to]:not([aria-current])").click();
     expect((await state(page)).reading).toBe("machine");
-    // 機械用: in the footer, and in the menu once the live shell has taken the footer away (4.3).
-    await expect(page.locator('.mx-footer [data-action="shortcut"]')).toBeVisible();
-    await expect(page.locator('.mx-header [data-action="shortcut"]')).toBeHidden();
-    await page.evaluate(() => (document.documentElement.dataset.shell = "live"));
+    // 機械用: the live shell takes the footer away, and the copy in the header row is the off switch (4.3).
+    await expect(page.locator('.mx-footer [data-action="shortcut"]')).toBeHidden();
     await expect(page.locator('.mx-header [data-action="shortcut"]')).toBeVisible();
-    await page.evaluate(() => delete document.documentElement.dataset.shell);
     await page.reload();
     await ready(page);
     expect(await page.locator('.mx-header [data-action="shortcut"] input').isChecked()).toBe(false);
+    await page.evaluate(() => document.activeElement.blur()); // in the command field \ is a character
     await page.keyboard.press("Backslash");
     expect((await state(page)).reading).toBe("machine");
-    await page.locator('.mx-footer [data-action="shortcut"] input').check();
-    expect(await page.locator('.mx-header [data-action="shortcut"] input').isChecked()).toBe(true);
+    await page.locator('.mx-header [data-action="shortcut"] input').check();
+    expect(await page.locator('.mx-footer [data-action="shortcut"] input').isChecked()).toBe(true);
     expect(await page.evaluate(() => localStorage.getItem("mx-shortcut"))).toBe("on");
     await page.locator("main").focus(); // the shortcut is ignored in a form field, the checkbox included
     await page.keyboard.press("Backslash");
