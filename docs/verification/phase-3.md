@@ -48,7 +48,7 @@ From `npm run test:specimens` (`tests/signature.spec.mjs`), Chromium, on this br
 | Projects | No `note` paragraph under the last entry; `Full fixture archive` | The prototype's last project has a note; the fixture's do not |
 | Footer | No X link and no "All explorations" | The fixture's links; "All explorations" is the prototype's own link (as phase-2.md) |
 | Muted text, phosphor-night | `#80c194` instead of `#7cbd90` | Decision Q9 (02, "Changed from the prototype"); expected everywhere muted text appears |
-| Compact switch, still | The `▾` is set at `font.size.label` (12px) instead of 9px | The "no raw values" gate allows no literal font size, and no token is 9px |
+| Compact switch, still | The `▾` is set at `font.size.label` (12px) instead of 9px | The "no raw values" gate allows no literal font size, and no token is 9px. Settled: it stays 12px and no token is added (below) |
 
 Nothing in the structure, spacing, type or colour of the shared parts (header with the switch, panels,
 streams wall and rows, figures, log, the capsule, the footer row) differs beyond the rows above.
@@ -60,3 +60,15 @@ streams wall and rows, figures, log, the capsule, the footer row) differs beyond
   the scan lines and the name as a terminal line can be built and tested. It is not compared.
 - Motion. Compared as stills; the change and the boot are checked by the behaviour tests and the flash
   check above, not frame by frame against the GSAP version (S3 recorded the same limit).
+
+## Settled
+
+The questions this phase left on pull request #63, as answered by wadakatu on 2026-11-15. They are
+decisions now.
+
+| Question | Decision |
+| --- | --- |
+| Does the shortcut's off switch persist, when 03 called `mx-theme` the only persistent key? | Yes, in `localStorage['mx-shortcut']`, as 05 says ("stored"). 03 was brought into line: `mx-theme` and `mx-shortcut` are the persistent keys |
+| The compact switch's `▾` is 12px, not the prototype's 9px. Add a 9px token? | No. It stays at `font.size.label` (12px) and no token is added; the row above is an accepted difference |
+| Where the off switch is: always in the footer; a line of the folded menu below 720px; from 720px the menu's copy shows only once the live shell has removed the footer (`data-shell="live"`, which Phase 4 sets) | Accepted as built |
+| The new chrome strings in `src/strings/en.ts` and `ja.ts`: the shortcut's label and hint, the intro's "Skip intro" and note, and the `boot.human` line | Approved as they are. The Phase 2 strings, including オペレーター配色, were approved before |
