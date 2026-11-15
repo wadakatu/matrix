@@ -64,5 +64,44 @@ the chips, the status line) differs beyond the rows above.
 
 - Motion: the reading change and the cursor's blink are checked by the behaviour tests
   (`tests/terminal.spec.mjs`, `tests/signature.spec.mjs`), not frame by frame.
-- `vim`, `ping`, `git log`, the jokes: the site's interpreter. matrix's Takeover is checked with the
-  demo's `view`, and the rain overlay with its `rain`.
+- `vim`'s commands and keys, `ping`, `git log`, the jokes: the site's interpreter. The Takeover's
+  chrome is compared below; its behaviour is checked with the demo's `view`, and the rain overlay with
+  its `rain`.
+
+## Takeover
+
+The same prototype build and capture setup as above, both pages live and focused, with a takeover open
+on `about.txt`: the prototype's `vim about.txt`, matrix's `view about.txt` (the demo interpreter's
+takeover; matrix has no `vim`). Prototype first, matrix second; phosphor-night, then operator-night.
+
+| Sheet | What |
+| --- | --- |
+| [`phase-4/cmp-takeover-1440.png`](phase-4/cmp-takeover-1440.png) | At 1440 × 900, half size: phosphor-night above, operator-night below |
+| [`phase-4/cmp-takeover-390.png`](phase-4/cmp-takeover-390.png) | At 390 × 844, full size: prototype and matrix in phosphor-night, then in operator-night |
+
+Measured on both, in every one of the four captures (1440 and 390, phosphor-night and operator-night):
+
+| | Prototype | matrix |
+| --- | --- | --- |
+| Takeover box, 1440 × 900 (top, height) | 126.1, 655.9 | 126.1, 655.9 |
+| Buffer, 1440 × 900 | 126.1, 633.5 | 126.1, 633.5 |
+| Message line, 1440 × 900 | 759.6, 22.4 | 759.6, 22.4 |
+| Takeover box, 390 × 844 | 126, 600 | 126, 600 |
+| Buffer, 390 × 844 | 126, 577.6 | 126, 577.6 |
+| Message line, 390 × 844 | 703.6, 22.4 | 703.6, 22.4 |
+| Buffer and message type | 14px / 22.4px | 14px / 22.4px |
+| Buffer, tilde, message colour, operator-night | `rgb(236, 228, 212)`, `rgb(194, 180, 150)`, `rgb(240, 224, 180)` | the same |
+| Document height and width | 900 × 1440; 844 × 390 | 900 × 1440; 844 × 390 |
+| Focus | the command field | the command field |
+
+| Where | Difference | Why |
+| --- | --- | --- |
+| Buffer | The fixture's `about.txt` instead of the site's | Fixture corpus (as above) |
+| Message line | `"about.txt" [readonly]` instead of `"about.txt" [readonly] 6L, 164B` | The message is the interpreter's (`takeover.message`); the demo's `view` does not count lines and bytes |
+| Status line | `0:view*` instead of `0:vim*` | The process name is the interpreter's (`takeover.name`) |
+| What is announced on opening | `view. Press q, or type colon q and press Enter, to leave.` instead of `vim. Type colon q and press Enter to leave.` | The interpreter's `announce`; not in the stills |
+| Tildes, phosphor-night | `#80c194` (`rgb(128, 193, 148)`) instead of `#7cbd90` | Decision Q9, as the muted text above |
+| Chips | The demo's commands | As above |
+
+Nothing else in the Takeover's chrome (the box, the buffer, the tilde column, the message line, the
+hidden prompt text with the cursor on the command line, the chips and status line below) differs.
