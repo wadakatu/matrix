@@ -7,7 +7,7 @@
 // steps, and "a second request finishes the first" is rush(), which runs every remaining step's end state
 // synchronously, so the next change starts on a settled page.
 import { hexFrame } from "../../lib/index.ts";
-import { decode, moving, textTween, type TextTween } from "../../effects/decode/decode.ts";
+import { decode, held, moving, textTween, type TextTween } from "../../effects/decode/decode.ts";
 
 type Reading = "human" | "machine";
 type Anim = Animation | TextTween;
@@ -170,7 +170,8 @@ export class MxReadings extends HTMLElement {
         {
           run: () => {
             const open = squash("scaleY(0.004)", "scaleY(1)", origin(), 280, EASE.out, "none");
-            const settle = [...new Set([...this.querySelectorAll<HTMLElement>(':scope > [data-reading="human"] :is(h2, .mx-stream-name a)')].map((el) => el.firstElementChild ?? el))]
+            // Decode is off while held (3.8).
+            const settle = held() ? [] : [...new Set([...this.querySelectorAll<HTMLElement>(':scope > [data-reading="human"] :is(h2, .mx-stream-name a)')].map((el) => el.firstElementChild ?? el))]
               .filter(onScreen)
               .map((el, i) => decode(el, 450, { delay: 80 + Math.min(i, 24) * 20 }));
             return [open, ...settle];
@@ -191,7 +192,7 @@ export class MxReadings extends HTMLElement {
       (sides.find((a) => a.dataset.to === v && a.tabIndex !== -1) ?? sides.find((a) => a.tabIndex !== -1))?.focus();
     }
     // The side just taken settles out of raw glyphs, as the page's headings do. The capsule stays as it is.
-    if (moving()) {
+    if (moving() && !held()) {
       for (const el of document.querySelectorAll(`.mx-header .mx-switch:not([data-variant]) a[data-to="${v}"] .mx-switch-label`)) {
         const t = decode(el, 450, { allWide: true });
         this.#effects.add(t);
@@ -256,7 +257,7 @@ export class MxReadings extends HTMLElement {
   /** Returning to 人間用: the name doubles once (05, catalogue). */
   #double() {
     const name = this.querySelector<HTMLElement>(".mx-name");
-    if (!name || !moving()) return;
+    if (!name || !moving() || held()) return;
     name.toggleAttribute("data-double", true);
     const clear = () => name.removeAttribute("data-double");
     name.addEventListener("animationend", clear, { once: true });
