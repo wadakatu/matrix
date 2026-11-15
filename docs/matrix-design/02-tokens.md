@@ -104,7 +104,7 @@ One value, by decision Q9: night-mode muted text is slightly brighter, so that s
 - Operator-night is not changed: its `text-muted` already measures Lc −62.1 on `ground` and
   −61.7 on `panel`. The two day contexts measure 68.5 and above.
 - `color.control-border` is an alias of `color.text-muted` and moves with it.
-- Whether this amount is the right one is the one open item in this set (README, N1).
+- The amount is settled: wadakatu confirmed `#80c194` (README, N1).
 
 ### Contrast contract
 
@@ -168,8 +168,9 @@ values compute to the same pixels).
 | --- | --- |
 | `space.0-5`, `1`, `1-5`, `2`, `3`, `4`, `5`, `6`, `7`, `10`, `12`, `18` | 2, 4, 6, 8, 12, 16, 20, 24, 28, 40, 48, 72px |
 | `size.frame` | 1376px (maximum content width) |
-| `size.measure.read` | 640px below 720px, 680px from 720px: 40 full-width characters at the body size |
-| `size.measure.lede` | 68ch (Latin lede and captions) |
+| `size.measure.read` | 680px. Article measure from 720px: 40 full-width characters at the body size |
+| `size.measure.read-compact` | 640px. Article measure below 720px: 40 full-width characters at the body size |
+| `size.measure.lede` | 68ch (Latin lede and captions). Stored as the number 68, because a DTCG dimension cannot carry `ch` |
 | `size.rail` | 264px (contents rail) |
 | `size.target` | 44px (touch target for primary controls) |
 | `size.target-min` | 24px (floor for any target, [2.5.8](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum)) |

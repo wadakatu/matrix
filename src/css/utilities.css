@@ -1,0 +1,29 @@
+@layer mx.utilities {
+  .mx-frame {
+    max-width: var(--mx-size-frame);
+    margin-inline: auto;
+    padding-inline: var(--mx-pad);
+  }
+  :root[data-reading="machine"] .mx-frame { max-width: none; }
+
+  .mx-vh {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .mx-skip {
+    position: absolute;
+    top: -80px;
+    left: var(--mx-space-4);
+    z-index: var(--mx-layer-skip);
+    padding: var(--mx-space-2) var(--mx-space-3);
+    background: var(--mx-color-accent);
+    color: var(--mx-color-on-accent);
+  }
+  .mx-skip:focus { top: var(--mx-space-3); }
+  .mx-skip:hover { color: var(--mx-color-on-accent); }
+}

@@ -1,0 +1,347 @@
+{
+  "color": {
+    "$type": "color",
+    "ground": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.0627,
+          0.0549,
+          0.0431
+        ],
+        "hex": "#100e0b"
+      },
+      "$description": "The screen itself, the darkest surface at night. Use for the page background, text on a filled accent face, and the code block background. Never a foreground on another surface."
+    },
+    "panel": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.0902,
+          0.0784,
+          0.0588
+        ],
+        "hex": "#17140f"
+      },
+      "$description": "A solid reading surface laid on the ground. Use for panels and hover fills. Reading text sits only on ground or panel."
+    },
+    "rule": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.2392,
+          0.2118,
+          0.1725
+        ],
+        "hex": "#3d362c"
+      },
+      "$description": "Hairline for decorative separators only. Never the only boundary of a control: it measures 1.5–2.4:1 and is exempt from contrast as decoration.",
+      "$extensions": {
+        "dev.wadakatu.matrix": {
+          "decorative": true
+        }
+      }
+    },
+    "text": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.9255,
+          0.8941,
+          0.8314
+        ],
+        "hex": "#ece4d4"
+      },
+      "$description": "Body text. Use for all running text. Must clear 7:1 on ground and panel.",
+      "$extensions": {
+        "dev.wadakatu.matrix": {
+          "contrast": [
+            {
+              "against": "color.ground",
+              "floor": 7
+            },
+            {
+              "against": "color.panel",
+              "floor": 7
+            }
+          ]
+        }
+      }
+    },
+    "text-muted": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.7608,
+          0.7059,
+          0.5882
+        ],
+        "hex": "#c2b496"
+      },
+      "$description": "Secondary text: meta lines, captions, hints. Dim with this colour, never with opacity. Must clear 4.5:1 on ground and panel.",
+      "$extensions": {
+        "dev.wadakatu.matrix": {
+          "contrast": [
+            {
+              "against": "color.ground",
+              "floor": 4.5
+            },
+            {
+              "against": "color.panel",
+              "floor": 4.5
+            }
+          ]
+        }
+      }
+    },
+    "text-lead": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.9412,
+          0.8784,
+          0.7059
+        ],
+        "hex": "#f0e0b4"
+      },
+      "$description": "Emphasised text for short runs: titles, strong, hover. Not for paragraphs at night. Must clear 7:1 on ground and panel.",
+      "$extensions": {
+        "dev.wadakatu.matrix": {
+          "contrast": [
+            {
+              "against": "color.ground",
+              "floor": 7
+            },
+            {
+              "against": "color.panel",
+              "floor": 7
+            }
+          ]
+        }
+      }
+    },
+    "accent": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.851,
+          0.7098,
+          0.4157
+        ],
+        "hex": "#d9b56a"
+      },
+      "$description": "The lit colour of the context (phosphor green or operator amber). Use for identity, links, headings, prompts, current state. Never running body text, and never assume it is green. Must clear 4.5:1 on ground and panel.",
+      "$extensions": {
+        "dev.wadakatu.matrix": {
+          "contrast": [
+            {
+              "against": "color.ground",
+              "floor": 4.5
+            },
+            {
+              "against": "color.panel",
+              "floor": 4.5
+            }
+          ]
+        }
+      }
+    },
+    "on-accent": {
+      "$value": "{color.ground}",
+      "$description": "Text on an accent fill (filled controls, the status line). Alias of color.ground. Must clear 4.5:1 on accent.",
+      "$extensions": {
+        "dev.wadakatu.matrix": {
+          "contrast": [
+            {
+              "against": "color.accent",
+              "floor": 4.5
+            }
+          ]
+        }
+      }
+    },
+    "focus": {
+      "$value": "{color.accent}",
+      "$description": "The focus indicator. Alias of color.accent. Use only for focus outlines. Must clear 3:1 on ground and panel.",
+      "$extensions": {
+        "dev.wadakatu.matrix": {
+          "contrast": [
+            {
+              "against": "color.ground",
+              "floor": 3
+            },
+            {
+              "against": "color.panel",
+              "floor": 3
+            }
+          ]
+        }
+      }
+    },
+    "control-border": {
+      "$value": "{color.text-muted}",
+      "$description": "The boundary of a control that is identified by its box. Alias of color.text-muted. Must clear 3:1 on ground and panel.",
+      "$extensions": {
+        "dev.wadakatu.matrix": {
+          "contrast": [
+            {
+              "against": "color.ground",
+              "floor": 3
+            },
+            {
+              "against": "color.panel",
+              "floor": 3
+            }
+          ]
+        }
+      }
+    },
+    "rain": {
+      "tail": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.1647,
+            0.1451,
+            0.1137
+          ],
+          "hex": "#2a251d"
+        },
+        "$description": "Dimmest end of a rain drop. Decoration only; never text.",
+        "$extensions": {
+          "dev.wadakatu.matrix": {
+            "decorative": true
+          }
+        }
+      },
+      "body": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.5412,
+            0.4824,
+            0.3686
+          ],
+          "hex": "#8a7b5e"
+        },
+        "$description": "Body of a rain drop. Decoration only; never text. Has a contrast ceiling: at most 5:1 on ground, so rain stays below reading brightness (law L2).",
+        "$extensions": {
+          "dev.wadakatu.matrix": {
+            "decorative": true,
+            "ceiling": {
+              "against": "color.ground",
+              "max": 5
+            }
+          }
+        }
+      },
+      "head": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9412,
+            0.8784,
+            0.7059
+          ],
+          "hex": "#f0e0b4"
+        },
+        "$description": "Leading glyph of a rain drop. Decoration only; never text.",
+        "$extensions": {
+          "dev.wadakatu.matrix": {
+            "decorative": true
+          }
+        }
+      }
+    },
+    "reading": {
+      "human": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.3451,
+            0.7176,
+            1
+          ],
+          "hex": "#58b7ff"
+        },
+        "$description": "Dot on the 人間用 side of the capsule switch. The capsule's dots only, never text. Must clear 3:1 on ground and panel.",
+        "$extensions": {
+          "dev.wadakatu.matrix": {
+            "contrast": [
+              {
+                "against": "color.ground",
+                "floor": 3
+              },
+              {
+                "against": "color.panel",
+                "floor": 3
+              }
+            ]
+          }
+        }
+      },
+      "machine": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            1,
+            0.3647,
+            0.3098
+          ],
+          "hex": "#ff5d4f"
+        },
+        "$description": "Dot on the 機械用 side of the capsule switch. The capsule's dots only, never text. Must clear 3:1 on ground and panel.",
+        "$extensions": {
+          "dev.wadakatu.matrix": {
+            "contrast": [
+              {
+                "against": "color.ground",
+                "floor": 3
+              },
+              {
+                "against": "color.panel",
+                "floor": 3
+              }
+            ]
+          }
+        }
+      }
+    },
+    "glow": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.851,
+          0.7098,
+          0.4157
+        ],
+        "alpha": 0.45,
+        "hex": "#d9b56a"
+      },
+      "$description": "Phosphor bloom: accent at 45% alpha at night, transparent by day, so text-shadow needs no theme selector. For the name line and lit bits in 機械用 only; never on reading text.",
+      "$extensions": {
+        "dev.wadakatu.matrix": {
+          "decorative": true
+        }
+      }
+    },
+    "scanline": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.0627,
+          0.0549,
+          0.0431
+        ],
+        "alpha": 0.28,
+        "hex": "#100e0b"
+      },
+      "$description": "Scan-line wash: ground at 28% alpha. Decoration only; contrast is measured without it.",
+      "$extensions": {
+        "dev.wadakatu.matrix": {
+          "decorative": true
+        }
+      }
+    }
+  }
+}

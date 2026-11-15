@@ -1,7 +1,5 @@
 .DS_Store
 node_modules/
-.superpowers/
-__pycache__/
-*.pyc
+dist/
 playwright-report/
 test-results/

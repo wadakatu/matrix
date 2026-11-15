@@ -1,0 +1,14 @@
+# Network log for /src/specimens/bare.html (Chromium), written by tests/specimens.spec.mjs when it passes.
+# Every request the page made; any to another origin would be listed and aborted.
+requests: 9, to another origin: 0
+font files fetched: 6 of 376 in dist/fonts.css
+
+/dist/fonts.css
+/dist/fonts/ibm-plex-mono-latin-400-normal.woff2  page characters in its unicode-range: 39
+/dist/fonts/ibm-plex-mono-latin-700-normal.woff2  page characters in its unicode-range: 39
+/dist/fonts/m-plus-1-code-116-400-normal.woff2  page characters in its unicode-range: 1
+/dist/fonts/m-plus-1-code-117-400-normal.woff2  page characters in its unicode-range: 2
+/dist/fonts/m-plus-1-code-119-400-normal.woff2  page characters in its unicode-range: 4
+/dist/fonts/m-plus-1-code-97-400-normal.woff2  page characters in its unicode-range: 1
+/dist/matrix.css
+/src/specimens/bare.html
