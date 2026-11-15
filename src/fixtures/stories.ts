@@ -15,6 +15,10 @@ export const docs = (md: string, { chrome = false } = {}) => ({
 export const contexts = { parameters: { contexts: true } };
 /** Japanese content, `lang="ja"` on the root and the Japanese chrome strings. */
 export const japanese = { globals: { language: "ja" } };
+/** Contexts for a fixed layer: each scope holds it and has a height. */
+export const framed = { parameters: { contexts: true, framed: true } };
+/** Motion off: the still (L4). */
+export const still = { globals: { motion: "off" } };
 /** At 390 wide, for a component that changes shape there. */
 export const narrow = { globals: { viewport: { value: "narrow", isRotated: false } } };
 

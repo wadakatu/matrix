@@ -1,0 +1,33 @@
+---
+/** Streams of fixture entries, for the Stream, Streams and Rewards stories. */
+import Streams from "../components/streams/Streams.astro";
+import Stream from "../components/stream/Stream.astro";
+import Meta from "../components/meta/Meta.astro";
+import { signature } from "./corpus.ts";
+import { splitJa } from "../lib/index.ts";
+interface Props {
+  variant?: "rows";
+  /** How many entries: the projects, then the posts. */
+  count?: number;
+  lang?: "en" | "ja";
+}
+const { variant, count = 7, lang = "en" } = Astro.props;
+const { projects, posts, pairs } = signature;
+const entries = [
+  ...projects.map((p) => ({ name: p.name, href: p.href, meta: p.lang, blurb: p.blurb, commit: pairs[p.name], strands: [p.name, p.blurb, p.href.replace("https://", ""), p.lang] })),
+  ...posts.map((p) => ({ name: p.title, href: p.href, meta: p.date, blurb: "", commit: undefined, strands: [p.title, p.date, `example.com${p.href}`, p.category] })),
+].slice(0, count);
+---
+<div class="mx-frame">
+  <Streams variant={variant}>
+    {entries.map((e, i) => {
+      const [en, ja] = splitJa(e.blurb);
+      return (
+        <Stream name={e.name} href={e.href} index={i} level={variant ? "h2" : "h3"} commit={e.commit} strands={e.strands}>
+          <Meta>{e.meta}</Meta>
+          {e.blurb && <p class="mx-blurb">{lang === "ja" ? <span lang="ja">見本の説明文です。</span> : en}{ja && <Fragment><br /><span lang="ja">{ja}</span></Fragment>}</p>}
+        </Stream>
+      );
+    })}
+  </Streams>
+</div>

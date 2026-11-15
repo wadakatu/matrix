@@ -39,8 +39,8 @@ export default {
   // renders a story once, with no toolbar, so it is rendered in both languages and the root's is
   // stamped (Language.astro). `Contexts` frames each rendering, so it is applied here, not per story.
   decorators: [
-    (Story: () => unknown, { component, args, parameters }: { component: unknown; args: Record<string, unknown>; parameters: { chrome?: boolean; contexts?: boolean } }) => {
-      const frame = (inner: unknown) => (parameters.contexts ? { component: Contexts, slots: { default: inner } } : inner);
+    (Story: () => unknown, { component, args, parameters }: { component: unknown; args: Record<string, unknown>; parameters: { chrome?: boolean; contexts?: boolean; framed?: boolean } }) => {
+      const frame = (inner: unknown) => (parameters.contexts ? { component: Contexts, props: { framed: parameters.framed }, slots: { default: inner } } : inner);
       if (!parameters.chrome) return frame(Story());
       const { slots = {}, ...rest } = args as { slots?: Record<string, unknown> };
       const props = Object.fromEntries(Object.entries(rest).filter(([k]) => !k.startsWith("slot-")));
@@ -51,8 +51,11 @@ export default {
   ],
   // Each global is one root attribute (03). Astro decorators run on the server, so this is where
   // the iframe's <html> is set; it runs again on every toolbar change (S1).
-  beforeEach: ({ globals }: { globals: Record<string, string> }) => {
+  beforeEach: ({ globals, parameters }: { globals: Record<string, string>; parameters: { boot?: string } }) => {
     const root = document.documentElement;
+    // The boot's still is a root attribute too (03); only its stories set it.
+    if (parameters.boot) root.dataset.boot = parameters.boot;
+    else delete root.dataset.boot;
     root.dataset.palette = globals.palette;
     root.dataset.theme = globals.theme;
     root.dataset.reading = globals.reading;
@@ -76,6 +79,6 @@ export default {
     a11y: { test: "error", options: { runOnly: ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"] } },
     layout: "fullscreen",
     viewport: { options: { narrow: { name: "Narrow (390)", styles: { width: "390px", height: "844px" } }, wide: { name: "Wide (1440)", styles: { width: "1440px", height: "900px" } } } },
-    options: { storySort: { order: ["Welcome", "Foundations", ["Colour", "Type", "Space and size", "Motion", "Logo", "Language"], "Chrome", "Surfaces", "*"] } },
+    options: { storySort: { order: ["Welcome", "Foundations", ["Colour", "Type", "Space and size", "Motion", "Logo", "Language"], "Chrome", "Surfaces", "Signature", "*"] } },
   },
 };
