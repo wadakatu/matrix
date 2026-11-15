@@ -43,7 +43,10 @@ export class MxBoot extends HTMLElement {
   #stop() {
     for (const a of this.#running) "end" in a ? a.end() : a.cancel();
     this.#running.clear();
-    document.querySelector(".mx-curtain")?.removeAttribute("data-on");
+    // Finished slabs too: their fill would outlive the boot on an early end.
+    const curtain = document.querySelector(".mx-curtain");
+    curtain?.getAnimations({ subtree: true }).forEach((a) => a.cancel());
+    curtain?.removeAttribute("data-on");
   }
 
   async #step<T extends Animation | TextTween>(a: T): Promise<boolean> {
@@ -72,11 +75,12 @@ export class MxBoot extends HTMLElement {
       v.toggleAttribute("data-done", true);
       if (!(await this.#step(wait(80)))) return;
     }
-    // The mark is wiped in whole, top to bottom, in ten steps. The image itself is never scrambled.
+    // The mark is wiped in whole, top to bottom, in ten steps: a cover lifts off it. The image itself is
+    // never clipped or scrambled (L5).
     const logo = this.querySelector<HTMLElement>(".mx-boot-logo")!;
     logo.toggleAttribute("data-on", true);
-    const img = logo.querySelector("img")!;
-    if (!(await this.#step(img.animate([{ clipPath: "inset(0 0 100% 0)" }, { clipPath: "inset(0 0 0 0)" }], { duration: 500, easing: "steps(10)" })))) return;
+    const cover = logo.querySelector(".mx-boot-cover")!;
+    if (!(await this.#step(cover.animate([{ clipPath: "inset(0 0 0 0)" }, { clipPath: "inset(100% 0 0 0)" }], { duration: 500, easing: "steps(10)" })))) return;
     if (!(await this.#step(wait(500)))) return;
     // The curtain falls slab by slab, the boot ends behind it, and it lifts on the page.
     const curtain = document.querySelector<HTMLElement>(".mx-curtain");

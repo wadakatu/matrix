@@ -34,6 +34,9 @@
   /* The last record is the mark itself, whole (L5): wiped in, never scrambled. */
   .mx-boot-lines .mx-boot-logo { align-items: start; margin-top: 1em; }
   .mx-boot-logo .mx-logo { width: clamp(120px, 24vh, 220px); }
+  /* The wipe lifts a cover off the mark, never clips the image (L5). Clipped away unless the wipe runs. */
+  .mx-boot-mark { position: relative; justify-self: start; }
+  .mx-boot-cover { position: absolute; inset: 0; background: var(--mx-color-ground); clip-path: inset(100% 0 0 0); }
 
   /* The still (`?boot=frozen`): every line settled, the mark whole. Needs no script. */
   :root[data-boot="frozen"] .mx-boot-line { visibility: visible; }

@@ -19,7 +19,7 @@ of corpus glyphs, then the logo, then the curtain (L1, L4, L5).
 <mx-boot class="mx-boot">
   <div class="mx-boot-lines" aria-hidden="true">
     <p class="mx-boot-line"><span class="mx-boot-key">name</span><span class="mx-boot-value" data-text="wadakatu_">wadakatu_</span></p>
-    <p class="mx-boot-line mx-boot-logo"><span class="mx-boot-key">logo</span><img class="mx-logo" src="…" alt=""></p>
+    <p class="mx-boot-line mx-boot-logo"><span class="mx-boot-key">logo</span><span class="mx-boot-mark"><img class="mx-logo" src="…" alt=""><span class="mx-boot-cover"></span></span></p>
   </div>
   <p class="mx-boot-exit">
     <button class="mx-control mx-boot-skip" type="button">Skip intro <kbd>Esc</kbd></button>
@@ -45,7 +45,8 @@ page passes `boot` to `Head` (or `Layout`), which puts the decision in the head 
 The head script decides it and ends it on Skip, Escape, a click or tap anywhere on it (either side of
 its switch included) and `motion.boot.failsafe`, so it ends with every other script blocked. Ending
 it removes `data-boot`, emits `mx:bootend` and moves focus to `main`. `mx-boot` adds the motion:
-values decode (`decode`), the logo is wiped in from the top in ten steps, the curtain falls, the boot
+values decode (`decode`), the logo is wiped in from the top in ten steps by lifting a cover off it
+(the image itself is never clipped, L5), the curtain falls, the boot
 ends behind it, the curtain lifts. An early end drops the rest; reduced motion switched on ends it.
 機械用 on its switch goes straight to the shell; 人間用 is Skip.
 
@@ -66,3 +67,4 @@ one direction per transition; checked frame by frame (05).
 - Do keep it to Home, once per tab.
 - Don't let anything but the head script decide it.
 - Don't scramble the logo: it is wiped in whole.
+- Don't clip, mask or transform the image to wipe it: the cover moves, the mark does not (L5).

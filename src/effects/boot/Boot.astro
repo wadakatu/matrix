@@ -1,7 +1,7 @@
 ---
 /**
  * The intro (05, "The boot"): five labels whose real values decode out of corpus glyphs, then the logo
- * wiped in whole, then the curtain. First in the document, so Skip is the first tab stop while it is up.
+ * uncovered whole, then the curtain. First in the document, so Skip is the first tab stop while it is up.
  * Whether it plays is decided by the head script (`Head` with `boot`), which also ends it on Skip,
  * Escape, a click and `motion.boot.failsafe`, so it fails open with every other script blocked. The
  * values are in the markup, settled, so the frozen still needs no script.
@@ -26,7 +26,7 @@ const t = strings[lang].boot;
     {lines.map((l) => (
       <p class="mx-boot-line"><span class="mx-boot-key">{l.key}</span><span class="mx-boot-value" lang={hasJa(l.text) ? "ja" : undefined} data-text={l.text}>{l.text}</span></p>
     ))}
-    <p class="mx-boot-line mx-boot-logo"><span class="mx-boot-key">logo</span><Logo src={logo} /></p>
+    <p class="mx-boot-line mx-boot-logo"><span class="mx-boot-key">logo</span><span class="mx-boot-mark"><Logo src={logo} /><span class="mx-boot-cover"></span></span></p>
   </div>
   <p class="mx-boot-exit">
     <button class="mx-control mx-boot-skip" type="button">{t.skip} <kbd>Esc</kbd></button>
