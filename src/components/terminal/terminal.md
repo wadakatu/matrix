@@ -82,7 +82,8 @@ sets `data-keyboard` instead and the lock holds. With
 viewport too; matrix's `Head` does not set it.
 
 What history and the guide's × remember is tab-scoped: `sessionStorage['mx-history']`,
-`sessionStorage['mx-guide']`.
+`sessionStorage['mx-guide']`. A stored history that does not parse is an empty one. The Storybook
+preview sets `MxTerminal.remember = false`, so a story neither reads nor writes either key (03, 06).
 
 Without scripts: the recorded session, its links real, the status line's and the guide's links plain
 links to 人間用. Runs in the output are still buttons (the markup is one), styled as text, and do
