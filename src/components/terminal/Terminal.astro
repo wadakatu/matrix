@@ -31,7 +31,8 @@ const { interpreter: sh, session, chips, human, login, lang = "en", id = "mx-com
 const t = strings[lang].terminal;
 const o = { newTab: t.newTab };
 const start = sh.prompt();
-let tty = render(sh.motd(), o) + render([{ text: t.recorded, tone: "dim" }], o);
+// Not motd(): its words are for a live prompt. The recording says what it is instead, as the prototype's does.
+let tty = render([{ text: t.recorded, tone: "dim" }], o);
 session.forEach((cmd, i) => {
   const p = sh.prompt();
   const { out } = sh.exec(cmd);
