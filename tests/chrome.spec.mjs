@@ -339,6 +339,29 @@ test.describe("header", () => {
       expect(await header(page)).toBe(69);
     });
 
+    test("forced colours: the figure stays; open and pressed are Highlight / HighlightText (05)", async ({ page }) => {
+      await page.emulateMedia({ forcedColors: "active" });
+      // A system colour as the engine resolves it, from a probe that forced colours leave alone.
+      const sys = (c) => page.evaluate((c) => {
+        const i = document.body.appendChild(document.createElement("i"));
+        i.style.cssText = `forced-color-adjust: none; color: ${c}`;
+        const v = getComputedStyle(i).color;
+        i.remove();
+        return v;
+      }, c);
+      const look = (sel, pseudo) => page.locator(sel).evaluate((el, pseudo) => {
+        const s = getComputedStyle(el, pseudo);
+        return { bg: s.backgroundColor, color: s.color, image: s.backgroundImage };
+      }, pseudo);
+      expect(await look(".mx-menu > summary", "::before")).toMatchObject({ color: await sys("ButtonText"), image: expect.stringContaining("gradient") });
+      await summary(page).click();
+      expect((await look(".mx-menu > summary")).bg).toBe(await sys("Highlight"));
+      expect(await look(".mx-menu > summary", "::before")).toMatchObject({ color: await sys("HighlightText"), image: expect.stringContaining("gradient") });
+      await page.locator('[data-action="palette"]').click();
+      expect(await look('[data-action="palette"]')).toMatchObject({ bg: await sys("Highlight"), color: await sys("HighlightText") });
+      expect((await look('[data-action="theme"]')).bg).not.toBe(await sys("Highlight"));
+    });
+
     test("menu lines and controls are 44px targets", async ({ page }) => {
       await summary(page).click();
       const boxes = await page.$$eval(".mx-header .mx-nav a, .mx-controls .mx-control, .mx-lang, .mx-menu > summary", (els) => els.map((e) => [e.textContent.trim(), e.getBoundingClientRect().height]));
