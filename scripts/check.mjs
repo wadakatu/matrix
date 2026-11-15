@@ -83,6 +83,7 @@ run("version consistency", () =>
 
 run("gate tests: node --test", () => command("node", ["--test", "tests/gates.test.mjs"]));
 run("lib tests: node --test (task 3.1)", () => command("node", ["--test", "tests/lib.test.mjs"]));
+run("terminal tests: node --test (task 4.1)", () => command("node", ["--test", "tests/terminal.test.mjs"]));
 
 if (failed) {
   console.log(`\n✖ ${failed} gate(s) failed`);
