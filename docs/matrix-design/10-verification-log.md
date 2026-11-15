@@ -198,7 +198,8 @@ lightness from `#7cbd90` with chroma and hue held.
 | `color.text` `#c4f2d0`, for scale | L .920 C .066 H 153 | 16.31 (Lc −92.2) | 15.43 (Lc −91.8) |
 
 - Two smaller lifts also reach Lc 60 on `panel` (`#7ec092` at −60.0, `#7fc093` at −60.1).
-  `#80c194` was taken for the margin; the choice is a judgement, and it is N1 in the README.
+  `#80c194` was taken for the margin; the choice was a judgement, and wadakatu confirmed it
+  (README, N1).
 - The contract's minima in 02 do not move: the lowest `text-muted` ratio is still 6.89, in
   phosphor-day.
 - Not measured: the lifted colour on a rendered page, under scan lines, or by eye.

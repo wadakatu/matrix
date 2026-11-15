@@ -1,0 +1,634 @@
+{
+  "font": {
+    "family": {
+      "mono": {
+        "$type": "fontFamily",
+        "$value": [
+          "IBM Plex Mono",
+          "M PLUS 1 Code",
+          "ui-monospace",
+          "Menlo",
+          "monospace"
+        ],
+        "$description": "Latin text, controls and code."
+      },
+      "ja": {
+        "$type": "fontFamily",
+        "$value": [
+          "M PLUS 1 Code",
+          "IBM Plex Mono",
+          "ui-monospace",
+          "Menlo",
+          "monospace"
+        ],
+        "$description": "Any run marked lang=\"ja\": M PLUS 1 Code, then the mono stack."
+      },
+      "dot": {
+        "$type": "fontFamily",
+        "$value": [
+          "DotGothic16",
+          "M PLUS 1 Code",
+          "ui-monospace",
+          "monospace"
+        ],
+        "$description": "Rain, boot, curtain and the rain switch. Never reading text."
+      }
+    },
+    "weight": {
+      "regular": {
+        "$type": "fontWeight",
+        "$value": 400,
+        "$description": "Regular weight for running text."
+      },
+      "medium": {
+        "$type": "fontWeight",
+        "$value": 500,
+        "$description": "Medium weight for marks, labels and headings."
+      },
+      "bold": {
+        "$type": "fontWeight",
+        "$value": 700,
+        "$description": "Bold. The giant name only."
+      }
+    },
+    "size": {
+      "label": {
+        "$type": "dimension",
+        "$value": {
+          "value": 0.75,
+          "unit": "rem"
+        },
+        "$description": "Code language tab and Copy (12px)."
+      },
+      "meta": {
+        "$type": "dimension",
+        "$value": {
+          "value": 0.8125,
+          "unit": "rem"
+        },
+        "$description": "Meta lines, hints, chips, the status line and the footer (13px)."
+      },
+      "ui": {
+        "$type": "dimension",
+        "$value": {
+          "value": 0.875,
+          "unit": "rem"
+        },
+        "$description": "Header, controls, terminal text and code blocks (14px)."
+      },
+      "body": {
+        "$type": "dimension",
+        "$value": {
+          "value": 0.9375,
+          "unit": "rem"
+        },
+        "$description": "Page text (15px)."
+      },
+      "read-compact": {
+        "$type": "dimension",
+        "$value": {
+          "value": 1,
+          "unit": "rem"
+        },
+        "$description": "Article body below 720px, and the command field on touch (16px)."
+      },
+      "read": {
+        "$type": "dimension",
+        "$value": {
+          "value": 1.0625,
+          "unit": "rem"
+        },
+        "$description": "Article body from 720px (17px)."
+      },
+      "lead": {
+        "$type": "dimension",
+        "$value": {
+          "value": 1.125,
+          "unit": "rem"
+        },
+        "$description": "Role line and article h3 (18px)."
+      },
+      "heading": {
+        "$type": "dimension",
+        "$value": {
+          "value": 1.375,
+          "unit": "rem"
+        },
+        "$description": "Article h2 (22px)."
+      },
+      "title": {
+        "min": {
+          "$type": "dimension",
+          "$value": {
+            "value": 1.5,
+            "unit": "rem"
+          },
+          "$description": "Article title, smallest end of its fluid size (24px)."
+        },
+        "max": {
+          "$type": "dimension",
+          "$value": {
+            "value": 2.375,
+            "unit": "rem"
+          },
+          "$description": "Article title, largest end of its fluid size (38px)."
+        }
+      },
+      "entry": {
+        "min": {
+          "$type": "dimension",
+          "$value": {
+            "value": 1.375,
+            "unit": "rem"
+          },
+          "$description": "Entry names in stream rows, smallest end (22px)."
+        },
+        "max": {
+          "$type": "dimension",
+          "$value": {
+            "value": 2.125,
+            "unit": "rem"
+          },
+          "$description": "Entry names in stream rows, largest end (34px)."
+        }
+      },
+      "prompt": {
+        "min": {
+          "$type": "dimension",
+          "$value": {
+            "value": 1.75,
+            "unit": "rem"
+          },
+          "$description": "The name as a terminal line, smallest end (28px)."
+        },
+        "max": {
+          "$type": "dimension",
+          "$value": {
+            "value": 2.75,
+            "unit": "rem"
+          },
+          "$description": "The name as a terminal line, largest end (44px)."
+        }
+      },
+      "rain": {
+        "$type": "dimension",
+        "$value": {
+          "value": 16,
+          "unit": "px"
+        },
+        "$description": "Rain glyphs. DotGothic16 is drawn for 16px, so this is pixels on purpose."
+      }
+    },
+    "leading": {
+      "tight": {
+        "$type": "number",
+        "$value": 1.25,
+        "$description": "Tight line height for display lines."
+      },
+      "title": {
+        "$type": "number",
+        "$value": 1.45,
+        "$description": "Line height for titles."
+      },
+      "terminal": {
+        "$type": "number",
+        "$value": 1.6,
+        "$description": "Line height for terminal output."
+      },
+      "ui": {
+        "$type": "number",
+        "$value": 1.7,
+        "$description": "Line height for page text and chrome."
+      },
+      "code": {
+        "$type": "number",
+        "$value": 1.75,
+        "$description": "Line height for code blocks."
+      },
+      "read": {
+        "$type": "number",
+        "$value": 2,
+        "$description": "Line height for Japanese article body."
+      }
+    }
+  },
+  "space": {
+    "1": {
+      "$type": "dimension",
+      "$value": {
+        "value": 4,
+        "unit": "px"
+      },
+      "$description": "Space step 1 (4px). Use for gaps, padding and margins that repeat; one-off layout numbers stay literal."
+    },
+    "2": {
+      "$type": "dimension",
+      "$value": {
+        "value": 8,
+        "unit": "px"
+      },
+      "$description": "Space step 2 (8px). Use for gaps, padding and margins that repeat; one-off layout numbers stay literal."
+    },
+    "3": {
+      "$type": "dimension",
+      "$value": {
+        "value": 12,
+        "unit": "px"
+      },
+      "$description": "Space step 3 (12px). Use for gaps, padding and margins that repeat; one-off layout numbers stay literal."
+    },
+    "4": {
+      "$type": "dimension",
+      "$value": {
+        "value": 16,
+        "unit": "px"
+      },
+      "$description": "Space step 4 (16px). Use for gaps, padding and margins that repeat; one-off layout numbers stay literal."
+    },
+    "5": {
+      "$type": "dimension",
+      "$value": {
+        "value": 20,
+        "unit": "px"
+      },
+      "$description": "Space step 5 (20px). Use for gaps, padding and margins that repeat; one-off layout numbers stay literal."
+    },
+    "6": {
+      "$type": "dimension",
+      "$value": {
+        "value": 24,
+        "unit": "px"
+      },
+      "$description": "Space step 6 (24px). Use for gaps, padding and margins that repeat; one-off layout numbers stay literal."
+    },
+    "7": {
+      "$type": "dimension",
+      "$value": {
+        "value": 28,
+        "unit": "px"
+      },
+      "$description": "Space step 7 (28px). Use for gaps, padding and margins that repeat; one-off layout numbers stay literal."
+    },
+    "10": {
+      "$type": "dimension",
+      "$value": {
+        "value": 40,
+        "unit": "px"
+      },
+      "$description": "Space step 10 (40px). Use for gaps, padding and margins that repeat; one-off layout numbers stay literal."
+    },
+    "12": {
+      "$type": "dimension",
+      "$value": {
+        "value": 48,
+        "unit": "px"
+      },
+      "$description": "Space step 12 (48px). Use for gaps, padding and margins that repeat; one-off layout numbers stay literal."
+    },
+    "18": {
+      "$type": "dimension",
+      "$value": {
+        "value": 72,
+        "unit": "px"
+      },
+      "$description": "Space step 18 (72px). Use for gaps, padding and margins that repeat; one-off layout numbers stay literal."
+    },
+    "0-5": {
+      "$type": "dimension",
+      "$value": {
+        "value": 2,
+        "unit": "px"
+      },
+      "$description": "Space step 0-5 (2px). Use for gaps, padding and margins that repeat; one-off layout numbers stay literal."
+    },
+    "1-5": {
+      "$type": "dimension",
+      "$value": {
+        "value": 6,
+        "unit": "px"
+      },
+      "$description": "Space step 1-5 (6px). Use for gaps, padding and margins that repeat; one-off layout numbers stay literal."
+    }
+  },
+  "size": {
+    "frame": {
+      "$type": "dimension",
+      "$value": {
+        "value": 1376,
+        "unit": "px"
+      },
+      "$description": "Maximum content width of the frame."
+    },
+    "measure": {
+      "read": {
+        "$type": "dimension",
+        "$value": {
+          "value": 680,
+          "unit": "px"
+        },
+        "$description": "Article measure from 720px: 40 full-width characters at the body size."
+      },
+      "read-compact": {
+        "$type": "dimension",
+        "$value": {
+          "value": 640,
+          "unit": "px"
+        },
+        "$description": "Article measure below 720px: 40 full-width characters at the body size."
+      },
+      "lede": {
+        "$type": "number",
+        "$value": 68,
+        "$description": "Measure of Latin ledes and captions, in ch (68ch). A number because DTCG dimensions allow only px, em and rem; use as calc(var(--mx-size-measure-lede) * 1ch)."
+      }
+    },
+    "rail": {
+      "$type": "dimension",
+      "$value": {
+        "value": 264,
+        "unit": "px"
+      },
+      "$description": "Width of the contents rail."
+    },
+    "target": {
+      "$type": "dimension",
+      "$value": {
+        "value": 44,
+        "unit": "px"
+      },
+      "$description": "Touch target for primary controls (44px)."
+    },
+    "target-min": {
+      "$type": "dimension",
+      "$value": {
+        "value": 24,
+        "unit": "px"
+      },
+      "$description": "Floor for any target (24px, WCAG 2.5.8)."
+    },
+    "logo": {
+      "header": {
+        "$type": "dimension",
+        "$value": {
+          "value": 44,
+          "unit": "px"
+        },
+        "$description": "Logo in the header (44px)."
+      },
+      "header-compact": {
+        "$type": "dimension",
+        "$value": {
+          "value": 32,
+          "unit": "px"
+        },
+        "$description": "Logo in the compact header (32px)."
+      }
+    }
+  },
+  "border": {
+    "width": {
+      "hair": {
+        "$type": "dimension",
+        "$value": {
+          "value": 1,
+          "unit": "px"
+        },
+        "$description": "Hairline border (1px)."
+      },
+      "strong": {
+        "$type": "dimension",
+        "$value": {
+          "value": 2,
+          "unit": "px"
+        },
+        "$description": "Strong border, and the focus ring width (2px)."
+      }
+    }
+  },
+  "radius": {
+    "control": {
+      "$type": "dimension",
+      "$value": {
+        "value": 2,
+        "unit": "px"
+      },
+      "$description": "Corner radius of controls. Panels and the logo have no radius."
+    },
+    "capsule": {
+      "$type": "dimension",
+      "$value": {
+        "value": 999,
+        "unit": "px"
+      },
+      "$description": "Fully rounded capsule ends."
+    }
+  },
+  "breakpoint": {
+    "phone": {
+      "$type": "dimension",
+      "$value": {
+        "value": 600,
+        "unit": "px"
+      },
+      "$description": "Breakpoint phone (600px). Media queries cannot read custom properties, so CSS uses this literal; lint allows only the four breakpoints."
+    },
+    "tablet": {
+      "$type": "dimension",
+      "$value": {
+        "value": 720,
+        "unit": "px"
+      },
+      "$description": "Breakpoint tablet (720px). Media queries cannot read custom properties, so CSS uses this literal; lint allows only the four breakpoints."
+    },
+    "desk": {
+      "$type": "dimension",
+      "$value": {
+        "value": 1100,
+        "unit": "px"
+      },
+      "$description": "Breakpoint desk (1100px). Media queries cannot read custom properties, so CSS uses this literal; lint allows only the four breakpoints."
+    },
+    "wall": {
+      "$type": "dimension",
+      "$value": {
+        "value": 1360,
+        "unit": "px"
+      },
+      "$description": "Breakpoint wall (1360px). Media queries cannot read custom properties, so CSS uses this literal; lint allows only the four breakpoints."
+    }
+  },
+  "motion": {
+    "blink": {
+      "duration": {
+        "$type": "duration",
+        "$value": {
+          "value": 1000,
+          "unit": "ms"
+        },
+        "$description": "Cursor blink period."
+      },
+      "count": {
+        "$type": "number",
+        "$value": 5,
+        "$description": "Cursor blinks five times, then stays lit."
+      }
+    },
+    "wipe": {
+      "duration": {
+        "$type": "duration",
+        "$value": {
+          "value": 240,
+          "unit": "ms"
+        },
+        "$description": "A side of the switch becoming current."
+      },
+      "steps": {
+        "$type": "number",
+        "$value": 3,
+        "$description": "Steps of the wipe; compose as steps(var(--mx-motion-wipe-steps))."
+      }
+    },
+    "drip": {
+      "duration": {
+        "$type": "duration",
+        "$value": {
+          "value": 3200,
+          "unit": "ms"
+        },
+        "$description": "One cycle of the drop through the idle strand of the switch."
+      }
+    },
+    "echo": {
+      "duration": {
+        "$type": "duration",
+        "$value": {
+          "value": 480,
+          "unit": "ms"
+        },
+        "$description": "Déjà vu."
+      }
+    },
+    "double": {
+      "duration": {
+        "$type": "duration",
+        "$value": {
+          "value": 200,
+          "unit": "ms"
+        },
+        "$description": "The name doubling on return to 人間用."
+      }
+    },
+    "decode": {
+      "duration": {
+        "$type": "duration",
+        "$value": {
+          "value": 450,
+          "unit": "ms"
+        },
+        "$description": "Text settling out of corpus glyphs."
+      }
+    },
+    "rain": {
+      "duration": {
+        "min": {
+          "$type": "duration",
+          "$value": {
+            "value": 9,
+            "unit": "s"
+          },
+          "$description": "Shortest fall of one rain column (9s)."
+        },
+        "max": {
+          "$type": "duration",
+          "$value": {
+            "value": 21,
+            "unit": "s"
+          },
+          "$description": "Longest fall of one rain column (21s)."
+        }
+      }
+    },
+    "strand": {
+      "duration": {
+        "min": {
+          "$type": "duration",
+          "$value": {
+            "value": 5,
+            "unit": "s"
+          },
+          "$description": "Shortest fall of one stream strand (5s)."
+        },
+        "max": {
+          "$type": "duration",
+          "$value": {
+            "value": 11,
+            "unit": "s"
+          },
+          "$description": "Longest fall of one stream strand (11s)."
+        }
+      }
+    },
+    "boot": {
+      "failsafe": {
+        "$type": "duration",
+        "$value": {
+          "value": 8000,
+          "unit": "ms"
+        },
+        "$description": "The intro ends no later than this."
+      }
+    },
+    "shell": {
+      "fallback": {
+        "$type": "duration",
+        "$value": {
+          "value": 4000,
+          "unit": "ms"
+        },
+        "$description": "After this the recorded session gets its scrolling page back."
+      }
+    }
+  },
+  "layer": {
+    "rain": {
+      "$type": "number",
+      "$value": -1,
+      "$description": "z-index of the rain layer. Every z-index comes from this list."
+    },
+    "scanline": {
+      "$type": "number",
+      "$value": 20,
+      "$description": "z-index of the scanline layer. Every z-index comes from this list."
+    },
+    "lifted": {
+      "$type": "number",
+      "$value": 21,
+      "$description": "z-index of the lifted layer. Every z-index comes from this list."
+    },
+    "overlay": {
+      "$type": "number",
+      "$value": 22,
+      "$description": "z-index of the overlay layer. Every z-index comes from this list."
+    },
+    "status": {
+      "$type": "number",
+      "$value": 25,
+      "$description": "z-index of the status layer. Every z-index comes from this list."
+    },
+    "boot": {
+      "$type": "number",
+      "$value": 30,
+      "$description": "z-index of the boot layer. Every z-index comes from this list."
+    },
+    "curtain": {
+      "$type": "number",
+      "$value": 40,
+      "$description": "z-index of the curtain layer. Every z-index comes from this list."
+    },
+    "skip": {
+      "$type": "number",
+      "$value": 50,
+      "$description": "z-index of the skip layer. Every z-index comes from this list."
+    }
+  }
+}

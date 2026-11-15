@@ -1,43 +1,56 @@
-// TOMBO stylelint config — the Baseline gate + a minimal set of genuine-error rules.
+// The CSS gates: no raw values in authored CSS, and the Baseline ledger.
 //
-// The ignore* lists below are the "PE ledger": every CSS feature TOMBO uses that is
-// NOT Baseline-widely, each with why it's allowed. It's pinned empirically — running
-// `use-baseline` at "widely" flags exactly these, no more. Keep it honest: CI fails
-// when a NEW non-widely feature appears until it's added here with a justification
-// (or wrapped in @supports). tombo.css itself is never edited to satisfy the linter.
+// The ignore* lists are the ledger: every CSS feature matrix uses that is not Baseline
+// widely available, each with why it is allowed. CI fails when a new one appears until it is
+// added here with a justification (or wrapped in @supports).
+const baseline = {
+  available: "widely",
+  ignoreSelectors: [
+    "selection", // ::selection: cosmetic; degrades to the browser's own selection colours
+  ],
+  ignoreProperties: {
+    "word-break": ["auto-phrase"], // Limited (Chromium). Japanese headings break by phrase where supported; elsewhere the default breaking applies (03)
+  },
+};
+
 export default {
   plugins: ["stylelint-plugin-use-baseline"],
   rules: {
-    "plugin/use-baseline": [true, {
-      available: "widely",
-      ignoreFunctions: [
-        "light-dark",     // Baseline newly 2024 — the token foundation; the whole system is built on it
-        "rect",           // legacy rect() in the .tombo-sr-only clip fallback (paired with clip-path)
-      ],
-      ignoreSelectors: [
-        "has",            // :has() — Baseline newly 2023; opt-in scoping (glow/trim guards), degrades harmlessly
-        "selection",      // ::selection — cosmetic highlight; degrades to the native selection color
-      ],
-      ignoreProperties: {
-        "text-autospace":     ["/^.+$/"], // Limited (Chromium) — wholesale PE: unsupported → tight 和欧, degrades not breaks
-        "print-color-adjust": ["exact"],  // print-only; the -webkit- alias covers the rest; makes mark backgrounds print
-        "accent-color":       [],         // native checkbox/radio tint; degrades to the UA accent
-        "orphans":            [],         // print pagination control; ignored on screen
-        "widows":             [],         // print pagination control; ignored on screen
-        "clip":               [],         // deprecated but universal — legacy .tombo-sr-only fallback, paired with clip-path
-        "break-after":        ["avoid"],  // fragmentation control (keep a heading with its section); print PE
-      },
-      ignoreAtRules: [
-        "page",           // @page margin — print-only, ignored by screen engines
-      ],
-    }],
-    // Minimal genuine-error rules — real bugs only, not the stylistic standard config
-    // (which would fight TOMBO's hand-authored formatting). All report zero on tombo.css.
+    "plugin/use-baseline": [true, baseline],
+    // Genuine errors only.
     "color-no-invalid-hex": true,
     "declaration-block-no-duplicate-properties": true,
     "block-no-empty": true,
     "no-duplicate-selectors": true,
     "property-no-unknown": true,
     "unit-no-unknown": true,
+    // No raw values (02, "Gates"): colours, font sizes and z-indexes come from tokens.
+    "color-no-hex": true,
+    "color-named": "never",
+    "function-disallowed-list": ["rgb", "rgba", "hsl", "hsla", "hwb", "lab", "lch", "oklab", "oklch", "color"],
+    "declaration-property-value-allowed-list": {
+      "font-size": ["/^var\\(--mx-/", "inherit", "100%"],
+      "z-index": ["/^var\\(--mx-layer-/", "auto"],
+    },
+    // Breakpoints (02, "Space, size, border"): media queries can't read custom properties, so the four are literals.
+    "media-feature-name-value-allowed-list": Object.fromEntries(
+      ["width", "min-width", "max-width"].map((f) => [f, ["600px", "720px", "1100px", "1360px"]]),
+    ),
+    // ...and no other size feature to set one by another name.
+    "media-feature-name-disallowed-list": ["/^(min-|max-)?(device-width|device-height|height|inline-size|block-size)$/"],
+    "declaration-property-value-disallowed-list": {
+      // A size inside the font shorthand is a raw font size too.
+      font: ["/\\d(px|rem|em|pt|%)/"],
+    },
   },
+  overrides: [
+    {
+      // Generated from the tokens: the one place literal values live.
+      files: ["dist/tokens.css"],
+      rules: {
+        "color-no-hex": null,
+        "declaration-property-value-allowed-list": null,
+      },
+    },
+  ],
 };

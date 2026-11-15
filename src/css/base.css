@@ -1,0 +1,49 @@
+@layer mx.base {
+  :root { --mx-pad: clamp(12px, 3.4vw, 48px); }
+  html { background: var(--mx-color-ground); }
+  body {
+    position: relative;
+    overflow-x: clip;
+    color: var(--mx-color-text);
+    font-family: var(--mx-font-family-mono);
+    font-size: var(--mx-font-size-body);
+    font-weight: var(--mx-font-weight-regular);
+    line-height: var(--mx-font-leading-ui);
+  }
+  /* Each language in its own face (03, "Language as a context"), also for a run of one inside the other. */
+  :lang(en) { font-family: var(--mx-font-family-mono); }
+  :lang(ja) {
+    font-family: var(--mx-font-family-ja);
+    letter-spacing: normal;
+    line-break: strict;
+  }
+  :is(h1, h2, h3, h4, h5, h6):lang(ja) { word-break: auto-phrase; }
+
+  a {
+    color: inherit;
+    text-decoration-thickness: var(--mx-border-width-hair);
+    text-underline-offset: var(--mx-space-1);
+  }
+  a:hover {
+    color: var(--mx-color-text-lead);
+    text-decoration-thickness: var(--mx-border-width-strong);
+  }
+
+  :focus-visible {
+    outline: var(--mx-border-width-strong) solid var(--mx-color-focus);
+    outline-offset: 3px;
+  }
+  /* The skip link moves focus to main; main shows no ring for it (05). */
+  main:focus { outline: none; }
+
+  kbd {
+    font: inherit;
+    padding: 0 var(--mx-space-1-5);
+    border: var(--mx-border-width-hair) solid currentcolor;
+    border-radius: var(--mx-radius-control);
+  }
+  ::selection {
+    background: var(--mx-color-accent);
+    color: var(--mx-color-on-accent);
+  }
+}

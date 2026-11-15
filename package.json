@@ -1,22 +1,53 @@
 {
-  "name": "tombo",
-  "version": "0.0.0",
+  "name": "@wadakatu/matrix",
+  "version": "1.0.0-alpha.0",
   "private": true,
+  "description": "wadakatu's personal design system: tokens, CSS, custom elements and Astro components for wadakatu.dev.",
+  "license": "MIT",
+  "author": "wadakatu",
+  "homepage": "https://github.com/wadakatu/matrix#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wadakatu/matrix.git"
+  },
+  "bugs": {
+    "url": "https://github.com/wadakatu/matrix/issues"
+  },
   "type": "module",
-  "description": "Dev/CI tooling for the TOMBO design system (not a published package — vendor tombo.css).",
+  "engines": {
+    "node": ">=22.12"
+  },
+  "exports": {
+    "./tokens.css": "./dist/tokens.css",
+    "./tokens.json": "./dist/tokens.json",
+    "./tokens/*": "./tokens/*",
+    "./css": "./dist/matrix.css",
+    "./fonts.css": "./dist/fonts.css",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist/",
+    "tokens/",
+    "src/css/",
+    "docs/tokens.md",
+    "AGENTS.md",
+    "CHANGELOG.md"
+  ],
   "scripts": {
-    "check": "bash scripts/check.sh",
-    "lint:css": "stylelint tombo.css",
-    "test:visual": "bash scripts/test_visual.sh",
-    "test:visual:update": "bash scripts/test_visual.sh --update-snapshots",
-    "test:visual:run": "playwright test"
+    "build": "node scripts/build.mjs",
+    "docs": "node scripts/tokens-doc.mjs --write",
+    "check": "node scripts/check.mjs",
+    "test:specimens": "playwright test"
   },
   "devDependencies": {
-    "@fontsource-variable/instrument-sans": "5.3.0",
-    "@fontsource-variable/m-plus-2": "5.3.1",
-    "@fontsource-variable/martian-mono": "5.3.0",
-    "@playwright/test": "1.64.1",
-    "stylelint": "^17.14.1",
-    "stylelint-plugin-use-baseline": "^1.4.4"
+    "@fontsource/dotgothic16": "5.3.1",
+    "@fontsource/ibm-plex-mono": "5.3.0",
+    "@fontsource/m-plus-1-code": "5.3.1",
+    "@playwright/test": "1.65.1",
+    "@terrazzo/cli": "2.10.0",
+    "@terrazzo/token-tools": "2.10.0",
+    "apca-w3": "0.1.9",
+    "stylelint": "17.16.0",
+    "stylelint-plugin-use-baseline": "1.4.8"
   }
 }

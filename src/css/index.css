@@ -1,0 +1,3 @@
+/* The layer order. Keep this first in the first stylesheet a page loads: a minifier may
+   reduce the statement, and then the order comes from the order the blocks appear in (S1). */
+@layer mx.reset, mx.tokens, mx.base, mx.components, mx.effects, mx.utilities;

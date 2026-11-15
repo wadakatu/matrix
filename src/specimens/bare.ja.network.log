@@ -1,0 +1,29 @@
+# Network log for /src/specimens/bare.ja.html (Chromium), written by tests/specimens.spec.mjs when it passes.
+# Every request the page made; any to another origin would be listed and aborted.
+requests: 24, to another origin: 0
+font files fetched: 21 of 376 in dist/fonts.css
+
+/dist/fonts.css
+/dist/fonts/ibm-plex-mono-latin-400-normal.woff2  page characters in its unicode-range: 18
+/dist/fonts/m-plus-1-code-103-400-normal.woff2  page characters in its unicode-range: 1
+/dist/fonts/m-plus-1-code-105-400-normal.woff2  page characters in its unicode-range: 1
+/dist/fonts/m-plus-1-code-106-400-normal.woff2  page characters in its unicode-range: 1
+/dist/fonts/m-plus-1-code-107-400-normal.woff2  page characters in its unicode-range: 1
+/dist/fonts/m-plus-1-code-110-400-normal.woff2  page characters in its unicode-range: 1
+/dist/fonts/m-plus-1-code-111-400-normal.woff2  page characters in its unicode-range: 2
+/dist/fonts/m-plus-1-code-112-400-normal.woff2  page characters in its unicode-range: 2
+/dist/fonts/m-plus-1-code-112-500-normal.woff2  page characters in its unicode-range: 2
+/dist/fonts/m-plus-1-code-113-400-normal.woff2  page characters in its unicode-range: 3
+/dist/fonts/m-plus-1-code-114-400-normal.woff2  page characters in its unicode-range: 1
+/dist/fonts/m-plus-1-code-115-400-normal.woff2  page characters in its unicode-range: 4
+/dist/fonts/m-plus-1-code-116-400-normal.woff2  page characters in its unicode-range: 4
+/dist/fonts/m-plus-1-code-117-400-normal.woff2  page characters in its unicode-range: 7
+/dist/fonts/m-plus-1-code-117-500-normal.woff2  page characters in its unicode-range: 7
+/dist/fonts/m-plus-1-code-118-400-normal.woff2  page characters in its unicode-range: 16
+/dist/fonts/m-plus-1-code-119-400-normal.woff2  page characters in its unicode-range: 29
+/dist/fonts/m-plus-1-code-119-500-normal.woff2  page characters in its unicode-range: 29
+/dist/fonts/m-plus-1-code-69-400-normal.woff2  page characters in its unicode-range: 1
+/dist/fonts/m-plus-1-code-92-400-normal.woff2  page characters in its unicode-range: 1
+/dist/fonts/m-plus-1-code-latin-400-normal.woff2  page characters in its unicode-range: 18
+/dist/matrix.css
+/src/specimens/bare.ja.html

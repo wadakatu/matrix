@@ -4,7 +4,8 @@ The design for turning this repository (today `tombo`) into **matrix**, wadakatu
 design system and the source of truth for wadakatu.dev.
 
 - **Status:** proposed design, 2026-11-15. wadakatu answered all ten open questions the same
-  day; they are recorded below as settled decisions. One narrow follow-up (N1) is open.
+  day; they are recorded below as settled decisions. The one follow-up they raised (N1) is
+  settled as well. No question is open.
 - **Scope of this step:** design documents only. No implementation code, no rename, no
   push, no pull request. Nothing outside `docs/` in this repository was changed, and the
   prototype worktree was only read.
@@ -74,7 +75,7 @@ decisions now; the pages named in the last column were brought into line with th
 | **Q6** | Replace GSAP? | Animations use the browser's own mechanisms (Web Animations API, CSS). GSAP is bundled only if that proves insufficient | [05](05-a11y-motion.md#no-third-party-motion-code), 09 (S3) |
 | **Q7** | Do TOMBO's public pages stay online? | No. `/tombo/` stops being published; no stub and no redirect | [08](08-migration.md#freezing-tombo), 09 |
 | **Q8** | Japanese and English addresses | English at the root, Japanese under `/ja/`. A blog post exists only in the language it was written in | [08](08-migration.md#production-routes), 03, 04 |
-| **Q9** | `text-muted` at night is light for small text | Made slightly brighter. The value chosen is in 02; the amount is N1 below | [02](02-tokens.md#changed-from-the-prototype), 05, 10 |
+| **Q9** | `text-muted` at night is light for small text | Made slightly brighter. The value is `#80c194` (02); the amount was confirmed as N1 below | [02](02-tokens.md#changed-from-the-prototype), 05, 10 |
 | **Q10** | Storybook 10 or 11? | The latest stable version when implementation starts | [06](06-storybook.md#stack), 09 (S1) |
 
 ### Gate, not a question
@@ -84,14 +85,20 @@ decisions now; the pages named in the last column were brought into line with th
   artefacts and nothing is deployed. The order of the steps is in
   [06](06-storybook.md#gate-the-dns-record); the plan's task 6.5 waits on it.
 
-### New open question
+### Settled after the ten
 
-One, raised by the answer to Q9. It does not reopen Q9: that the colour is lifted is
-settled. The answer gives a direction and not a value, so the amount is new.
+N1 was raised by the answer to Q9, which gave a direction and not a value. wadakatu has
+since confirmed the value, so N1 is a decision and not a question.
 
-| # | Question | What the docs assume until answered |
+| # | Question | Decision |
 | --- | --- | --- |
-| **N1** | **Is `#80c194` the right lift for `text-muted` in phosphor-night** (was `#7cbd90`)? Only lightness moves (OKLCH L .742 to .755; chroma and hue kept). On `ground` it goes from 9.18:1, Lc −58.9 to 9.59:1, Lc −61.1; on `panel` from Lc −58.5 to −60.7. The line used is Lc 60, APCA's minimum for content text that is not body text. Operator-night (Lc −62.1, −61.7) and both day contexts already clear it and are unchanged. APCA attaches larger sizes than 13px to that level, so no small lift makes 13px meet its size table; the next level, Lc 75, would need about `#99dbac`, which closes much of the gap to `text` (Lc −92.2). Measurements: [10](10-verification-log.md#m8--the-lifted-text-muted-decision-q9) | `#80c194`. Work is not blocked: it is one token value, shown on the Storybook colour page (09, task 2.1), and changing it is a one-line change plus the golden values |
+| **N1** | **Is `#80c194` the right lift for `text-muted` in phosphor-night** (was `#7cbd90`)? Only lightness moves (OKLCH L .742 to .755; chroma and hue kept). On `ground` it goes from 9.18:1, Lc −58.9 to 9.59:1, Lc −61.1; on `panel` from Lc −58.5 to −60.7. The line used is Lc 60, APCA's minimum for content text that is not body text. Operator-night (Lc −62.1, −61.7) and both day contexts already clear it and are unchanged. APCA attaches larger sizes than 13px to that level, so no small lift makes 13px meet its size table; the next level, Lc 75, would need about `#99dbac`, which closes much of the gap to `text` (Lc −92.2). Measurements: [10](10-verification-log.md#m8--the-lifted-text-muted-decision-q9) | Yes. `text-muted` in phosphor-night stays `#80c194`, the value specified in 02 and already built |
+
+One naming change came out of the implementation and was accepted by wadakatu: the article
+measure is two tokens, `size.measure.read` (680px, from 720px) and
+`size.measure.read-compact` (640px, below 720px), because one token cannot hold two values.
+The values are the designed ones. It is recorded in
+[02](02-tokens.md#space-size-border), 03 and 04.
 
 Content decisions that belong to the portfolio (the `tombo` project entry, TOMBO jokes in
 the shell, the About page, alt text) are listed in [08](08-migration.md#decisions-the-site-needs-from-wadakatu).

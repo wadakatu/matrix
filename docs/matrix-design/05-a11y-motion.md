@@ -73,7 +73,7 @@ Two readings of this table:
   for content text that is not body text. Operator-night already cleared it and is
   unchanged. The alternative that was offered, keeping the colour and forbidding it below
   13px, was not taken. The value and its measurements are in 02 ("Changed from the
-  prototype"); whether the amount is right is the README's N1.
+  prototype"); the amount was confirmed by wadakatu (README, N1).
 
 APCA stays a report, not a gate: it is not part of WCAG 2.2 and the library is beta
 (<https://github.com/Myndex/apca-w3>).

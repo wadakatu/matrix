@@ -289,7 +289,7 @@ Long-form reading, tuned for Japanese. Everything a Markdown renderer can emit i
 
 | Element | Setting |
 | --- | --- |
-| Body | `font.family.ja`, regular; `read-compact` / `leading.read` below 720px, `read` from 720px. Measure `size.measure.read`. `line-break: strict`; no justification; no negative tracking |
+| Body | `font.family.ja`, regular; `read-compact` / `leading.read` below 720px, `read` from 720px. Measure `size.measure.read-compact` below 720px, `size.measure.read` from 720px. `line-break: strict`; no justification; no negative tracking |
 | `h2`, `h3`, `h4` | `heading` / `lead` / body size. The Markdown marker (`##`) is drawn before each as generated content with empty alternative text, so it is seen and not read |
 | Links | Underlined, `accent` |
 | `strong` | Medium weight, `text-lead` |

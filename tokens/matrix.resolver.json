@@ -1,0 +1,16 @@
+{
+  "version": "2025.10",
+  "sets": { "base": { "sources": [{ "$ref": "./base.tokens.json" }] } },
+  "modifiers": {
+    "context": {
+      "contexts": {
+        "phosphor-night": [{ "$ref": "./context/phosphor-night.tokens.json" }],
+        "phosphor-day": [{ "$ref": "./context/phosphor-day.tokens.json" }],
+        "operator-night": [{ "$ref": "./context/operator-night.tokens.json" }],
+        "operator-day": [{ "$ref": "./context/operator-day.tokens.json" }]
+      },
+      "default": "phosphor-night"
+    }
+  },
+  "resolutionOrder": [{ "$ref": "#/sets/base" }, { "$ref": "#/modifiers/context" }]
+}

@@ -176,7 +176,7 @@ extra markup beyond the `lang` it needs anyway.
 | --- | --- | --- |
 | Family | `font.family.mono` | `font.family.ja` |
 | Letter spacing | As set by the component | `normal`, always. No negative tracking on Japanese |
-| Article measure | `size.measure.lede` | `size.measure.read` (40 full-width characters) |
+| Article measure | `size.measure.lede` | `size.measure.read-compact` below 720px, `size.measure.read` from 720px (40 full-width characters) |
 | Line breaking | default | `line-break: strict`; titles and headings `word-break: auto-phrase` |
 | Body leading | `font.leading.ui` | `font.leading.read` in articles |
 

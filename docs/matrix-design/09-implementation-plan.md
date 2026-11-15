@@ -94,11 +94,10 @@ Not questions: the decision is made, and the step is his to take or to approve.
 | Review of the Japanese chrome strings | 7.3 (`1.0.0`) | When 2.6 is done |
 | Approval of draft components | 7.3 (`1.0.0`) | When 5.3 is shown |
 
-### One open item
+### No open item
 
-N1 in the README: whether `#80c194` is the right amount of lift for `text-muted` in
-phosphor-night. It blocks nothing. Build the value in 02; if the answer changes it, the
-change is one token value, table M2 and the affected visual baselines, in one pull request.
+N1 in the README, whether `#80c194` is the right amount of lift for `text-muted` in
+phosphor-night, is settled: the value stays `#80c194`, as specified in 02 and as built.
 
 ## Phase 0 — Spikes
 
