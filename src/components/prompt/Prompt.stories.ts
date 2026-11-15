@@ -8,7 +8,7 @@ export const Default = { args: { part: "prompt" }, ...shell };
 /** Focused: the block cursor is lit; it is the field's focus indicator. */
 export const Focused = { args: { part: "prompt" }, ...shell, ...focused(".mx-prompt-field input") };
 export const Still = { args: { part: "prompt" }, ...shell, ...still, ...focused(".mx-prompt-field input") };
-export const Contexts = { args: { part: "prompt" }, ...shell, ...contexts };
+export const Contexts = { args: { part: "prompt" }, parameters: { ...shell.parameters, ...contexts.parameters } };
 export const Japanese = { args: { part: "prompt" }, ...shell, ...japanese };
 /** Below 720px the path takes its own line and $ starts the next. */
 export const Narrow = { args: { part: "prompt" }, ...shell, ...narrow };
