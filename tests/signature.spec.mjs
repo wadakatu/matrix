@@ -642,7 +642,11 @@ test.describe("3.7 boot", () => {
         if (getComputedStyle(img).transform !== "none") out.img.add("transform");
         for (const a of img.getAnimations()) out.img.add("animation");
         const c = document.querySelector(".mx-boot-cover");
-        if (c.getAnimations().length && getComputedStyle(c).clipPath.startsWith("inset(0")) out.covered = true;
+        // Covered means the cover is what is on top at the image's middle, not only that it is unclipped.
+        if (c.getAnimations().length && getComputedStyle(c).clipPath.startsWith("inset(0")) {
+          const r = img.getBoundingClientRect();
+          if (document.elementFromPoint(r.x + r.width / 2, r.y + r.height / 2) === c) out.covered = true;
+        }
         if (document.documentElement.dataset.boot) requestAnimationFrame(tick);
         else r({ img: [...out.img], covered: out.covered });
       };

@@ -36,7 +36,8 @@
   .mx-boot-logo .mx-logo { width: clamp(120px, 24vh, 220px); }
   /* The wipe lifts a cover off the mark, never clips the image (L5). Clipped away unless the wipe runs. */
   .mx-boot-mark { position: relative; justify-self: start; }
-  .mx-boot-cover { position: absolute; inset: 0; background: var(--mx-color-ground); clip-path: inset(100% 0 0 0); }
+  /* On the lifted layer, after the image: in front of it in 機械用 too, where scan lines lift the mark. */
+  .mx-boot-cover { position: absolute; inset: 0; z-index: var(--mx-layer-lifted); background: var(--mx-color-ground); clip-path: inset(100% 0 0 0); }
 
   /* The still (`?boot=frozen`): every line settled, the mark whole. Needs no script. */
   :root[data-boot="frozen"] .mx-boot-line { visibility: visible; }
