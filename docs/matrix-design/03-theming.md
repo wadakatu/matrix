@@ -18,6 +18,10 @@ set them, and each one has a value that is correct with no script at all.
 | `data-boot` | `play`, `frozen` | absent | Head script | `sessionStorage['mx-boot']` (once per tab) |
 | `lang` | `en`, `ja` | Set by each page | The page | — |
 
+One stored choice has no attribute: the off switch of the `\` / `¥` shortcut (04, "Readings";
+05, "Keyboard") is `localStorage['mx-shortcut']`, written only when the reader changes it.
+`<mx-readings>` reads it; the head script does not, and no CSS keys on it.
+
 Renamed from the prototype: `data-view="page|machine"` becomes
 `data-reading="human|machine"`, to match the vocabulary (00). `data-theme="light"` is no
 longer an alias of `day`; the screenshot harness that needed it is replaced by Storybook
@@ -218,7 +222,12 @@ Requirements on that script:
 
 ## Storage and same-origin neighbours
 
-`mx-theme` is the only persistent key. The Storybook is served from `matrix.wadakatu.dev`
+Two keys persist, both in `localStorage`: `mx-theme`, the reader's theme, and `mx-shortcut`,
+the off switch of the single-key shortcut (05, "Keyboard"). Each is written only after the
+reader chooses. That the off switch persists, rather than lasting for the tab, was settled
+by wadakatu on 2026-11-15. `mx-boot` is in `sessionStorage` and ends with the tab.
+
+The Storybook is served from `matrix.wadakatu.dev`
 (06), a different origin from the site, so the two share no storage and no service worker.
 The Storybook preview still never reads or writes `mx-*` storage: its toolbar is the only
 state, so a story looks the same for every visitor. TOMBO's `tombo-theme` key is removed
