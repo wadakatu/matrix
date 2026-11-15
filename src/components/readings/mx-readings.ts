@@ -26,7 +26,8 @@ const onScreen = (el: Element) => {
   const r = el.getBoundingClientRect();
   return r.bottom > 0 && r.top < innerHeight && r.width > 0;
 };
-const ended = (a: Anim) => ("end" in a ? a.anim.finished : a.finished);
+// A text tween ended early (Hold, 3.8) counts as done, so the change goes on without it.
+const ended = (a: Anim) => ("end" in a ? a.anim.finished.catch(() => {}) : a.finished);
 const stop = (a: Anim) => ("end" in a ? a.end() : a.cancel());
 
 class Change {
@@ -108,6 +109,8 @@ export class MxReadings extends HTMLElement {
     this.#shortcut(this.#enabled(), false);
     // Reduced motion switched on mid-change ends it at once (05).
     matchMedia("(prefers-reduced-motion: reduce)").addEventListener("change", (m) => m.matches && this.finish(), { signal });
+    // Hold rain checked mid-change: Decode and the name doubling stop where they are (3.8).
+    addEventListener("change", (e) => (e.target as Element).closest?.('[data-action="hold"]') && held() && this.#still(), { signal });
     // Leaving the page finishes, so a restored page is never caught mid-change.
     addEventListener("pagehide", () => this.finish(), { signal });
     this.#sync(this.reading, false);
@@ -122,6 +125,18 @@ export class MxReadings extends HTMLElement {
   finish() {
     this.#change?.rush();
     for (const t of [...this.#effects]) t.end();
+  }
+
+  /** Every Decode and the name doubling, ended now; the rest of a change goes on. */
+  #still() {
+    for (const t of [...this.#effects]) t.end();
+    this.querySelector(".mx-name")?.removeAttribute("data-double");
+  }
+
+  #track(t: TextTween) {
+    this.#effects.add(t);
+    t.anim.finished.finally(() => this.#effects.delete(t)).catch(() => {});
+    return t;
   }
 
   /** The other reading, with the transition when motion is allowed. */
@@ -173,7 +188,7 @@ export class MxReadings extends HTMLElement {
             // Decode is off while held (3.8).
             const settle = held() ? [] : [...new Set([...this.querySelectorAll<HTMLElement>(':scope > [data-reading="human"] :is(h2, .mx-stream-name a)')].map((el) => el.firstElementChild ?? el))]
               .filter(onScreen)
-              .map((el, i) => decode(el, 450, { delay: 80 + Math.min(i, 24) * 20 }));
+              .map((el, i) => this.#track(decode(el, 450, { delay: 80 + Math.min(i, 24) * 20 })));
             return [open, ...settle];
           },
         },
@@ -194,9 +209,7 @@ export class MxReadings extends HTMLElement {
     // The side just taken settles out of raw glyphs, as the page's headings do. The capsule stays as it is.
     if (moving() && !held()) {
       for (const el of document.querySelectorAll(`.mx-header .mx-switch:not([data-variant]) a[data-to="${v}"] .mx-switch-label`)) {
-        const t = decode(el, 450, { allWide: true });
-        this.#effects.add(t);
-        t.anim.finished.finally(() => this.#effects.delete(t)).catch(() => {});
+        this.#track(decode(el, 450, { allWide: true }));
       }
     }
     history.replaceState(history.state, "", this.#address(v));
