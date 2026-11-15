@@ -1,0 +1,22 @@
+---
+/**
+ * A stand-in for 機械用 until the Terminal arrives (Phase 4): a short recorded session of fixture lines,
+ * and a plain way back to 人間用, as the guide line and the status line will carry. Plainly a fixture.
+ */
+import { signature } from "./corpus.ts";
+interface Props {
+  page: "home" | "projects";
+  human: string;
+}
+const { page, human } = Astro.props;
+const { projects, posts, person } = signature;
+---
+<div class="fixture-session">
+  <p class="mx-ln">Recorded session (fixture). <a href={human} data-to="human">Read it as an ordinary page: <span lang="ja">人間用</span></a></p>
+  {page === "home" && <p class="mx-ln">$ whoami</p>}
+  {page === "home" && <p class="mx-ln">{person.heading} · {person.role} · {person.location}</p>}
+  <p class="mx-ln">$ ls -l {page === "home" ? "~/projects" : "."}</p>
+  {projects.map((p) => <p class="mx-ln">{p.lang.padEnd(12)}{p.name}  {p.blurb}</p>)}
+  {page === "home" && <p class="mx-ln">$ ls -l ~/posts</p>}
+  {page === "home" && posts.map((p) => <p class="mx-ln" lang="ja">{p.date}  {p.title}</p>)}
+</div>

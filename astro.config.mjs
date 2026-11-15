@@ -10,7 +10,7 @@ const specimens = {
       // Storybook's Astro server reads integrations but not this file's devToolbar setting, and
       // with the toolbar on Astro writes each file's absolute path into the markup (data-astro-source-file).
       updateConfig({ devToolbar: { enabled: false } });
-      for (const f of readdirSync("src/specimens").filter((f) => /^[a-z][\w.]*\.astro$/.test(f))) {
+      for (const f of readdirSync("src/specimens").filter((f) => /^[a-z][\w.-]*\.astro$/.test(f))) {
         const name = f.replace(/\.astro$/, "");
         injectRoute({ pattern: `/${name}`, entrypoint: `./src/specimens/${f}` });
       }

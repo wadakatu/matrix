@@ -1,0 +1,130 @@
+---
+/**
+ * The Signature specimens (Phase 3 exit): Home and Projects, each in both readings at its own address.
+ * 機械用 owns the short address; 人間用 is the twin ("Twin routes", 04). Fixture data only (06).
+ */
+import "../../dist/fonts.css";
+import "../../dist/matrix.css";
+import "./specimen.css";
+import Layout from "../components/layout/Layout.astro";
+import Panel from "../components/panel/Panel.astro";
+import Lede from "../components/lede/Lede.astro";
+import Figures from "../components/figures/Figures.astro";
+import InlineList from "../components/inline-list/InlineList.astro";
+import Log from "../components/log/Log.astro";
+import Meta from "../components/meta/Meta.astro";
+import Name from "../components/name/Name.astro";
+import Stream from "../components/stream/Stream.astro";
+import Streams from "../components/streams/Streams.astro";
+import Switch from "../components/switch/Switch.astro";
+import Readings from "../components/readings/Readings.astro";
+import Rain from "../effects/rain/Rain.astro";
+import Boot from "../effects/boot/Boot.astro";
+import Curtain from "../effects/curtain/Curtain.astro";
+import MachineFixture from "../fixtures/MachineFixture.astro";
+import { fixture, signature } from "../fixtures/corpus.ts";
+import { corpus, splitJa } from "../lib/index.ts";
+interface Props {
+  page: "home" | "projects";
+  reading: "human" | "machine";
+}
+const { page, reading } = Astro.props;
+const f = fixture.en;
+const { person, projects, posts, commits, pairs, phrases } = signature;
+const route = (p: "home" | "projects", v: "human" | "machine") => `/${v === "human" ? "human-" : ""}${p}.html`;
+const to = (p: "home" | "projects") => ({ human: route(p, "human"), machine: route(p, "machine") });
+const here = to(page);
+const base = page === "home" ? [person.heading, person.role] : ["Projects", person.heading];
+const titles = { machine: base.join(" | "), human: `${base[0]}, human reading | ${base[1]}` };
+const nav = [
+  { label: "Home", href: route("home", reading), to: to("home"), current: page === "home" ? ("page" as const) : undefined },
+  { label: "Projects", href: route("projects", reading), to: to("projects"), current: page === "projects" ? ("page" as const) : undefined },
+  { label: "Blog", href: "/blog/" },
+  { label: "About", href: "/about/" },
+];
+const mark = { ...f.mark, href: route("home", reading), to: to("home") };
+const host = (href: string) => href.replace(/^https?:\/\//, "");
+const boot = [
+  { key: "name", text: person.heading },
+  { key: "role", text: person.role },
+  { key: "location", text: person.location },
+  { key: "project", text: projects[0].name },
+  { key: "post", text: posts[0].title },
+];
+const lines = commits.flatMap((c, i) => (i % 3 === 2 ? [c, posts[((i / 3) | 0) % posts.length].title] : [c]));
+---
+<Layout title={titles[reading]} lang="en" reading={reading} mark={mark} nav={nav} footer={f.footer} corpus={phrases} boot={page === "home"}>
+  {page === "home" && <Boot slot="boot" lines={boot} logo={f.mark.logo} to={here} />}
+  <Rain slot="rain" phrases={phrases} />
+  <Switch slot="switch" to={here} current={reading} />
+  <Readings titles={titles}>
+    <Name slot="name" id="name" lines={lines}>{page === "home" ? person.heading : "Projects"}</Name>
+    <Fragment slot="human">
+      {page === "home" ? (
+        <Fragment>
+          <section class="mx-panel specimen-about" aria-label="About">
+            <p class="specimen-role">{person.role}<br />{person.location}</p>
+            <p class="specimen-brief">{person.line1}<br />{person.line2}</p>
+          </section>
+          <Panel title="Work and writing" id="streams">
+            <Lede>{projects.length} projects and {posts.length} recent posts. Each one falls in its own words and settles into the entry below it.</Lede>
+            <Streams>
+              {projects.map((p, i) => {
+                const [en, ja] = splitJa(p.blurb);
+                return (
+                  <Stream name={p.name} href={p.href} index={i} commit={pairs[p.name]} strands={[p.name, p.blurb, host(p.href), p.lang]}>
+                    <Meta>{p.lang}</Meta>
+                    <p class="mx-blurb">{en}{ja && <Fragment><br /><span lang="ja">{ja}</span></Fragment>}</p>
+                  </Stream>
+                );
+              })}
+              {posts.map((post, i) => (
+                <Stream name={post.title} href={post.href} index={i + projects.length} strands={[post.title, post.date, `example.com${post.href}`, post.category]}>
+                  <Meta><time datetime={post.date}>{post.date}</time> <span lang="ja">{post.category}</span></Meta>
+                </Stream>
+              ))}
+            </Streams>
+            <InlineList variant="after" items={[{ label: "All projects", href: route("projects", "human"), to: to("projects") }, { label: "Read the blog", href: "/blog/" }]} />
+          </Panel>
+          <div class="specimen-station">
+            <Panel title="Activity" id="activity"><Figures items={[...f.figures, { key: "Fixture since", value: 2020 }]} /></Panel>
+            <Panel title="Writing" id="writing">
+              <Figures items={[{ key: "Fixture posts", value: posts.length }, { key: "Latest entry", value: posts[0].date, datetime: posts[0].date }]} />
+              <InlineList variant="after" items={[{ label: posts[0].title, href: posts[0].href, lang: "ja" }]} />
+            </Panel>
+            <Panel title="Skills" id="skills"><InlineList items={f.words.map((label) => ({ label }))} /></Panel>
+          </div>
+          <Panel title="What the rain is made of" id="made">
+            <Lede>{corpus(phrases).length} fixture phrases: commit subjects, file paths, the project lines above and {posts.length} post titles. These are the latest commits in it.</Lede>
+            <Log items={commits.slice(0, 6)} />
+          </Panel>
+          <Panel title="Two readings" id="choice">
+            <Lede>This is the page. The data it is built from is also a shell you can type into: the same facts with nothing drawn around them. Either side leads back to the other.</Lede>
+            <Switch variant="capsule" to={here} current="human" notes={{ human: "the page", machine: "a shell" }} />
+          </Panel>
+        </Fragment>
+      ) : (
+        <section class="mx-panel specimen-wall" aria-label="Projects">
+          <Streams variant="rows">
+            {projects.map((p, i) => {
+              const [en, ja] = splitJa(p.blurb);
+              return (
+                <Stream name={p.name} href={p.href} index={i} level="h2" commit={pairs[p.name]} strands={[p.name, p.blurb, host(p.href), p.lang]}>
+                  <Meta>{p.lang}</Meta>
+                  <p class="mx-blurb">{en}{ja && <Fragment><br /><span lang="ja">{ja}</span></Fragment>}</p>
+                  <InlineList variant="links" items={[{ label: host(p.href), href: p.href }, ...("docs" in p && p.docs ? [{ label: host(p.docs), href: p.docs }] : []), ...("site" in p && p.site ? [{ label: host(p.site), href: p.site }] : [])]} />
+                </Stream>
+              );
+            })}
+          </Streams>
+          <InlineList variant="after" items={[{ label: "Full fixture archive", href: "/projects/archive/" }]} />
+        </section>
+      )}
+    </Fragment>
+    <Fragment slot="machine"><MachineFixture page={page} human={here.human} /></Fragment>
+  </Readings>
+  {page === "home" && <Curtain slot="curtain" phrases={phrases} />}
+  <script>
+    import "../elements.ts";
+  </script>
+</Layout>
