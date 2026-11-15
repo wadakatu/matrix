@@ -630,6 +630,27 @@ test.describe("3.7 boot", () => {
     });
   }
 
+  test("the logo is wiped in by a cover; the image itself is never clipped or animated (L5)", async ({ page }) => {
+    await open(page, `${PAGES.machine.home}?boot=1`, { boot: true });
+    await ready(page);
+    // Polled every frame from the start: any clip or animation on the image at any moment is recorded.
+    const seen = await page.evaluate(() => new Promise((r) => {
+      const img = document.querySelector(".mx-boot-logo .mx-logo");
+      const out = { img: new Set(), covered: false };
+      const tick = () => {
+        if (getComputedStyle(img).clipPath !== "none") out.img.add("clip-path");
+        if (getComputedStyle(img).transform !== "none") out.img.add("transform");
+        for (const a of img.getAnimations()) out.img.add("animation");
+        const c = document.querySelector(".mx-boot-cover");
+        if (c.getAnimations().length && getComputedStyle(c).clipPath.startsWith("inset(0")) out.covered = true;
+        if (document.documentElement.dataset.boot) requestAnimationFrame(tick);
+        else r({ img: [...out.img], covered: out.covered });
+      };
+      tick();
+    }));
+    expect(seen).toEqual({ img: [], covered: true });
+  });
+
   test("fails open with every other script blocked, no later than the failsafe", async ({ page }) => {
     const t0 = Date.now();
     await open(page, PAGES.human.home, { boot: true, block: ELEMENTS });
