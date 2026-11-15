@@ -1,0 +1,29 @@
+@layer mx.effects {
+  /* Déjà vu: an entry you come back to repeats its own line once (05, catalogue). */
+  .mx-stream[data-reward="deja"] .mx-stream-name::after {
+    content: attr(data-echo) / "";
+    grid-area: 1 / 1;
+    align-self: start;
+    position: relative; /* positioned, so it paints over the title link without a stacking order of its own */
+    white-space: nowrap;
+    overflow: hidden;
+    background: var(--mx-color-panel);
+    color: var(--mx-color-accent);
+    pointer-events: none;
+    animation: mx-echo var(--mx-motion-echo-duration) steps(1) forwards;
+  }
+  @keyframes mx-echo {
+    0% { transform: translateX(6px); }
+    40% { transform: none; }
+    100% { visibility: hidden; }
+  }
+  /* Title to commit: a decorative layer over the title that takes no room of its own. */
+  .mx-ghost { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+  .mx-ghost > span { display: block; padding-bottom: var(--mx-space-1); background: var(--mx-color-panel); color: var(--mx-color-accent); }
+  .mx-stream[data-reward="flick"] .mx-stream-name a { color: transparent; text-decoration: none; }
+
+  :root[data-motion="off"] .mx-ghost, :root[data-motion="off"] .mx-stream[data-reward] .mx-stream-name::after { display: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .mx-ghost, .mx-stream[data-reward] .mx-stream-name::after { display: none; }
+  }
+}

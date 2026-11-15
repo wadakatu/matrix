@@ -1,0 +1,14 @@
+@layer mx.components {
+  mx-readings { display: block; }
+  /* The reading not chosen is display: none, so it is out of the accessibility tree and the tab order. */
+  :root[data-reading="human"] mx-readings > [data-reading="machine"],
+  :root[data-reading="machine"] mx-readings > [data-reading="human"] { display: none; }
+  :root[data-reading="machine"] mx-readings > [data-reading="machine"] { font-size: var(--mx-font-size-ui); line-height: var(--mx-font-leading-terminal); }
+  /* The shortcut's off switch is in the footer and in the menu (04, "Readings"). From 720px the menu
+     is the header row, which it would wrap, so there it shows only where the footer is gone: the live
+     shell in 機械用 (`data-shell="live"`, task 4.3). Below 720px it is a line of the folded menu. */
+  @media (width >= 720px) {
+    :root:not([data-reading="machine"][data-shell="live"]) .mx-controls [data-action="shortcut"] { display: none; }
+  }
+  .mx-footer-row:has([data-action="shortcut"]) p { margin-top: var(--mx-space-1); }
+}

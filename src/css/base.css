@@ -1,5 +1,11 @@
 @layer mx.base {
-  :root { --mx-pad: clamp(12px, 3.4vw, 48px); }
+  /* Derived properties (02): formulas, not tokens. */
+  :root {
+    --mx-pad: clamp(12px, 3.4vw, 48px);
+    --mx-text-display: min(15.5rem, calc((100vw - 2 * var(--mx-pad)) / 4.86));
+    --mx-text-entry: clamp(var(--mx-font-size-entry-min), 3.2vw, var(--mx-font-size-entry-max));
+    --mx-text-prompt: clamp(var(--mx-font-size-prompt-min), 4vw, var(--mx-font-size-prompt-max));
+  }
   html { background: var(--mx-color-ground); }
   body {
     position: relative;

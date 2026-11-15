@@ -1,0 +1,11 @@
+---
+/** The curtain (04): 24 slabs of the site's running text that cover the page as the boot ends (L1). */
+import { curtainSlabs } from "../../lib/index.ts";
+interface Props {
+  phrases: string[];
+}
+const { phrases } = Astro.props;
+---
+<div class="mx-curtain" aria-hidden="true">
+  {curtainSlabs(phrases).map((s) => <span class="mx-curtain-slab" lang="ja">{s}</span>)}
+</div>

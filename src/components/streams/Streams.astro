@@ -1,0 +1,8 @@
+---
+/** The wall of streams (04): the default stands up into seven columns from 1360px; `rows` stays stacked. */
+interface Props {
+  variant?: "rows";
+}
+const { variant } = Astro.props;
+---
+<ul class="mx-streams" data-variant={variant}><slot /></ul>

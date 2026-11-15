@@ -6,6 +6,8 @@ export interface NavItem {
   href: string;
   /** `page` on the page itself, `true` inside its section (a post under Blog). */
   current?: "page" | "true";
+  /** On a page with two readings: where the link goes from each, so it follows an in-place change (task 3.6). */
+  to?: { human: string; machine: string };
 }
 interface Props {
   items: NavItem[];
@@ -14,5 +16,5 @@ interface Props {
 const { items, lang = "en" } = Astro.props;
 ---
 <nav class="mx-nav" aria-label={strings[lang].nav}>
-  {items.map((i) => <a href={i.href} aria-current={i.current}>{i.label}</a>)}
+  {items.map((i) => <a href={i.href} aria-current={i.current} data-human-href={i.to?.human} data-machine-href={i.to?.machine}>{i.label}</a>)}
 </nav>

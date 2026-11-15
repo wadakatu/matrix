@@ -21,8 +21,8 @@ Contact links and the logo's credit, at the end of every page (L5: the designer 
 </footer>
 ```
 
-The row is rendered only when the default slot has content; the shortcut's off switch goes there
-(task 3.6).
+The row is rendered only when the default slot has content. On a page with two readings the Layout
+puts the shortcut's off switch and its one-line hint there (Readings).
 
 ## Variants and states
 

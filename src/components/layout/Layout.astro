@@ -8,6 +8,8 @@ import Head from "../../head/Head.astro";
 import Header from "../header/Header.astro";
 import Footer, { type FooterLink } from "../footer/Footer.astro";
 import Status from "../status/Status.astro";
+import Control from "../control/Control.astro";
+import { glyphPools } from "../../lib/index.ts";
 import type { NavItem } from "../nav/Nav.astro";
 import { strings, type Lang } from "../../strings/index.ts";
 interface Props {
@@ -16,30 +18,42 @@ interface Props {
   lang: Lang;
   /** Set by each static route; absent on a document with one reading. */
   reading?: "human" | "machine";
-  mark: { href: string; label: string; logo: string };
+  mark: { href: string; label: string; logo: string; to?: { human: string; machine: string } };
   nav: NavItem[];
   footer: FooterLink[];
   /** The twin in the other language (L6). */
   alternate?: string;
   /** The site's own flags, for the head script. */
   flags?: string;
+  /** The site's corpus: decode settles text out of its glyphs (L1). */
+  corpus?: string[];
+  /** The page has the intro, in the `boot` slot (05). */
+  boot?: boolean;
 }
-const { title, description, lang, reading, mark, nav, footer, alternate, flags } = Astro.props;
+const { title, description, lang, reading, mark, nav, footer, alternate, flags, corpus = [], boot } = Astro.props;
+const pools = glyphPools(corpus);
+const t = strings[lang];
 ---
 <!doctype html>
 <html lang={lang} data-theme="night" data-reading={reading}>
   <head>
-    <Head title={title} description={description} flags={flags} />
+    <Head title={title} description={description} flags={flags} boot={boot} />
     <slot name="head" />
   </head>
   <body>
-    <mx-root>
-      <a class="mx-skip" href="#main">{strings[lang].skip}</a>
+    <mx-root data-wide={pools.wide || undefined} data-narrow={pools.narrow || undefined}>
+      <slot name="boot" />
+      <a class="mx-skip" href="#main">{t.skip}</a>
       <slot name="rain" />
-      <Header mark={mark} nav={nav} alternate={alternate} lang={lang}><slot name="switch" slot="switch" /></Header>
+      <Header mark={mark} nav={nav} alternate={alternate} lang={lang} shortcut={!!reading}><slot name="switch" slot="switch" /></Header>
       <main id="main" class="mx-frame" tabindex="-1"><slot /></main>
-      <Footer links={footer}><slot name="footer" /></Footer>
+      <Footer links={footer}>
+        {reading && <Control action="shortcut" lang={lang} />}
+        {reading && <p>{t.shortcutHint}</p>}
+        <slot name="footer" />
+      </Footer>
       <Status />
+      <slot name="curtain" />
     </mx-root>
   </body>
 </html>

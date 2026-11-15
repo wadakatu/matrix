@@ -1,0 +1,62 @@
+@layer mx.effects {
+  /* Every drop is a piece of a real phrase, falling head first (L1). Fixed to the window, behind
+     everything: reading text sits on solid surfaces above it (L2). */
+  .mx-rain {
+    position: fixed;
+    inset: 0;
+    z-index: var(--mx-layer-rain);
+    overflow: hidden;
+  }
+  .mx-rain-col { position: absolute; top: 0; left: var(--x); width: var(--mx-font-size-rain); height: 100%; }
+  .mx-drop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    white-space: nowrap;
+    font-family: var(--mx-font-family-dot);
+    font-size: var(--mx-font-size-rain);
+    line-height: 1;
+    color: transparent;
+    background: linear-gradient(to bottom, transparent, var(--mx-color-rain-tail) 15%, var(--mx-color-rain-body) 80%, var(--mx-color-rain-head));
+    background-clip: text;
+    animation: mx-drop-vh var(--t) linear var(--d) infinite;
+  }
+  /* Plain units, never a custom property: a palette change re-resolved every paused drop and froze
+     Chrome (04, "Rain"; MATRIX-NOTES "Hold rain recolor"). */
+  @keyframes mx-drop-vh {
+    from { transform: translateY(-100%); }
+    to { transform: translateY(100vh); }
+  }
+
+  /* Density: every second column below 1100px, one in four below 720px. */
+  @media (width < 1100px) { .mx-rain .mx-rain-col:nth-child(even) { display: none; } }
+  @media (width < 720px) { .mx-rain .mx-rain-col:not(:nth-child(4n + 1)) { display: none; } }
+
+  /* The blog's band: one viewport tall, scrolling away with the page, fading out from half way (L2). */
+  .mx-rain[data-variant="band"] {
+    position: absolute;
+    inset: 0 0 auto;
+    height: 100vh;
+    mask-image: linear-gradient(to bottom, var(--mx-color-ground) 50%, transparent);
+  }
+
+  /* 機械用 has no ambient rain (03, "Readings"). */
+  :root[data-reading="machine"] .mx-rain { display: none; }
+
+  /* Hold: without scripts the checkbox itself, through :has(); once mx-root runs, data-rain. */
+  :root:is(:has([data-action="hold"] input:checked), [data-rain="held"]) .mx-drop { animation-play-state: paused; }
+
+  /* The still (L4): every drop parked at its own height down the whole document, so the rain scrolls
+     with the page. The media query repeats it for a page without scripts. */
+  :root[data-motion="off"] .mx-drop { animation: none; top: var(--rest); }
+  :root[data-motion="off"] .mx-rain:not([data-variant="band"]) { position: absolute; }
+  @media (prefers-reduced-motion: reduce) {
+    .mx-drop { animation: none; top: var(--rest); }
+    .mx-rain:not([data-variant="band"]) { position: absolute; }
+  }
+
+  /* Forced colours flatten the gradient into nothing readable; the rain is not drawn (05). */
+  @media (forced-colors: active) { .mx-rain { display: none; } }
+}

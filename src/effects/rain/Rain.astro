@@ -1,0 +1,26 @@
+---
+/**
+ * The ambient rain (04, "Rain"): 40 columns of three drops, each drop one piece of one of the site's
+ * phrases, laid out by a seeded generator so every build is identical (L1). Decoration only: the
+ * whole layer is hidden from assistive technology, and the same facts are readable on the page.
+ */
+import { rainColumns } from "../../lib/index.ts";
+interface Props {
+  /** The site's corpus. */
+  phrases: string[];
+  /** `band` (blog): one viewport tall, not fixed, fading out from half way. */
+  variant?: "band";
+  seed?: number;
+}
+const { phrases, variant, seed } = Astro.props;
+const columns = rainColumns(phrases, seed === undefined ? {} : { seed });
+---
+<div class="mx-rain" data-variant={variant} aria-hidden="true">
+  {columns.map((c) => (
+    <span class="mx-rain-col" style={`--x:${c.x}%`}>
+      {c.drops.map((d) => (
+        <span class="mx-drop" lang={d.ja ? "ja" : undefined} style={`--t:${d.t}s;--d:${d.d}s;--rest:${d.rest}%`}>{d.text}</span>
+      ))}
+    </span>
+  ))}
+</div>

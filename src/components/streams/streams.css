@@ -1,0 +1,26 @@
+@layer mx.components {
+  .mx-streams { display: grid; margin-top: var(--mx-space-3); }
+
+  /* Rows: stacked entries with large names (Projects). */
+  .mx-streams[data-variant="rows"] { margin-top: 0; }
+  .mx-streams[data-variant="rows"] .mx-stream:first-child { border-top: 0; }
+  .mx-streams[data-variant="rows"] .mx-stream-name { font-size: var(--mx-text-entry); line-height: var(--mx-font-leading-tight); color: var(--mx-color-accent); }
+  .mx-streams[data-variant="rows"] .mx-blurb { font-size: var(--mx-font-size-body); }
+  @media (width >= 720px) {
+    .mx-streams[data-variant="rows"] .mx-stream-fall { width: 100px; min-height: 152px; }
+    .mx-streams[data-variant="rows"] .mx-strand:nth-child(4) { display: block; }
+    .mx-streams[data-variant="rows"] .mx-stream { gap: var(--mx-space-6); }
+    .mx-streams[data-variant="rows"] .mx-stream-entry { padding-block: var(--mx-space-4) var(--mx-space-5); }
+  }
+
+  /* The wall: the rows stand up into seven columns, each stream falling into its entry. */
+  @media (width >= 1360px) {
+    .mx-streams:not([data-variant]) { grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 0 var(--mx-space-5); }
+    .mx-streams:not([data-variant]) .mx-stream { flex-direction: column; gap: 0; border-top: 0; }
+    .mx-streams:not([data-variant]) .mx-stream-fall { width: auto; min-height: 0; margin-block: 0; height: clamp(168px, 22vh, 240px); }
+    .mx-streams:not([data-variant]) .mx-strand { left: calc(var(--j) * 25% + 6%); }
+    .mx-streams:not([data-variant]) .mx-strand:nth-child(4) { display: block; }
+    .mx-streams:not([data-variant]) .mx-stream-entry { flex: none; padding: var(--mx-space-3) 0 0; border-top: var(--mx-border-width-hair) solid var(--mx-color-rule); }
+    .mx-streams:not([data-variant]) .mx-stream:is(:hover, :focus-within) .mx-stream-entry { border-color: var(--mx-color-accent); }
+  }
+}

@@ -1,0 +1,25 @@
+@layer mx.effects {
+  /* Shown only while mx-boot runs its last step; never in a still, never without scripts. */
+  .mx-curtain { display: none; position: fixed; inset: 0; z-index: var(--mx-layer-curtain); pointer-events: none; }
+  .mx-curtain[data-on] { display: flex; }
+  .mx-curtain-slab {
+    position: relative;
+    flex: 1 1 0;
+    min-width: 0;
+    height: 100%;
+    overflow: hidden;
+    background: var(--mx-color-ground);
+    color: var(--mx-color-rain-body);
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    line-break: anywhere;
+    word-break: break-all;
+    font-family: var(--mx-font-family-dot);
+    font-size: var(--mx-font-size-rain);
+    line-height: var(--mx-font-leading-tight);
+    will-change: transform;
+  }
+  .mx-curtain-slab::after { content: ""; position: absolute; inset: auto 0 0; height: 2px; background: var(--mx-color-rain-head); }
+  :root[data-motion="off"] .mx-curtain { display: none; }
+  @media (prefers-reduced-motion: reduce) { .mx-curtain { display: none; } }
+}

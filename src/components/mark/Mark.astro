@@ -7,7 +7,9 @@ interface Props {
   label: string;
   /** Address of the logo file. */
   logo: string;
+  /** On a page with two readings: home in each, so the link follows an in-place change (task 3.6). */
+  to?: { human: string; machine: string };
 }
-const { href, label, logo } = Astro.props;
+const { href, label, logo, to } = Astro.props;
 ---
-<a class="mx-mark" href={href}><Logo src={logo} />{label}</a>
+<a class="mx-mark" href={href} data-human-href={to?.human} data-machine-href={to?.machine}><Logo src={logo} />{label}</a>

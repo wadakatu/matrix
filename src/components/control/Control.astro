@@ -1,12 +1,13 @@
 ---
 /**
  * A control. With `action` it is one of the chrome's three: Hold rain (a checkbox, works without
- * scripts), Operator colours and Daylight (buttons that `mx-root` drives). Without it, a button or
+ * scripts), Operator colours and Daylight (buttons that `mx-root` drives), and the reading shortcut's
+ * off switch (a checkbox that `mx-readings` reads; task 3.6). Without it, a button or
  * a link (`href`) whose label is the slot.
  */
 import { strings, type Lang } from "../../strings/index.ts";
 interface Props {
-  action?: "hold" | "palette" | "theme";
+  action?: "hold" | "palette" | "theme" | "shortcut";
   /** A link instead of a button. */
   href?: string;
   /** For a plain button: its pressed state. The toggles start unpressed; `mx-root` sets them. */
@@ -20,6 +21,8 @@ const t = strings[lang];
 ---
 {action === "hold" ? (
   <label class="mx-control" data-action="hold"><input type="checkbox" checked={checked} /> {t.hold}</label>
+) : action === "shortcut" ? (
+  <label class="mx-control" data-action="shortcut"><input type="checkbox" checked /> {t.shortcut.before}<kbd>\</kbd> / <kbd>¥</kbd>{t.shortcut.after}</label>
 ) : action ? (
   <button class="mx-control" data-action={action} type="button" aria-pressed={String(pressed ?? false)}>{t[action]}</button>
 ) : href ? (

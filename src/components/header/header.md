@@ -21,7 +21,7 @@ theme are chosen here).
     <summary class="mx-control"><span class="mx-menu-label">Menu</span></summary>
     <nav class="mx-nav" aria-label="Main">…</nav>
     <div class="mx-controls">
-      <!-- the reading switch, task 3.5 -->
+      <mx-switch class="mx-switch" role="group" aria-label="Reading">…</mx-switch>
       <label class="mx-control" data-action="hold">…</label>
       <button class="mx-control" data-action="palette" …>…</button>
       <button class="mx-control" data-action="theme" …>…</button>

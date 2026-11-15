@@ -1,0 +1,20 @@
+@layer mx.effects {
+  /* 機械用: a fixed wash of `color.scanline` on one pixel row in three, over the whole screen and under
+     the status line (layer.status). It takes no pointer events and is not counted in contrast (05). */
+  :root[data-reading="machine"] body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: var(--mx-layer-scanline);
+    pointer-events: none;
+    background: repeating-linear-gradient(to bottom, transparent 0 2px, var(--mx-color-scanline) 2px 3px);
+  }
+  /* The mark is shown as designed, with nothing drawn across it (L5); filled faces would lose their
+     glyphs under the lines. Both are lifted above them. */
+  :root[data-reading="machine"] :is(.mx-logo, .mx-header .mx-switch, .mx-header summary, .mx-control[aria-pressed="true"]) {
+    position: relative;
+    z-index: var(--mx-layer-lifted);
+  }
+  @media (forced-colors: active) { :root[data-reading="machine"] body::after { display: none; } }
+  @media print { :root[data-reading="machine"] body::after { display: none; } }
+}

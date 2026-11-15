@@ -27,13 +27,15 @@
   }
   .mx-control input { accent-color: var(--mx-color-accent); margin: 0; }
   /* Hold rain: the label is outlined when its checkbox has focus (05, "Focus"). */
+  .mx-control kbd { padding-inline: var(--mx-space-1); }
   .mx-control:has(input:focus-visible) {
     outline: var(--mx-border-width-strong) solid var(--mx-color-focus);
     outline-offset: 3px;
   }
 
   /* Daylight and Operator need the controller; without it they are absent, not dead (05). */
-  mx-root:not(:defined) .mx-control:is([data-action="theme"], [data-action="palette"]) { display: none; }
+  mx-root:not(:defined) .mx-control:is([data-action="theme"], [data-action="palette"], [data-action="shortcut"]) { display: none; }
+  mx-root:not(:defined) .mx-footer-row:has([data-action="shortcut"]) { display: none; }
   /* An engine without light-dark() has only the night world, so there is no day to switch to (03). */
   @supports not (color: light-dark(#000, #fff)) {
     .mx-control[data-action="theme"] { display: none; }

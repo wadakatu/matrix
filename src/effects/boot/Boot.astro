@@ -1,0 +1,36 @@
+---
+/**
+ * The intro (05, "The boot"): five labels whose real values decode out of corpus glyphs, then the logo
+ * wiped in whole, then the curtain. First in the document, so Skip is the first tab stop while it is up.
+ * Whether it plays is decided by the head script (`Head` with `boot`), which also ends it on Skip,
+ * Escape, a click and `motion.boot.failsafe`, so it fails open with every other script blocked. The
+ * values are in the markup, settled, so the frozen still needs no script.
+ */
+import Logo from "../../components/logo/Logo.astro";
+import Switch from "../../components/switch/Switch.astro";
+import { hasJa } from "../../lib/index.ts";
+import { strings, type Lang } from "../../strings/index.ts";
+interface Props {
+  /** The data file's keys and their real values. */
+  lines: { key: string; text: string }[];
+  logo: string;
+  /** The two static routes, for the switch beside Skip. */
+  to: { human: string; machine: string };
+  lang?: Lang;
+}
+const { lines, logo, to, lang = "en" } = Astro.props;
+const t = strings[lang].boot;
+---
+<mx-boot class="mx-boot">
+  <div class="mx-boot-lines" aria-hidden="true">
+    {lines.map((l) => (
+      <p class="mx-boot-line"><span class="mx-boot-key">{l.key}</span><span class="mx-boot-value" lang={hasJa(l.text) ? "ja" : undefined} data-text={l.text}>{l.text}</span></p>
+    ))}
+    <p class="mx-boot-line mx-boot-logo"><span class="mx-boot-key">logo</span><Logo src={logo} /></p>
+  </div>
+  <p class="mx-boot-exit">
+    <button class="mx-control mx-boot-skip" type="button">{t.skip} <kbd>Esc</kbd></button>
+    <Switch to={to} lang={lang} />
+    <span class="mx-boot-note">{t.note} <span lang="ja">人間用</span>{lang === "en" ? " " : ""}{t.human}</span>
+  </p>
+</mx-boot>

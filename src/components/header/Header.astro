@@ -1,7 +1,7 @@
 ---
 /**
  * The page's header: the Mark, then the Menu holding the Nav and the controls. The reading switch
- * (task 3.5) goes in the `switch` slot, first among the controls, as in the prototype.
+ * goes in the `switch` slot, first among the controls, as in the prototype.
  */
 import Mark from "../mark/Mark.astro";
 import Menu from "../menu/Menu.astro";
@@ -10,15 +10,17 @@ import Control from "../control/Control.astro";
 import LangLink from "../lang/LangLink.astro";
 import type { Lang } from "../../strings/index.ts";
 interface Props {
-  mark: { href: string; label: string; logo: string };
+  mark: { href: string; label: string; logo: string; to?: { human: string; machine: string } };
   nav: NavItem[];
   /** The same page in the other language, where it has a twin (L6, decision Q8). */
   alternate?: string;
   lang?: Lang;
   /** Below 720px: the menu starts unfolded (stories). */
   open?: boolean;
+  /** The page has two readings: the shortcut's off switch is in the menu too (04, "Readings"). */
+  shortcut?: boolean;
 }
-const { mark, nav, alternate, lang = "en", open } = Astro.props;
+const { mark, nav, alternate, lang = "en", open, shortcut } = Astro.props;
 ---
 <header class="mx-header mx-frame">
   <Mark {...mark} />
@@ -29,6 +31,7 @@ const { mark, nav, alternate, lang = "en", open } = Astro.props;
       <Control action="hold" lang={lang} />
       <Control action="palette" lang={lang} />
       <Control action="theme" lang={lang} />
+      {shortcut && <Control action="shortcut" lang={lang} />}
       {alternate && <LangLink href={alternate} lang={lang} />}
     </div>
   </Menu>
