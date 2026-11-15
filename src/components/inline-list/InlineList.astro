@@ -4,6 +4,8 @@ export interface Item {
   label: string;
   href?: string;
   lang?: "en" | "ja";
+  /** On a page with two readings: where the link goes from each (task 3.6). */
+  to?: { human: string; machine: string };
 }
 interface Props {
   items: Item[];
@@ -15,5 +17,5 @@ const words = !variant;
 {words ? (
   <ul class="mx-inline-list">{items.map((i) => <li lang={i.lang}>{i.href ? <a href={i.href}>{i.label}</a> : i.label}</li>)}</ul>
 ) : (
-  <p class="mx-inline-list" data-variant={variant}>{items.map((i) => <a href={i.href} lang={i.lang}>{i.label}</a>)}</p>
+  <p class="mx-inline-list" data-variant={variant}>{items.map((i) => <a href={i.href} lang={i.lang} data-human-href={i.to?.human} data-machine-href={i.to?.machine}>{i.label}</a>)}</p>
 )}

@@ -1,0 +1,45 @@
+@layer mx.effects {
+  /* The data file's keys, their values decoding in. Shown only while the root says so. */
+  mx-boot { display: none; }
+  .mx-boot {
+    --mx-text-boot: clamp(16px, 2.6vw, 34px); /* fluid, one use: the formula is the effect's (02) */
+    position: fixed;
+    inset: 0;
+    z-index: var(--mx-layer-boot);
+    background: var(--mx-color-ground);
+    padding: min(26vh, 160px) var(--mx-pad) var(--mx-pad);
+    overflow-y: auto;
+    align-content: start;
+    gap: var(--mx-space-10);
+  }
+  :root[data-boot] .mx-boot { display: grid; }
+  :root[data-boot] { overflow: hidden; }
+  :root[data-boot] mx-root > :not(.mx-boot, .mx-curtain, .mx-status) { visibility: hidden; }
+
+  .mx-boot-line {
+    visibility: hidden;
+    display: grid;
+    grid-template-columns: 9ch minmax(0, 1fr);
+    gap: 0 var(--mx-space-4);
+    font-family: var(--mx-font-family-dot);
+    font-size: var(--mx-text-boot);
+    line-height: var(--mx-font-leading-terminal);
+  }
+  .mx-boot-line[data-on] { visibility: visible; }
+  .mx-boot-key { color: var(--mx-color-text-muted); }
+  .mx-boot-value { color: var(--mx-color-accent); overflow-wrap: anywhere; font-family: var(--mx-font-family-dot); }
+  .mx-boot-value[data-done] { color: var(--mx-color-text-lead); }
+  .mx-boot-exit { display: flex; flex-wrap: wrap; align-items: center; gap: var(--mx-space-3); }
+  .mx-boot-note { flex-basis: 100%; max-width: 62ch; color: var(--mx-color-text-muted); font-size: var(--mx-font-size-ui); }
+  /* The last record is the mark itself, whole (L5): wiped in, never scrambled. */
+  .mx-boot-lines .mx-boot-logo { align-items: start; margin-top: 1em; }
+  .mx-boot-logo .mx-logo { width: clamp(120px, 24vh, 220px); }
+
+  /* The still (`?boot=frozen`): every line settled, the mark whole. Needs no script. */
+  :root[data-boot="frozen"] .mx-boot-line { visibility: visible; }
+  :root[data-boot="frozen"] .mx-boot-value { color: var(--mx-color-text-lead); }
+
+  @media (width < 720px) {
+    .mx-boot-line { grid-template-columns: 7ch minmax(0, 1fr); gap: 0 var(--mx-space-3); }
+  }
+}

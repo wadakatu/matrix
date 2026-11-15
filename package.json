@@ -33,6 +33,10 @@
       "types": "./dist/head/head.d.ts",
       "default": "./dist/head/head.js"
     },
+    "./lib": {
+      "types": "./dist/lib/index.d.ts",
+      "default": "./dist/lib/index.js"
+    },
     "./strings": {
       "types": "./dist/strings/index.d.ts",
       "default": "./dist/strings/index.js"
@@ -45,6 +49,9 @@
     "src/css/",
     "src/components/",
     "!src/components/*/*.stories.ts",
+    "src/effects/",
+    "!src/effects/*/*.stories.ts",
+    "src/lib/",
     "src/head/",
     "src/strings/",
     "src/astro.ts",

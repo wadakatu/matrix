@@ -20,6 +20,10 @@ controls: Hold rain, Operator colours and Daylight (L4, L7).
 <button class="mx-control" data-action="theme" type="button" aria-pressed="false">Daylight</button>
 ```
 
+On a page with two readings the shortcut's off switch is one more:
+`<label class="mx-control" data-action="shortcut"><input type="checkbox" checked> Enable <kbd>\</kbd> / <kbd>¥</kbd> shortcut</label>`
+(Readings).
+
 A plain control is `<button class="mx-control" type="button">` or `<a class="mx-control" href>`.
 
 ## Variants and states
@@ -28,6 +32,7 @@ A plain control is `<button class="mx-control" type="button">` or `<a class="mx-
 - Pressed (`aria-pressed="true"`): filled `accent` with `on-accent` text.
 - `data-action="hold"`: a checkbox in the label, `accent` tick. Hidden when motion is off,
   because then nothing moves. Present in both readings.
+- `data-action="shortcut"`: a checked checkbox; hidden until `mx-root` is defined.
 - `data-action="palette"`, `data-action="theme"`: hidden until `mx-root` is defined; the
   theme toggle is also hidden where `light-dark()` is missing (03).
 

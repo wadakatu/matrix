@@ -13,6 +13,7 @@ const baseline = {
     "accent-color": ["/.*/"], // Newly available. Hold rain's tick in the accent; elsewhere the browser's own checkbox colours
     "forced-color-adjust": ["none"], // Only inside @media (forced-colors: active), whose engines all have it: the menu's figure keeps its gradient lines in system colours (menu.css)
     "content-visibility": ["/.*/"], // Newly available. Only inside @supports selector(::details-content), whose engines all have it: keeps the menu's content shown while closed from 720px
+    "background-clip": ["text"], // Newly available. The rain's drops are text clipped to a gradient; where it is missing they are not drawn (decoration, aria-hidden). The switch's drip is inside @supports
     "word-break": ["auto-phrase"], // Limited (Chromium). Japanese headings break by phrase where supported; elsewhere the default breaking applies (03)
   },
 };

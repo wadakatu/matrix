@@ -1,0 +1,20 @@
+---
+/**
+ * Both readings of one page, and the in-place change between them (04, "Readings"). The h1 is the
+ * Name, shared by both; CSS shows the child whose data-reading matches the root's. Each static route
+ * sets the root attribute in its markup, so both exist as real addresses without scripts.
+ */
+import { strings, type Lang } from "../../strings/index.ts";
+interface Props {
+  /** The document title of each reading; the change keeps the title in step. */
+  titles: { human: string; machine: string };
+  lang?: Lang;
+}
+const { titles, lang = "en" } = Astro.props;
+const t = strings[lang].status;
+---
+<mx-readings data-human-title={titles.human} data-machine-title={titles.machine} data-human-status={t.human} data-machine-status={t.machine}>
+  <slot name="name" />
+  <div data-reading="human"><slot name="human" /></div>
+  <div data-reading="machine"><slot name="machine" /></div>
+</mx-readings>

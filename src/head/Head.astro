@@ -10,8 +10,10 @@ interface Props {
   description?: string;
   /** Code for the site's own flags, run inside the script (see `headScript`). */
   flags?: string;
+  /** The page has the intro (Boot): the script decides and wires it (05). */
+  boot?: boolean;
 }
-const { title, description, flags } = Astro.props;
+const { title, description, flags, boot } = Astro.props;
 ---
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -19,4 +21,4 @@ const { title, description, flags } = Astro.props;
 <meta name="theme-color" content={tokens["phosphor-night"]["color.ground"]} />
 <title>{title}</title>
 {description && <meta name="description" content={description} />}
-<script is:inline set:html={headScript(flags)} />
+<script is:inline set:html={headScript(flags, { boot })} />

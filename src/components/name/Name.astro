@@ -1,0 +1,15 @@
+---
+/**
+ * The page's one h1, shared by both readings (04, "Name"). From 720px it is set as wide as the frame
+ * and masked with lines of the site's own text (L1); below that it is solid; in 機械用 it is a line
+ * of terminal text with a cursor.
+ */
+import { nameMask } from "../../lib/index.ts";
+interface Props {
+  /** Commit subjects and post titles, cut out of the mask. */
+  lines: string[];
+  id?: string;
+}
+const { lines, id } = Astro.props;
+---
+<h1 class="mx-name" id={id} style={`--mx-etch:${nameMask(lines)}`}><slot /></h1>

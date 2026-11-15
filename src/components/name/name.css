@@ -1,0 +1,51 @@
+@layer mx.components {
+  /* As wide as the frame, with the site's own lines cut out of it, so the rain shows through the cuts.
+     Display type: the one place rain is allowed behind text (L2). */
+  .mx-name {
+    padding-block: clamp(40px, 10vh, 112px) var(--mx-space-5);
+    font-family: var(--mx-font-family-mono);
+    font-weight: var(--mx-font-weight-bold);
+    font-size: var(--mx-text-display);
+    line-height: 0.86;
+    letter-spacing: -0.02em;
+    color: var(--mx-color-accent);
+    mask: var(--mx-etch) 0 0 / 1000px auto;
+  }
+  @media (width < 720px) { .mx-name { mask: none; } }
+
+  /* 機械用: a line of terminal text with a cursor that settles after five blinks, and phosphor bloom
+     at night (the glow token is transparent by day). */
+  :root[data-reading="machine"] .mx-name {
+    padding-block: var(--mx-space-7) 0;
+    font-weight: var(--mx-font-weight-medium);
+    font-size: var(--mx-text-prompt);
+    line-height: 1.2;
+    letter-spacing: 0;
+    mask: none;
+    text-shadow: 0 0 12px var(--mx-color-glow);
+  }
+  :root[data-reading="machine"] .mx-name::after {
+    content: "";
+    display: inline-block;
+    width: 0.56em;
+    height: 1em;
+    margin-left: 0.14em;
+    vertical-align: -0.14em;
+    background: var(--mx-color-accent);
+    animation: mx-blink var(--mx-motion-blink-duration) steps(1) var(--mx-motion-blink-count);
+  }
+  @keyframes mx-blink { 50% { opacity: 0; } }
+
+  /* Returning to 人間用: the name doubles for one frame (05, catalogue). Set and cleared by mx-readings. */
+  .mx-name[data-double] { animation: mx-double var(--mx-motion-double-duration) steps(1); }
+  @keyframes mx-double {
+    0% { text-shadow: 0.07em 0.035em 0 var(--mx-color-rain-body); transform: translateX(-0.02em); }
+    50% { text-shadow: -0.05em -0.02em 0 var(--mx-color-rain-body); transform: none; }
+  }
+
+  /* The still: a lit cursor, no doubling. */
+  :root[data-motion="off"] .mx-name::after, :root[data-motion="off"] .mx-name[data-double] { animation: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .mx-name::after, .mx-name[data-double] { animation: none; }
+  }
+}

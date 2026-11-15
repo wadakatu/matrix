@@ -1,0 +1,56 @@
+@layer mx.components {
+  /* Mobile first: a strip of falling text beside the entry it settles as. */
+  .mx-stream { position: relative; display: flex; gap: var(--mx-space-4); min-width: 0; border-top: var(--mx-border-width-hair) solid var(--mx-color-rule); }
+  .mx-stream-fall {
+    position: relative;
+    flex: none;
+    width: 72px;
+    min-height: 136px;
+    margin-block: var(--mx-space-2);
+    overflow: hidden;
+    container-type: size;
+  }
+  .mx-strand { position: absolute; top: 0; left: calc(var(--j) * 28px); width: var(--mx-font-size-rain); height: 100%; }
+  .mx-strand:nth-child(n + 4) { display: none; }
+
+  .mx-stream-entry { flex: 1; min-width: 0; padding: var(--mx-space-3) 0 var(--mx-space-4); }
+  .mx-stream-name {
+    position: relative;
+    display: grid;
+    font-family: var(--mx-font-family-mono);
+    font-size: var(--mx-font-size-body);
+    font-weight: var(--mx-font-weight-medium);
+    line-height: 1.5;
+    color: var(--mx-color-text-lead);
+    overflow-wrap: anywhere;
+  }
+  .mx-stream-name:lang(ja) { font-family: var(--mx-font-family-ja); letter-spacing: normal; }
+  .mx-stream-name > * { grid-area: 1 / 1; }
+  .mx-stream-name a { text-decoration: none; }
+  /* The whole stream is outlined when its link has focus (05, "Focus"). */
+  .mx-stream-name a:focus-visible { outline: none; }
+  .mx-stream:has(.mx-stream-name a:focus-visible) {
+    outline: var(--mx-border-width-strong) solid var(--mx-color-focus);
+    outline-offset: 2px;
+  }
+  .mx-stream:hover .mx-stream-name a { text-decoration: underline; text-decoration-color: var(--mx-color-accent); }
+  .mx-blurb { font-size: var(--mx-font-size-ui); margin-top: var(--mx-space-2); max-width: 62ch; }
+}
+
+@layer mx.effects {
+  /* A strand's drops fall the height of their own strip, not the window. Plain units (04, "Rain"). */
+  .mx-stream-fall .mx-drop { animation-name: mx-drop-cqh; }
+  @keyframes mx-drop-cqh {
+    from { transform: translateY(-100%); }
+    to { transform: translateY(100cqh); }
+  }
+  /* The stream you point at holds still and comes up to reading brightness. */
+  .mx-stream:is(:hover, :focus-within) .mx-drop {
+    animation-play-state: paused;
+    --mx-color-rain-body: var(--mx-color-accent);
+    --mx-color-rain-tail: var(--mx-color-accent);
+  }
+  /* The still: one parked drop per strand. */
+  :root[data-motion="off"] .mx-strand .mx-drop + .mx-drop { display: none; }
+  @media (prefers-reduced-motion: reduce) { .mx-strand .mx-drop + .mx-drop { display: none; } }
+}

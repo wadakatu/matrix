@@ -1,0 +1,30 @@
+---
+/**
+ * The choice between the two readings (04, "Switch"): two real links to the two static routes, so it
+ * works without scripts; `mx-readings` makes the change happen in place. `rain` is the header's and
+ * the boot layer's drawing; `capsule` is the large one in the "Two readings" panel, with a note under
+ * each name. On the boot layer neither side is current (`current` absent).
+ */
+import { strings, type Lang } from "../../strings/index.ts";
+interface Props {
+  /** The two static routes. */
+  to: { human: string; machine: string };
+  current?: "human" | "machine";
+  variant?: "capsule";
+  /** Capsule only: what is on each side. */
+  notes?: { human: string; machine: string };
+  lang?: Lang;
+}
+const { to, current, variant, notes, lang = "en" } = Astro.props;
+const sides = [
+  { to: "human", label: "人間用" },
+  { to: "machine", label: "機械用" },
+] as const;
+---
+<mx-switch class="mx-switch" role="group" aria-label={strings[lang].reading} data-variant={variant}>
+  {sides.map((s) => (
+    <a class="mx-switch-side" data-to={s.to} href={to[s.to]} aria-current={s.to === current ? "true" : undefined}>
+      <span class="mx-switch-label" lang="ja">{s.label}</span>{notes && <small>{notes[s.to]}</small>}
+    </a>
+  ))}
+</mx-switch>

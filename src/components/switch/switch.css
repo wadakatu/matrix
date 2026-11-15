@@ -1,0 +1,200 @@
+@layer mx.components {
+  /* The current side, in every drawing: `accent` under `on-accent`, plus aria-current (04). */
+  mx-switch { display: inline-flex; }
+
+  /* ---------- rain (the default): each name is a strand of the rain ---------- */
+  .mx-switch:not([data-variant]) {
+    align-self: center;
+    background: var(--mx-color-ground);
+    border: var(--mx-border-width-hair) solid var(--mx-color-control-border);
+    border-radius: var(--mx-radius-control);
+    margin-block: -3px; /* three 16px glyphs stand 6px taller than the row; the header keeps its height */
+  }
+  .mx-switch:not([data-variant]) .mx-switch-side {
+    padding: 0 9px;
+    color: var(--mx-color-text-muted);
+    text-decoration: none;
+    white-space: nowrap;
+    font-family: var(--mx-font-family-dot);
+    font-size: var(--mx-font-size-rain);
+    line-height: 1;
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+  }
+  .mx-switch:not([data-variant]) .mx-switch-label { font-family: var(--mx-font-family-dot); }
+  .mx-switch:not([data-variant]) .mx-switch-side + .mx-switch-side { border-left: var(--mx-border-width-hair) solid var(--mx-color-control-border); }
+  .mx-switch:not([data-variant]) .mx-switch-side:hover { color: var(--mx-color-text-lead); background: var(--mx-color-panel); }
+  .mx-switch:not([data-variant]) .mx-switch-side[aria-current],
+  .mx-switch:not([data-variant]) .mx-switch-side[aria-current]:hover {
+    background: var(--mx-color-accent);
+    color: var(--mx-color-on-accent);
+    animation: mx-wipe-down var(--mx-motion-wipe-duration) steps(var(--mx-motion-wipe-steps));
+  }
+  /* On the filled face the ring would vanish into the fill: a ground gap inside it (05, C40). */
+  /* Positioned only while focused, so it paints over its static neighbour. */
+  .mx-switch-side:focus-visible { position: relative; outline-offset: 2px; box-shadow: 0 0 0 2px var(--mx-color-ground); }
+  /* Eight cells: three at rest, the tail, the head, three at rest. The strand is a window three cells
+     tall; a drop falls through the idle side every motion.drip.duration. */
+  /* Without text clipping the label stays plain text-muted: the still, which reads the same. */
+  @supports (background-clip: text) {
+    .mx-switch:not([data-variant]) .mx-switch-side:not([aria-current], :hover) .mx-switch-label {
+      color: transparent;
+      background:
+        linear-gradient(to bottom, var(--mx-color-text-muted) 0 3em, var(--mx-color-accent) 3em 4em, var(--mx-color-rain-head) 4em 5em, var(--mx-color-text-muted) 5em)
+        0 0 / 100% 8em no-repeat;
+      background-clip: text;
+      animation: mx-drip var(--mx-motion-drip-duration) infinite;
+    }
+  }
+  /* Half a cycle apart: on the boot layer, where neither side is current, both drip. */
+  .mx-switch:not([data-variant]) .mx-switch-side[data-to="machine"] .mx-switch-label { animation-delay: calc(var(--mx-motion-drip-duration) / -2); }
+  @keyframes mx-drip {
+    0% { background-position-y: -5em; animation-timing-function: steps(5); }
+    24%, 100% { background-position-y: 0; }
+  }
+  /* Both ends explicit: a wipe to `none` froze Chrome when restarted mid-composite (04, "Rain"). */
+  @keyframes mx-wipe-down {
+    from { clip-path: inset(0 0 100% 0); }
+    to { clip-path: inset(0 0 0 0); }
+  }
+
+  @media (width < 720px) {
+    .mx-switch:not([data-variant]) { margin-block: -3.6px; }
+    .mx-switch:not([data-variant]) .mx-switch-side { font-size: var(--mx-font-size-meta); }
+    /* 601 to 719px: two strands as tall as the menu button beside them. */
+    .mx-header .mx-switch:not([data-variant]) { min-height: 46px; margin-block: 0; }
+    .mx-header .mx-switch:not([data-variant]) .mx-switch-side { text-align: center; }
+  }
+
+  /* ---------- rain at phone width, in the header: one 44×44 button showing the current reading ----------
+     A hole travels down the filled face and shows the other name, on the drip's cadence. Long solid
+     regions either side of the hole, so the face is covered at rest. The boot layer keeps two strands. */
+  @media (width <= 600px) {
+    .mx-header .mx-switch:not([data-variant]) {
+      position: relative;
+      display: grid;
+      grid-template: 1fr / 1fr;
+      min-width: var(--mx-size-target);
+      min-height: var(--mx-size-target);
+      overflow: hidden;
+    }
+    .mx-header .mx-switch:not([data-variant]) .mx-switch-side {
+      grid-area: 1 / 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: var(--mx-size-target);
+      min-height: var(--mx-size-target);
+      padding: 2px 10px;
+    }
+    .mx-header .mx-switch:not([data-variant]) .mx-switch-side + .mx-switch-side { border-left: 0; }
+    .mx-header .mx-switch:not([data-variant]) .mx-switch-side:not([aria-current]) { background: var(--mx-color-ground); color: var(--mx-color-text-muted); }
+    .mx-header .mx-switch:not([data-variant]) .mx-switch-side:not([aria-current]):hover { color: var(--mx-color-text-lead); background: var(--mx-color-ground); }
+    /* The filled face is painted last (grid items paint in order-modified document order) and lets
+       presses through to the other side. */
+    .mx-header .mx-switch:not([data-variant]) .mx-switch-side[aria-current] {
+      order: 1;
+      pointer-events: none;
+      mask-image: linear-gradient(to bottom, var(--mx-color-ground) 0 8em, transparent 8em 9.15em, var(--mx-color-ground) 9.15em 24em);
+      mask-size: 100% 24em;
+      mask-repeat: no-repeat;
+      mask-position: 0 -9.3em;
+      animation: mx-glimpse var(--mx-motion-drip-duration) infinite;
+    }
+    .mx-header .mx-switch:not([data-variant]) .mx-switch-side[aria-current] .mx-switch-label { color: inherit; background: none; animation: none; }
+  }
+  @keyframes mx-glimpse {
+    /* The hole starts just above the 44px face and leaves just below it, then parks. */
+    0% { mask-position: 0 -9.3em; animation-timing-function: steps(5); }
+    24%, 100% { mask-position: 0 -4.4em; }
+  }
+
+  /* ---------- capsule: the large one in the "Two readings" panel, a note under each name ---------- */
+  .mx-switch[data-variant="capsule"] {
+    --mx-text-capsule: clamp(18px, 2.6vw, 24px); /* fluid, one use: the formula is the component's (02) */
+    display: flex;
+    width: fit-content;
+    max-width: 100%;
+    margin-top: var(--mx-space-5);
+    border: var(--mx-border-width-hair) solid var(--mx-color-control-border);
+    border-radius: var(--mx-radius-capsule);
+    background: var(--mx-color-ground);
+  }
+  .mx-switch[data-variant="capsule"] .mx-switch-side {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0 var(--mx-space-3);
+    align-items: center;
+    align-content: start;
+    flex: 1 1 0;
+    min-width: 0;
+    padding: var(--mx-space-3) clamp(16px, 4vw, 40px) 14px clamp(16px, 3vw, 28px);
+    color: var(--mx-color-text);
+    text-decoration: none;
+    font-size: var(--mx-text-capsule);
+    line-height: var(--mx-font-leading-ui);
+    border-radius: var(--mx-radius-capsule) 0 0 var(--mx-radius-capsule);
+  }
+  .mx-switch[data-variant="capsule"] .mx-switch-side + .mx-switch-side {
+    border-left: var(--mx-border-width-hair) solid var(--mx-color-control-border);
+    border-radius: 0 var(--mx-radius-capsule) var(--mx-radius-capsule) 0;
+  }
+  /* The dots: colour is never the only signal; each sits beside its name (05). */
+  .mx-switch[data-variant="capsule"] .mx-switch-side::before {
+    content: "";
+    flex: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--mx-color-reading-human);
+  }
+  .mx-switch[data-variant="capsule"] .mx-switch-side[data-to="machine"]::before { background: var(--mx-color-reading-machine); }
+  .mx-switch[data-variant="capsule"] .mx-switch-side:hover { color: var(--mx-color-text-lead); background: var(--mx-color-panel); }
+  .mx-switch[data-variant="capsule"] .mx-switch-side:hover::before { box-shadow: 0 0 0 3px var(--mx-color-panel), 0 0 0 4px var(--mx-color-reading-human); }
+  .mx-switch[data-variant="capsule"] .mx-switch-side[data-to="machine"]:hover::before { box-shadow: 0 0 0 3px var(--mx-color-panel), 0 0 0 4px var(--mx-color-reading-machine); }
+  .mx-switch[data-variant="capsule"] .mx-switch-side[aria-current],
+  .mx-switch[data-variant="capsule"] .mx-switch-side[aria-current]:hover { background: var(--mx-color-accent); color: var(--mx-color-on-accent); }
+  .mx-switch[data-variant="capsule"] .mx-switch-side[aria-current]::before { background: var(--mx-color-on-accent); box-shadow: none; }
+  .mx-switch[data-variant="capsule"] small { grid-column: 2; font-size: var(--mx-font-size-meta); }
+
+  /* Forced colours drop backgrounds: the strand gets its text colour back, the current side stays filled. */
+  @media (forced-colors: active) {
+    .mx-switch .mx-switch-label { color: inherit !important; background: none !important; }
+    .mx-switch .mx-switch-side[aria-current] { forced-color-adjust: none; background: Highlight !important; color: HighlightText !important; mask-image: none; }
+  }
+
+  /* Hold rain holds every endless animation, the switch's drop included, in both readings (05). */
+  :root:is(:has([data-action="hold"] input:checked), [data-rain="held"]) .mx-switch .mx-switch-label { animation-play-state: paused; }
+  @media (width <= 600px) {
+    :root:is(:has([data-action="hold"] input:checked), [data-rain="held"]) .mx-header .mx-switch:not([data-variant]) .mx-switch-side[aria-current] { animation-play-state: paused; }
+  }
+
+  /* The still (L4): no drop, no wipe; the idle label is plain text-muted. The frozen boot is a still too. */
+  :root:is([data-motion="off"], [data-boot="frozen"]) .mx-switch :is(.mx-switch-side, .mx-switch-label) { animation: none !important; }
+  :root:is([data-motion="off"], [data-boot="frozen"]) .mx-header .mx-switch .mx-switch-side[aria-current] { mask-image: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .mx-switch :is(.mx-switch-side, .mx-switch-label) { animation: none !important; }
+    .mx-header .mx-switch .mx-switch-side[aria-current] { mask-image: none; }
+  }
+  /* No drop: a caret says the one button still has another reading underneath. */
+  @media (width <= 600px) {
+    :root:is([data-motion="off"], [data-boot="frozen"]) .mx-header .mx-switch:not([data-variant]):has([aria-current])::after { content: "▾" / ""; }
+  }
+  @media (width <= 600px) and (prefers-reduced-motion: reduce) {
+    .mx-header .mx-switch:not([data-variant]):has([aria-current])::after { content: "▾" / ""; }
+  }
+  .mx-header .mx-switch:not([data-variant])::after {
+    position: absolute;
+    top: 50%;
+    right: 2px;
+    writing-mode: horizontal-tb;
+    text-orientation: mixed;
+    transform: translateY(-50%);
+    font-family: var(--mx-font-family-mono);
+    font-size: var(--mx-font-size-label);
+    line-height: 1;
+    color: var(--mx-color-on-accent);
+    pointer-events: none;
+  }
+  @media (forced-colors: active) { .mx-header .mx-switch:not([data-variant])::after { color: HighlightText; } }
+}

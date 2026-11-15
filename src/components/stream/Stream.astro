@@ -1,0 +1,34 @@
+---
+/**
+ * One entry of the wall (04, "Stream"): strands of its own words fall beside (or above) its readable
+ * text. The strands repeat what the entry says, so they are hidden from assistive technology (L1).
+ */
+import { hasJa, streamStrands } from "../../lib/index.ts";
+interface Props {
+  name: string;
+  href: string;
+  /** The entry's own texts: its name, its line, its host, its language or date. */
+  strands: string[];
+  /** Seeds the strands' speeds, so every build is the same. */
+  index: number;
+  level?: "h2" | "h3";
+  /** A commit subject that shipped this entry, for the title-to-commit reward (05). */
+  commit?: string;
+}
+const { name, href, strands, index, level: Heading = "h3", commit } = Astro.props;
+---
+<li class="mx-stream" data-commit={commit}>
+  <div class="mx-stream-fall" aria-hidden="true">
+    {streamStrands(strands, index).map((s, j) => (
+      <span class="mx-strand" style={`--j:${j}`}>
+        {s.drops.map((d) => (
+          <span class="mx-drop" lang={d.ja ? "ja" : undefined} style={`--t:${d.t}s;--d:${d.d}s;--rest:${d.rest}%`}>{d.text}</span>
+        ))}
+      </span>
+    ))}
+  </div>
+  <div class="mx-stream-entry">
+    <Heading class="mx-stream-name" data-echo={name} lang={hasJa(name) ? "ja" : undefined}><a href={href}>{name}</a></Heading>
+    <slot />
+  </div>
+</li>
