@@ -11,6 +11,8 @@
   </picture>
 </h1>
 
+> **TOMBO is complete.** Its last release is v0.14.1, and this `tombo` branch is frozen as the archive of the system. TOMBO continues as **matrix** in the same repository, now [`wadakatu/matrix`](https://github.com/wadakatu/matrix). Vendored copies of `tombo.css` are unaffected: they are copies, and their tags still resolve. TOMBO's public pages at `/tombo/` are no longer published.
+
 A single-file CSS design system for everything wadakatu ships — OSS docs sites, web apps, LPs, portfolios. Zero dependencies, one `<link>` — an optional `tombo.js` adds theme persistence and copy buttons, but no page needs it.
 
 The goal is not a component library. It's recognition: the same handful of signature marks, repeated without exception across every product, at a "volume" tuned to context — quiet in docs, loud in an LP.
