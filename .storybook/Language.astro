@@ -1,0 +1,11 @@
+---
+/**
+ * The Language global (06). A static build renders each story once, so the story is rendered in
+ * both languages, each in an inert <template>; `sb-language` (preview.ts) stamps the one that
+ * matches the root's `lang` whenever the story is put on the page.
+ */
+---
+<sb-language>
+  <template data-lang="en"><slot name="en" /></template>
+  <template data-lang="ja"><slot name="ja" /></template>
+</sb-language>

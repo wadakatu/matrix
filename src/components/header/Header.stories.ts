@@ -3,7 +3,7 @@ import md from "./header.md?raw";
 import { contexts, docs, fixture, japanese, narrow } from "../../fixtures/stories.ts";
 
 const args = (lang: "en" | "ja") => ({ mark: fixture[lang].mark, nav: fixture[lang].nav, alternate: lang === "en" ? "/ja/" : "/", lang });
-export default { title: "Chrome/Header", component: Header, ...docs(md) };
+export default { title: "Chrome/Header", component: Header, ...docs(md, { chrome: true }) };
 
 export const Default = { args: args("en") };
 export const Machine = { args: args("en"), globals: { reading: "machine" } };

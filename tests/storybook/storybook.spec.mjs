@@ -45,6 +45,43 @@ test("language: lang on the root, and the text takes the Japanese face", async (
   expect(await face()).toMatch(/^"M PLUS 1 Code"/);
 });
 
+test("language: the chrome strings passed to the story follow the toolbar", async ({ page }) => {
+  // The story is written in English; only the global changes.
+  const words = () => page.locator("#storybook-root").evaluate((el) => ({
+    text: el.textContent.replace(/\s+/g, " ").trim(),
+    nav: el.querySelector(".mx-nav")?.getAttribute("aria-label"),
+    lang: el.querySelector(".mx-lang")?.textContent,
+  }));
+  await story(page, "chrome-header--narrow-open", "language:en");
+  expect(await words()).toMatchObject({ nav: "Main", lang: "日本語" });
+  expect((await words()).text).toContain("Daylight");
+  await story(page, "chrome-header--narrow-open", "language:ja");
+  const ja = await words();
+  expect(ja).toMatchObject({ nav: "メイン", lang: "English" });
+  for (const s of ["メニュー", "雨を止める", "オペレーター配色", "デイライト"]) expect(ja.text).toContain(s);
+  expect(ja.text).not.toContain("Daylight");
+  // In Contexts every frame follows.
+  await story(page, "chrome-control--contexts", "language:ja");
+  expect(await page.locator(".fixture-scope .mx-control").allTextContents()).toEqual(Array(4).fill("オペレーター配色"));
+});
+
+test("the Control's state stories show their state: hovered takes the accent border, focused the ring", async ({ page }) => {
+  // The pointer starts at (0, 0), over the control; move it off so only the story sets hover.
+  const look = async () => (await page.mouse.move(600, 600), page.locator(".mx-control").first()).evaluate((el) => ({ border: getComputedStyle(el).borderColor, outline: getComputedStyle(el).outlineStyle }));
+  const accent = rgb(tokens["phosphor-night"]["color.accent"]);
+  await story(page, "chrome-control--default");
+  expect(await look()).toMatchObject({ outline: "none" });
+  expect((await look()).border).not.toBe(accent);
+  for (const s of ["hovered", "hold-hovered"]) {
+    await story(page, `chrome-control--${s}`);
+    expect((await look()).border, s).toBe(accent);
+  }
+  for (const s of ["focused", "hold-focused"]) {
+    await story(page, `chrome-control--${s}`);
+    expect((await look()).outline, s).toBe("solid");
+  }
+});
+
 test("reading: 機械用 draws the nav as a numbered window list", async ({ page }) => {
   const marker = () => page.locator(".mx-nav a").first().evaluate((el) => getComputedStyle(el, "::before").content);
   await story(page, "chrome-nav--default");

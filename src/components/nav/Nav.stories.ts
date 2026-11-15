@@ -2,7 +2,7 @@ import Nav from "./Nav.astro";
 import md from "./nav.md?raw";
 import { contexts, docs, fixture, japanese } from "../../fixtures/stories.ts";
 
-export default { title: "Chrome/Nav", component: Nav, ...docs(md) };
+export default { title: "Chrome/Nav", component: Nav, ...docs(md, { chrome: true }) };
 
 export const Default = { args: { items: fixture.en.nav } };
 export const Machine = { args: { items: fixture.en.nav }, globals: { reading: "machine" } };

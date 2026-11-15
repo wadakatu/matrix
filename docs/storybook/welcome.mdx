@@ -23,8 +23,9 @@ CRT), a daylight reading of both, and two readings of every fact: 機械用 (the
 ## How to read this Storybook
 
 - **The toolbar is the only state.** Palette, Theme, Motion, Language and Reading each set one
-  attribute on the preview's root, as the site's root does. No story sets them itself and nothing
-  is read from storage, so a story looks the same for every visitor.
+  attribute on the preview's root, as the site's root does; Language also gives the chrome its
+  words in that language. No story sets them itself and nothing is read from storage, so a story
+  looks the same for every visitor.
 - **Every component has the same stories:** `Default`, one per variant and state, `Contexts`
   (all four contexts in one frame, the one visual regression captures), `Japanese`, `Still` for
   anything that moves, and `Narrow` where it changes shape at 390 wide.

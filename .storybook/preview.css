@@ -1,6 +1,8 @@
 /* The preview's own page: the story sits on the ground of the context the toolbar chose. */
 html { background: var(--mx-color-ground); }
 body { padding: 0; }
+/* The Language global's wrapper (Language.astro) lays no box. */
+sb-language { display: contents; }
 .fixture-scope {
   padding: var(--mx-space-4) 0 var(--mx-space-6);
   background: var(--mx-color-ground);
