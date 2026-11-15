@@ -13,6 +13,7 @@ const d = document.documentElement;
 export const HISTORY_KEY = "mx-history";
 export const GUIDE_KEY = "mx-guide";
 const store = (key: string, value?: string) => {
+  if (!MxTerminal.remember) return null;
   try {
     if (value === undefined) return sessionStorage.getItem(key);
     sessionStorage.setItem(key, value);
@@ -22,6 +23,8 @@ const store = (key: string, value?: string) => {
 const still = () => d.dataset.motion === "off" || matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 export class MxTerminal extends HTMLElement {
+  /** Off in the Storybook preview, which never reads or writes `mx-*` storage (03, 06). */
+  static remember = true;
   #sh: Interpreter | null = null;
   #live = false;
   #off = new AbortController();
@@ -307,7 +310,10 @@ export class MxTerminal extends HTMLElement {
     this.#live = true;
     const { signal } = (this.#off = new AbortController());
     const sh = this.#sh!, input = this.#input;
-    const saved: unknown = JSON.parse(store(HISTORY_KEY) ?? "[]");
+    let saved: unknown = [];
+    try {
+      saved = JSON.parse(store(HISTORY_KEY) ?? "[]");
+    } catch {}
     this.#history = Array.isArray(saved) ? saved.filter((h): h is string => typeof h === "string") : [];
 
     this.#part("prompt").addEventListener("submit", (e) => {
