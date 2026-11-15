@@ -1,0 +1,18 @@
+@layer mx.components {
+  /* The designer's file, whole (L5): square, never cropped, rounded, rotated or masked. Its black
+     field is part of the mark. */
+  .mx-logo {
+    display: block;
+    flex: none;
+    aspect-ratio: 1;
+    height: auto;
+    object-fit: contain;
+  }
+  /* The one rule that reads both axes (03, "The one exception"). The filter is a property of the
+     scope, so a day or phosphor scope nested inside an operator-night root shows the mark untinted. */
+  :root, [data-palette][data-theme] { --mx-logo-filter: none; }
+  [data-palette="operator"][data-theme="night"],
+  :root[data-palette="operator"]:not([data-theme="day"]) { --mx-logo-filter: hue-rotate(-80deg) saturate(1.15); }
+  [data-palette="operator"][data-theme="night"] .mx-logo,
+  :root[data-palette="operator"]:not([data-theme="day"]) .mx-logo { filter: var(--mx-logo-filter); }
+}

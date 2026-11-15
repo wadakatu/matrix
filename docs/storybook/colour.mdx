@@ -1,0 +1,53 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+import data from "../../.storybook/foundations.json";
+
+<Meta title="Foundations/Colour" />
+
+# Colour
+
+The roles in all four contexts. Each swatch is drawn by its own custom property inside a theme
+scope, so it cannot disagree with the token; the hex beside it is `dist/tokens.json`.
+
+<table>
+  <thead><tr><th>Role</th>{data.contexts.map((c) => <th key={c}>{c}</th>)}</tr></thead>
+  <tbody>
+    {data.colour.map((t) => (
+      <tr key={t.id}>
+        <td><code>{t.id}</code><br /><small>{t.description}</small></td>
+        {data.contexts.map((c) => {
+          const [palette, theme] = c.split("-");
+          return (
+            <td key={c} data-palette={palette} data-theme={theme}>
+              <span style={{ display: "block", width: "4rem", height: "2rem", background: `var(${t.css})`, outline: "1px solid var(--mx-color-rule)" }} />
+              <code>{t.values[c]}</code>
+            </td>
+          );
+        })}
+      </tr>
+    ))}
+  </tbody>
+</table>
+
+## Measured contrast
+
+The contrast gate's output for every declared pair (WCAG 2 ratio, with APCA Lc as an advisory
+figure that never fails the build). These are the numbers `npm run check` prints and CI enforces.
+
+<table id="contrast">
+  <thead><tr><th>Pair</th><th>Rule</th>{data.contexts.map((c) => <th key={c}>{c}</th>)}</tr></thead>
+  <tbody>
+    {[...new Set(data.contrast.map((r) => `${r.fg} on ${r.bg}`))].map((pair) => {
+      const cells = data.contrast.filter((r) => `${r.fg} on ${r.bg}` === pair);
+      return (
+        <tr key={pair} data-pair={pair}>
+          <td><code>{pair}</code></td>
+          <td>{cells[0].rule}</td>
+          {data.contexts.map((c) => {
+            const r = cells.find((x) => x.context === c);
+            return <td key={c} data-context={c}>{r.ratio} (Lc {r.lc})</td>;
+          })}
+        </tr>
+      );
+    })}
+  </tbody>
+</table>

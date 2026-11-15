@@ -1,0 +1,16 @@
+/* The preview's own page: the story sits on the ground of the context the toolbar chose. */
+html { background: var(--mx-color-ground); }
+body { padding: 0; }
+.fixture-scope {
+  padding: var(--mx-space-4) 0 var(--mx-space-6);
+  background: var(--mx-color-ground);
+  color: var(--mx-color-text);
+}
+.fixture-scope-name {
+  padding-inline: var(--mx-pad);
+  color: var(--mx-color-text-muted);
+  font-size: var(--mx-font-size-meta);
+}
+/* A logo's holder sets its size (logo.md). In the Logo's own stories the frame is its holder,
+   at the fetch card's narrowest size, so the 400px file does not overflow a 390 frame. */
+#storybook-root > .mx-logo, .fixture-scope > .mx-logo { width: 112px; }

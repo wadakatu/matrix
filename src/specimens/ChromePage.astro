@@ -1,0 +1,39 @@
+---
+/** The chrome specimen, in either language: header, panels and footer from fixture data. */
+import "../../dist/fonts.css";
+import "../../dist/matrix.css";
+import Layout from "../components/layout/Layout.astro";
+import Panel from "../components/panel/Panel.astro";
+import Lede from "../components/lede/Lede.astro";
+import Figures from "../components/figures/Figures.astro";
+import InlineList from "../components/inline-list/InlineList.astro";
+import Log from "../components/log/Log.astro";
+import Meta from "../components/meta/Meta.astro";
+import { fixture } from "../fixtures/corpus.ts";
+interface Props {
+  lang: "en" | "ja";
+}
+const { lang } = Astro.props;
+const f = fixture[lang];
+const title = lang === "en" ? "Chrome specimen | matrix fixture" : "クロームの見本 | matrix fixture";
+---
+<Layout title={title} lang={lang} reading="human" mark={f.mark} nav={f.nav} footer={f.footer} alternate={lang === "en" ? "/chrome.ja.html" : "/chrome.html"}>
+  <h1>{lang === "en" ? "Chrome specimen" : "クロームの見本"}</h1>
+  <Panel title={f.panel.title} id="fixture-panel">
+    <Lede>{f.lede}</Lede>
+    <Meta>{f.meta}</Meta>
+    <InlineList items={f.after} variant="after" />
+  </Panel>
+  <Panel title={lang === "en" ? "Fixture figures" : "見本の数字"} id="fixture-figures">
+    <Figures items={f.figures} />
+    <InlineList items={f.words.map((label) => ({ label }))} />
+    <InlineList items={f.links} variant="links" />
+  </Panel>
+  <Panel title={lang === "en" ? "Fixture log" : "見本の記録"} id="fixture-log">
+    <p>{f.panel.text}</p>
+    <Log items={f.log} />
+  </Panel>
+  <script>
+    import "../elements.ts";
+  </script>
+</Layout>

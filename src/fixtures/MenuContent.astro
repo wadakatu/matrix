@@ -1,0 +1,16 @@
+---
+/** What the Header puts in its Menu, for the Menu's own stories. */
+import Nav from "../components/nav/Nav.astro";
+import Control from "../components/control/Control.astro";
+import { fixture } from "./corpus.ts";
+interface Props {
+  lang?: "en" | "ja";
+}
+const { lang = "en" } = Astro.props;
+---
+<Nav items={fixture[lang].nav} lang={lang} />
+<div class="mx-controls">
+  <Control action="hold" lang={lang} />
+  <Control action="palette" lang={lang} />
+  <Control action="theme" lang={lang} />
+</div>

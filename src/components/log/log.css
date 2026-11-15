@@ -1,0 +1,8 @@
+@layer mx.components {
+  .mx-log { margin-top: var(--mx-space-4); font-size: var(--mx-font-size-meta); max-width: 96ch; }
+  .mx-log li {
+    padding: var(--mx-space-1) 0;
+    border-bottom: var(--mx-border-width-hair) dotted var(--mx-color-rule);
+    overflow-wrap: anywhere;
+  }
+}

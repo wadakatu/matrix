@@ -1,0 +1,15 @@
+@layer mx.components {
+  /* Draft. A plain link to the same page in the other language, set with the header's links. */
+  .mx-lang { color: var(--mx-color-text-muted); text-decoration: none; }
+  .mx-lang:hover { color: var(--mx-color-text-lead); }
+  @media (width < 720px) {
+    .mx-controls .mx-lang {
+      display: flex;
+      flex-basis: 100%;
+      align-items: center;
+      min-height: var(--mx-size-target);
+      margin-top: var(--mx-space-2);
+      border-top: var(--mx-border-width-hair) dotted var(--mx-color-rule);
+    }
+  }
+}

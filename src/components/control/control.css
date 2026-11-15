@@ -1,0 +1,42 @@
+@layer mx.components {
+  /* One look for a button, a link, and a label wrapping a checkbox. */
+  .mx-control {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--mx-space-2);
+    font: inherit;
+    font-size: var(--mx-font-size-ui);
+    line-height: var(--mx-font-leading-ui);
+    color: var(--mx-color-text);
+    background: var(--mx-color-ground);
+    cursor: pointer;
+    text-decoration: none;
+    border: var(--mx-border-width-hair) solid var(--mx-color-control-border);
+    border-radius: var(--mx-radius-control);
+    padding: var(--mx-space-1) var(--mx-space-3);
+  }
+  .mx-control:hover { color: var(--mx-color-text-lead); border-color: var(--mx-color-accent); }
+  .mx-control[aria-pressed="true"] {
+    background: var(--mx-color-accent);
+    border-color: var(--mx-color-accent);
+    color: var(--mx-color-on-accent);
+  }
+  .mx-control input { accent-color: var(--mx-color-accent); margin: 0; }
+  /* Hold rain: the label is outlined when its checkbox has focus (05, "Focus"). */
+  .mx-control:has(input:focus-visible) {
+    outline: var(--mx-border-width-strong) solid var(--mx-color-focus);
+    outline-offset: 3px;
+  }
+
+  /* Daylight and Operator need the controller; without it they are absent, not dead (05). */
+  mx-root:not(:defined) .mx-control:is([data-action="theme"], [data-action="palette"]) { display: none; }
+  /* An engine without light-dark() has only the night world, so there is no day to switch to (03). */
+  @supports not (color: light-dark(#000, #fff)) {
+    .mx-control[data-action="theme"] { display: none; }
+  }
+  /* Nothing moves, so there is nothing to hold (05, "One switch for all endless motion"). */
+  :root[data-motion="off"] .mx-control[data-action="hold"] { display: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .mx-control[data-action="hold"] { display: none; }
+  }
+}

@@ -1,0 +1,19 @@
+---
+/** A wrapping row. Words are a list; links are a paragraph of links, as in the prototype. */
+export interface Item {
+  label: string;
+  href?: string;
+  lang?: "en" | "ja";
+}
+interface Props {
+  items: Item[];
+  variant?: "after" | "links";
+}
+const { items, variant } = Astro.props;
+const words = !variant;
+---
+{words ? (
+  <ul class="mx-inline-list">{items.map((i) => <li lang={i.lang}>{i.href ? <a href={i.href}>{i.label}</a> : i.label}</li>)}</ul>
+) : (
+  <p class="mx-inline-list" data-variant={variant}>{items.map((i) => <a href={i.href} lang={i.lang}>{i.label}</a>)}</p>
+)}

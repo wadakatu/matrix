@@ -1,0 +1,28 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+import data from "../../.storybook/foundations.json";
+
+<Meta title="Foundations/Type" />
+
+# Type
+
+Three self-hosted families: IBM Plex Mono for Latin text, M PLUS 1 Code for any run marked
+`lang="ja"`, DotGothic16 for the rain and never for reading text. Specimens are set by the tokens
+themselves.
+
+<table>
+  <thead><tr><th>Token</th><th>Value</th><th>Specimen</th></tr></thead>
+  <tbody>
+    {data.type.map((t) => {
+      const prop = t.id.startsWith("font.size") ? "fontSize" : t.id.startsWith("font.weight") ? "fontWeight" : t.id.startsWith("font.family") ? "fontFamily" : "lineHeight";
+      return (
+        <tr key={t.id}>
+          <td><code>{t.id}</code><br /><small>{t.description}</small></td>
+          <td><code>{t.value}</code></td>
+          <td style={{ [prop]: `var(${t.css})` }}>
+            <span lang="en">Station 0123</span> <span lang="ja">機械用の見本</span>
+          </td>
+        </tr>
+      );
+    })}
+  </tbody>
+</table>

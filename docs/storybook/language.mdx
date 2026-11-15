@@ -1,0 +1,24 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+import data from "../../.storybook/foundations.json";
+
+<Meta title="Foundations/Language" />
+
+# Language
+
+One language per page (L6). English is at the root and Japanese under `/ja/`; a run of the other
+language carries `lang` and takes that language's face. The chrome's words come from
+`@wadakatu/matrix/strings`, chosen by the page's language. 人間用 and 機械用 are names, the same in
+both, and are not in the strings.
+
+The Japanese strings are waiting for wadakatu's review (09, task 2.6).
+
+<table>
+  <thead><tr><th>Key</th><th>en</th><th>ja</th></tr></thead>
+  <tbody>
+    {Object.entries(data.strings.en).flatMap(([k, v]) =>
+      typeof v === "string" ? [[k, v, data.strings.ja[k]]] : Object.entries(v).map(([k2, v2]) => [`${k}.${k2}`, v2, data.strings.ja[k][k2]]),
+    ).map(([k, en, ja]) => (
+      <tr key={k}><td><code>{k}</code></td><td lang="en">{en}</td><td lang="ja">{ja}</td></tr>
+    ))}
+  </tbody>
+</table>

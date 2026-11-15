@@ -1,0 +1,11 @@
+@layer mx.components {
+  .mx-figures div {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--mx-space-4);
+    padding: var(--mx-space-1) 0;
+    border-bottom: var(--mx-border-width-hair) dotted var(--mx-color-rule);
+  }
+  .mx-figures dt { color: var(--mx-color-text-muted); }
+  .mx-figures dd { font-variant-numeric: tabular-nums; }
+}

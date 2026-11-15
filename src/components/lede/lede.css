@@ -1,0 +1,3 @@
+@layer mx.components {
+  .mx-lede { max-width: calc(var(--mx-size-measure-lede) * 1ch); color: var(--mx-color-text-muted); }
+}

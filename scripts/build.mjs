@@ -10,11 +10,15 @@ rmSync("dist", { recursive: true, force: true });
 // 1. Tokens: dist/tokens.css, tokens.json, tokens.d.ts.
 execFileSync("node_modules/.bin/tz", ["build", "--quiet"], { stdio: "inherit" });
 
-// 2. One flattened stylesheet, in layer order. Components and effects join this list as they arrive.
-const STYLESHEETS = ["src/css/index.css", "dist/tokens.css", "src/css/reset.css", "src/css/base.css", "src/css/utilities.css"];
+// 2. Elements, the head script and the strings: tsc, ESM and declarations (01, "Build").
+execFileSync("node_modules/.bin/tsc", ["-p", "tsconfig.json"], { stdio: "inherit" });
+
+// 3. One flattened stylesheet, in layer order. Components and effects join this list as they arrive.
+export const COMPONENTS = ["root", "logo", "mark", "nav", "control", "header", "menu", "lang", "footer", "panel", "lede", "figures", "inline-list", "log", "meta", "moved"];
+const STYLESHEETS = ["src/css/index.css", "dist/tokens.css", "src/css/reset.css", "src/css/base.css", ...COMPONENTS.map((c) => `src/components/${c}/${c}.css`), "src/css/utilities.css"];
 writeFileSync("dist/matrix.css", STYLESHEETS.map((f) => readFileSync(f, "utf8")).join("\n"));
 
-// 3. Fonts: Fontsource's @font-face rules for the weights in use, WOFF2 only, files copied
+// 4. Fonts: Fontsource's @font-face rules for the weights in use, WOFF2 only, files copied
 // into the package so that no page requests another origin (D9).
 const FONTS = [
   ["@fontsource/ibm-plex-mono", [400, 500, 700]],
@@ -42,4 +46,4 @@ for (const [pkg, weights] of FONTS) {
 }
 writeFileSync("dist/fonts.css", fontsCss);
 
-console.log("✔ build: dist/tokens.{css,json,d.ts}, dist/matrix.css, dist/fonts.css");
+console.log("✔ build: dist/tokens.{css,json,d.ts}, dist/{elements,head,strings}, dist/matrix.css, dist/fonts.css");

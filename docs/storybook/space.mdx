@@ -1,0 +1,22 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+import data from "../../.storybook/foundations.json";
+
+<Meta title="Foundations/Space and size" />
+
+# Space and size
+
+Context-free scales. Breakpoints are listed for reference: media queries cannot read custom
+properties, so CSS writes these four as literals and a lint rule allows only them.
+
+<table>
+  <thead><tr><th>Token</th><th>Value</th><th>Description</th></tr></thead>
+  <tbody>
+    {data.space.map((t) => (
+      <tr key={t.id}>
+        <td><code>{t.id}</code></td>
+        <td><code>{t.value}</code>{t.id.startsWith("space.") && <span style={{ display: "inline-block", marginLeft: "1rem", height: "0.5rem", width: `var(${t.css})`, background: "currentcolor" }} />}</td>
+        <td><small>{t.description}</small></td>
+      </tr>
+    ))}
+  </tbody>
+</table>

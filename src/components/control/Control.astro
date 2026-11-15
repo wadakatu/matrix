@@ -1,0 +1,29 @@
+---
+/**
+ * A control. With `action` it is one of the chrome's three: Hold rain (a checkbox, works without
+ * scripts), Operator colours and Daylight (buttons that `mx-root` drives). Without it, a button or
+ * a link (`href`) whose label is the slot.
+ */
+import { strings, type Lang } from "../../strings/index.ts";
+interface Props {
+  action?: "hold" | "palette" | "theme";
+  /** A link instead of a button. */
+  href?: string;
+  /** For a plain button: its pressed state. The toggles start unpressed; `mx-root` sets them. */
+  pressed?: boolean;
+  /** The checkbox's state, for Hold rain. */
+  checked?: boolean;
+  lang?: Lang;
+}
+const { action, href, pressed, checked = false, lang = "en" } = Astro.props;
+const t = strings[lang];
+---
+{action === "hold" ? (
+  <label class="mx-control" data-action="hold"><input type="checkbox" checked={checked} /> {t.hold}</label>
+) : action ? (
+  <button class="mx-control" data-action={action} type="button" aria-pressed={String(pressed ?? false)}>{t[action]}</button>
+) : href ? (
+  <a class="mx-control" href={href}><slot /></a>
+) : (
+  <button class="mx-control" type="button" aria-pressed={pressed === undefined ? undefined : String(pressed)}><slot /></button>
+)}

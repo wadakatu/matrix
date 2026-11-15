@@ -1,0 +1,19 @@
+---
+/** Contact links and the logo's credit. The links are the site's. */
+import type { Lang } from "../../strings/index.ts";
+export interface FooterLink {
+  label: string;
+  href: string;
+  /** Set when the label is in the other language (L6). */
+  lang?: Lang;
+}
+interface Props {
+  links: FooterLink[];
+}
+const { links } = Astro.props;
+const row = Astro.slots.has("default");
+---
+<footer class="mx-footer mx-frame">
+  {row && <div class="mx-footer-row"><slot /></div>}
+  {links.map((l) => <a href={l.href} lang={l.lang}>{l.label}</a>)}
+</footer>

@@ -1,0 +1,22 @@
+---
+/**
+ * The head contract: meta, and the pre-paint script inlined so that a Content Security Policy can
+ * allow it by hash. The stylesheets (`@wadakatu/matrix/css`, `fonts.css`) are imported by the site's layout.
+ */
+import { headScript } from "./head.ts";
+import tokens from "../../dist/tokens.json";
+interface Props {
+  title: string;
+  description?: string;
+  /** Code for the site's own flags, run inside the script (see `headScript`). */
+  flags?: string;
+}
+const { title, description, flags } = Astro.props;
+---
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="color-scheme" content="dark light" />
+<meta name="theme-color" content={tokens["phosphor-night"]["color.ground"]} />
+<title>{title}</title>
+{description && <meta name="description" content={description} />}
+<script is:inline set:html={headScript(flags)} />

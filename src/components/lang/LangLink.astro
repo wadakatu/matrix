@@ -1,0 +1,13 @@
+---
+/** The same page in the other language. Its name is in that language and says so (L6). */
+import { strings, type Lang } from "../../strings/index.ts";
+interface Props {
+  /** Address of the twin. */
+  href: string;
+  /** The language of the page it sits on. */
+  lang?: Lang;
+}
+const { href, lang = "en" } = Astro.props;
+const other = strings[lang].other;
+---
+<a class="mx-lang" href={href} hreflang={other.lang} lang={other.lang}>{other.label}</a>

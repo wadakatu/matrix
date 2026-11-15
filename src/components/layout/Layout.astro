@@ -1,0 +1,45 @@
+---
+/**
+ * The page frame: skip link, rain slot, header, main, footer and the status region, inside
+ * <mx-root>. Every root attribute has its no-script value in this markup (03). The site imports
+ * the stylesheets and `@wadakatu/matrix/elements` itself (08).
+ */
+import Head from "../../head/Head.astro";
+import Header from "../header/Header.astro";
+import Footer, { type FooterLink } from "../footer/Footer.astro";
+import Status from "../status/Status.astro";
+import type { NavItem } from "../nav/Nav.astro";
+import { strings, type Lang } from "../../strings/index.ts";
+interface Props {
+  title: string;
+  description?: string;
+  lang: Lang;
+  /** Set by each static route; absent on a document with one reading. */
+  reading?: "human" | "machine";
+  mark: { href: string; label: string; logo: string };
+  nav: NavItem[];
+  footer: FooterLink[];
+  /** The twin in the other language (L6). */
+  alternate?: string;
+  /** The site's own flags, for the head script. */
+  flags?: string;
+}
+const { title, description, lang, reading, mark, nav, footer, alternate, flags } = Astro.props;
+---
+<!doctype html>
+<html lang={lang} data-theme="night" data-reading={reading}>
+  <head>
+    <Head title={title} description={description} flags={flags} />
+    <slot name="head" />
+  </head>
+  <body>
+    <mx-root>
+      <a class="mx-skip" href="#main">{strings[lang].skip}</a>
+      <slot name="rain" />
+      <Header mark={mark} nav={nav} alternate={alternate} lang={lang}><slot name="switch" slot="switch" /></Header>
+      <main id="main" class="mx-frame" tabindex="-1"><slot /></main>
+      <Footer links={footer}><slot name="footer" /></Footer>
+      <Status />
+    </mx-root>
+  </body>
+</html>

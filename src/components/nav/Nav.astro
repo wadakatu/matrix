@@ -1,0 +1,18 @@
+---
+/** The site's main links. Items and their labels are the site's; the landmark's name is a chrome string. */
+import { strings, type Lang } from "../../strings/index.ts";
+export interface NavItem {
+  label: string;
+  href: string;
+  /** `page` on the page itself, `true` inside its section (a post under Blog). */
+  current?: "page" | "true";
+}
+interface Props {
+  items: NavItem[];
+  lang?: Lang;
+}
+const { items, lang = "en" } = Astro.props;
+---
+<nav class="mx-nav" aria-label={strings[lang].nav}>
+  {items.map((i) => <a href={i.href} aria-current={i.current}>{i.label}</a>)}
+</nav>
