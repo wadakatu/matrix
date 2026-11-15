@@ -295,23 +295,38 @@ test.describe("4.3 viewport", () => {
       switch: document.querySelector(".mx-header .mx-switch").getBoundingClientRect().height > 0,
     }));
     expect(f).toMatchObject({ kb: true, body: 420, modeline: "none", guide: "none", switch: true });
+    expect(await page.locator("mx-terminal").getAttribute("data-zoom")).toBeNull(); // a keyboard keeps the lock
     expect(f.prompt).toBeLessThanOrEqual(420);
     expect(f.chips).toBeLessThanOrEqual(420);
     await page.evaluate(() => window.__setKb(false));
     expect(await page.locator("mx-terminal").getAttribute("data-keyboard")).toBeNull();
   });
 
-  test("a pinch zoom (half the height at twice the scale) is not taken for a keyboard", async ({ page }) => {
+  test("a pinch zoom to 422 visible px (390×844 at scale 2) is not a keyboard, and the lock lets go (05); back to scale 1 takes it back", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.addInitScript(() => {
       const vv = window.visualViewport;
-      Object.defineProperty(vv, "height", { get: () => innerHeight / 2 });
-      Object.defineProperty(vv, "scale", { get: () => 2 });
+      window.__scale = 2;
+      Object.defineProperty(vv, "height", { get: () => innerHeight / window.__scale });
+      Object.defineProperty(vv, "scale", { get: () => window.__scale });
+      window.__setScale = (s) => ((window.__scale = s), vv.dispatchEvent(new Event("resize")));
     });
     await open(page, HOME);
     await live(page);
-    expect(await page.locator("mx-terminal").getAttribute("data-keyboard")).toBeNull();
-    expect(await page.evaluate(() => document.body.getBoundingClientRect().height)).toBe(844);
+    for (let i = 0; i < 4; i++) await type(page, "help");
+    const term = page.locator("mx-terminal");
+    expect(await term.getAttribute("data-keyboard")).toBeNull();
+    expect(await term.getAttribute("data-zoom")).not.toBeNull();
+    let f = await fit(page);
+    expect(f.bodyOverflow).not.toBe("hidden");
+    expect(f.docHeight).toBeGreaterThan(844);
+    await page.mouse.wheel(0, 400);
+    await expect.poll(async () => (await fit(page)).scrollY).toBeGreaterThan(0);
+    // 562 visible px: still fits, the lock holds.
+    await page.evaluate(() => window.__setScale(1.5));
+    expect(await term.getAttribute("data-zoom")).toBeNull();
+    f = await fit(page);
+    expect([f.docHeight, f.bodyOverflow, f.scrollY]).toEqual([844, "hidden", 0]);
   });
 
   test("the shell's script blocked: the recorded session gets its scrolling page back after motion.shell.fallback", async ({ page }) => {

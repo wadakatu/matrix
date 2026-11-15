@@ -53,6 +53,8 @@ link, a run, the swatches) or a card (an image with lines beside it). Effects: `
   inside the screen. The name (`h1`) is visually hidden and the footer is gone.
 - `data-keyboard` on the element (an on-screen keyboard is up): the status line and guide give way,
   and from 720px the window list too.
+- `data-zoom` on the element (a pinch zoom leaves under 480 visible CSS px, no keyboard): the one
+  viewport lets go and the document scrolls.
 - `data-overlay="rain"`: the page's own rain over the window until any key; parked still with motion off.
 - Below 1360px in the live shell, the Operator and Daylight buttons give way to `theme` and
   `palette`, so that the shortcut's off switch fits the one header row (69px at 1100); below 720px
@@ -72,8 +74,10 @@ change is the page's own; `navigate` keeps the carried flags; `clear` empties th
 The viewport: with scripts running, 機械用 is locked to one viewport whose height follows
 `visualViewport` (`--mx-vvh`). The head script gives the recorded session its scrolling page back
 after `motion.shell.fallback` (`data-shell="recorded"`); an element that goes live later takes the
-viewport back. The lock lets go whenever the window is under 480px tall (zoom, a short window), and
-a keyboard never causes that, because it shrinks only the visual viewport (05). With
+viewport back. The lock lets go whenever the visible height is under 480 CSS px and a keyboard is not
+the cause (05): a short window or browser zoom (the layout viewport), or a pinch zoom (`data-zoom` on
+the element, set from `visualViewport`). A keyboard shrinks only the visual viewport at scale 1, so it
+sets `data-keyboard` instead and the lock holds. With
 `interactive-widget=resizes-content` in a page's viewport meta a keyboard would shrink the layout
 viewport too; matrix's `Head` does not set it.
 

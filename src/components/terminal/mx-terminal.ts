@@ -281,10 +281,13 @@ export class MxTerminal extends HTMLElement {
     if (!vv) return;
     // Pinch zoom changes height and scale together; a keyboard changes height alone.
     const h = vv.height * vv.scale;
+    const keyboard = h < innerHeight - 120;
     d.style.setProperty("--mx-vvh", `${h}px`);
-    this.toggleAttribute("data-keyboard", h < innerHeight - 120);
-    // Locked (05, "lets go when it cannot fit"): the window stays at the top; the session scrolls inside.
-    if (d.dataset.reading === "machine" && matchMedia("(height >= 480px)").matches) {
+    this.toggleAttribute("data-keyboard", keyboard);
+    // 05, "lets go when it cannot fit": under 480 visible CSS px that a keyboard did not cause (a pinch zoom).
+    this.toggleAttribute("data-zoom", vv.height < 480 && !keyboard);
+    // Locked: the window stays at the top; the session scrolls inside.
+    if (d.dataset.reading === "machine" && !this.hasAttribute("data-zoom") && matchMedia("(height >= 480px)").matches) {
       scrollTo(0, 0);
       this.#bottom();
     }
