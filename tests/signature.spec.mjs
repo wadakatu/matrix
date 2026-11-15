@@ -542,6 +542,7 @@ test.describe("3.6 readings", () => {
     await ready(page);
     await page.locator(".mx-menu > summary").click();
     await expect(page.locator('.mx-header [data-action="shortcut"]')).toBeVisible();
+    expect((await page.locator('.mx-header [data-action="shortcut"]').boundingBox()).height).toBeGreaterThanOrEqual(44);
   });
 
   test("without scripts, the off switch and its hint are absent", async ({ browser }) => {

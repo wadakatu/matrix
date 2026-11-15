@@ -364,7 +364,7 @@ test.describe("header", () => {
 
     test("menu lines and controls are 44px targets", async ({ page }) => {
       await summary(page).click();
-      const boxes = await page.$$eval(".mx-header .mx-nav a, .mx-controls .mx-control, .mx-lang, .mx-menu > summary", (els) => els.map((e) => [e.textContent.trim(), e.getBoundingClientRect().height]));
+      const boxes = await page.$$eval(".mx-header .mx-nav a, .mx-controls .mx-control, .mx-lang, .mx-menu > summary", (els) => els.filter((e) => e.checkVisibility()).map((e) => [e.textContent.trim(), e.getBoundingClientRect().height]));
       for (const [name, h] of boxes) expect(h, name).toBeGreaterThanOrEqual(44);
     });
   });

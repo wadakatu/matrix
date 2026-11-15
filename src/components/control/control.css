@@ -34,8 +34,9 @@
   }
 
   /* Daylight and Operator need the controller; without it they are absent, not dead (05). */
-  mx-root:not(:defined) .mx-control:is([data-action="theme"], [data-action="palette"], [data-action="shortcut"]) { display: none; }
-  mx-root:not(:defined) .mx-footer-row:has([data-action="shortcut"]) { display: none; }
+  mx-root:not(:defined) .mx-control:is([data-action="theme"], [data-action="palette"]) { display: none; }
+  /* The shortcut's off switch needs the readings it switches: absent without them or without scripts. */
+  :root:not(:has(mx-readings:defined)) :is(.mx-control[data-action="shortcut"], .mx-footer-row:has([data-action="shortcut"])) { display: none; }
   /* An engine without light-dark() has only the night world, so there is no day to switch to (03). */
   @supports not (color: light-dark(#000, #fff)) {
     .mx-control[data-action="theme"] { display: none; }
