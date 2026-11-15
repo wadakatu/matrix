@@ -26,5 +26,10 @@ Unreleased. The foundation: an empty but real package.
   the three rewards, scan lines.
 - `@wadakatu/matrix/lib`: the seeded build-time helpers (rain, strands, curtain, glyph pools,
   the name mask, decode frames, the film-name filter).
+- Terminal (`<mx-terminal>`): one shell in one viewport that follows `visualViewport`, the
+  recorded session without scripts and the fallback to it, the line editor, keys and block
+  cursor, effects for the site's interpreter; Prompt, Guide, Chips, Status line, Takeover,
+  Fetch card, Login card, Swatches, Run. The interpreter contract, the one renderer and a demo
+  interpreter in `@wadakatu/matrix/lib`.
 - `npm run check`: token validity, contrast, golden values, no raw values, unknown tokens,
   freshness, the Baseline ledger, package contents and version consistency.
