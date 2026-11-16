@@ -147,7 +147,7 @@ specimen pages.
 
 | Feature | Without scripts |
 | --- | --- |
-| 機械用 | The recorded session as a scrolling document; all links real; status line says `recorded session`; no prompt, no dead buttons |
+| 機械用 | The recorded session as a scrolling document; all links real; status line says `recorded session`; no prompt, and no dead buttons but the commands in its output (below) |
 | Reading switch, guide link | Plain links between the two static routes |
 | Menu, login card, contents | Native `<details>` |
 | Hold rain | Works (a checkbox and `:has()`) |
@@ -155,6 +155,12 @@ specimen pages.
 | Daylight, Operator, the shortcut, Copy, share sheet, current-section mark | Absent, and their controls are not rendered as dead buttons (`:not(:defined)` hides them) |
 | Intro | Never shown |
 | Moved address | Arrives by `meta refresh`, without the query |
+
+One exception to "no dead buttons", settled by wadakatu on 2026-11-16: a command in the
+recorded session's output (a file name in a listing, a suggestion in a message) is still a
+button, outside the tab order and styled as text, and without scripts it does nothing. The
+recorded and the live output have to be the same markup (09, task 4.1), so the renderer
+prints one form for both.
 
 ## Zoom, reflow, forced colours
 

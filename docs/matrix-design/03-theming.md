@@ -225,12 +225,18 @@ Requirements on that script:
 Two keys persist, both in `localStorage`: `mx-theme`, the reader's theme, and `mx-shortcut`,
 the off switch of the single-key shortcut (05, "Keyboard"). Each is written only after the
 reader chooses. That the off switch persists, rather than lasting for the tab, was settled
-by wadakatu on 2026-11-15. `mx-boot` is in `sessionStorage` and ends with the tab.
+by wadakatu on 2026-11-15.
+
+Three keys are in `sessionStorage` and end with the tab: `mx-boot` (the intro has played;
+05), `mx-guide` (the guide line was dismissed) and `mx-history` (the commands typed into
+the shell; 04, "Terminal"). No third persistent key is added for the guide or the history:
+that both last for the tab only was settled by wadakatu on 2026-11-16.
 
 The Storybook is served from `matrix.wadakatu.dev`
 (06), a different origin from the site, so the two share no storage and no service worker.
 The Storybook preview still never reads or writes `mx-*` storage: its toolbar is the only
-state, so a story looks the same for every visitor. TOMBO's `tombo-theme` key is removed
+state, so a story looks the same for every visitor; the terminal's two keys are switched
+off there with `MxTerminal.remember = false` (06). TOMBO's `tombo-theme` key is removed
 once on first load after migration and is not mapped to a matrix theme: a stored "light"
 from the old site is not a request for day in the new one.
 
