@@ -49,10 +49,10 @@ The prototype's own notes give 712.3 and 656.4 for the screen with the guide lin
 | Status line | `0:sh*` instead of `0:zsh*` | The process name is the interpreter's (`prompt().shell`); the demo's is `sh` |
 | Chips | `help, ls, cat about.txt, ls -l projects, neofetch, view about.txt, clear, exit` | The site passes its chips; these are the demo's commands |
 | Header at 1440 | The shortcut's off switch (`Enable \ / ¥ shortcut`) after Daylight | 04, "Readings": matrix adds the off switch to the menu; from 720px it shows there once the live shell has taken the footer away (settled in Phase 3) |
-| Header from 720 to 1359px | Operator colours and Daylight are not shown in the live shell (not in these stills) | So that the off switch fits the one header row beside Hold rain, which matrix shows in both readings (05). The prototype's own rule, that the two buttons give way to `theme` and `palette`, applied below 720px only; matrix extends it to 1359px. Measured: 69px at 1100 with Hold rain, the off switch and everything else in the row |
+| Header from 720 to 1359px | Operator colours and Daylight are not shown in the live shell (not in these stills) | So that the off switch fits the one header row beside Hold rain, which matrix shows in both readings (05). The prototype's own rule, that the two buttons give way to `theme` and `palette`, applied below 720px only; matrix extends it to 1359px. Measured: 69px at 1100 with Hold rain, the off switch and everything else in the row. Settled: accepted as built (below) |
 | Header, no scripts | Hold rain is shown | 05, "One switch for all endless motion" (as Phase 3) |
 | Session without scripts | The recording's note is the session's first line, with no motd | The prototype's recording printed `Last login: not on record.` and then the note; a motd's words are for a live prompt |
-| Runs without scripts | File names in listings are buttons styled as text, as in the live shell | The recorded and live output are one markup (4.1). The prototype printed them as plain text in the recording |
+| Runs without scripts | File names in listings are buttons styled as text, as in the live shell | The recorded and live output are one markup (4.1). The prototype printed them as plain text in the recording. Settled: they stay buttons (below) |
 | Muted text, phosphor-night | `#80c194` instead of `#7cbd90` | Decision Q9 (02, "Changed from the prototype") |
 | Compact switch, still | The `▾` at 12px instead of 9px | Settled in Phase 3 |
 
@@ -105,3 +105,16 @@ Measured on both, in every one of the four captures (1440 and 390, phosphor-nigh
 
 Nothing else in the Takeover's chrome (the box, the buffer, the tilde column, the message line, the
 hidden prompt text with the cursor on the command line, the chips and status line below) differs.
+
+## Settled
+
+The questions this phase left on pull request #64, as answered by wadakatu on 2026-11-16. They are
+decisions now.
+
+| Question | Decision |
+| --- | --- |
+| To keep the 機械用 header at 69px at 1100px, the live shell hides the Operator colours and Daylight buttons below 1360px, where the prototype did so only below 720px. Is that acceptable? | Yes, accepted as built. Below 1360px in the live shell the two buttons give way to the `theme` and `palette` commands, and the row holds Hold rain and the shortcut's off switch at 69px at 1100px. From 1360px nothing is hidden. The row above is an accepted difference; 04 ("Chrome": Header, Theme toggle, Palette toggle) was brought into line |
+| The guide's × and the command history are remembered for the tab only (`sessionStorage['mx-guide']`, `sessionStorage['mx-history']`); the prototype kept the guide's in `localStorage`. Keep them tab-scoped? | Yes. No third persistent key is added: `mx-theme` and `mx-shortcut` remain the two (Phase 3). 03 ("Storage and same-origin neighbours") now names the keys that last for the tab, and 04's Guide line says "for the tab" |
+| 4.1 (09) requires recorded and live output to be the same markup, and 05 said the recorded session has no dead buttons. File names in the recorded session are buttons styled as text that do nothing. Accept that reading? | Yes. They stay buttons, as 4.1 requires. 05 ("Without JavaScript") now states the exception, and the row above is an accepted difference |
+| Three additions to the interpreter contract (an optional `key(k)`, so that a takeover like `vim` can react to single keys; `prompt().shell`, the process name in the status line; a `{ swatches: true }` segment for the fetch card's colour row) and `MxTerminal.remember`, a public static on the element class that only the Storybook preview uses, so that stories neither read nor write real `mx-*` storage (03, 06). Adopt them? | Yes, all four as built. The three are in 04's contract table; `MxTerminal.remember` is not part of that contract and is recorded beside it in 04 ("Terminal") and in 06 ("Toolbar globals") |
+| The new chrome strings in `src/strings/en.ts` and `ja.ts`: the guide's sentence, link and ×; the terminal's screen label, field label and hint, recording note and "recorded session"; the chips' group and key names; the "opens in a new tab" suffix; the login summary; the rain overlay's messages | Approved as they are. The Phase 2 and Phase 3 strings were approved before |
