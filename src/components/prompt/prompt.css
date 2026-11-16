@@ -1,0 +1,41 @@
+@layer mx.components {
+  /* The command line: a real text field. Its caret is drawn as a block that shows the character under
+     it in reverse, lit while the field has focus and hollow when it does not, which is also the
+     field's focus indicator (05, "Focus"). It blinks five times after a keystroke, then rests lit. */
+  .mx-prompt { display: flex; flex-wrap: wrap; align-items: baseline; margin-top: var(--mx-space-1-5); }
+  .mx-prompt > label, .mx-prompt > label > .mx-prompt-ps { display: contents; }
+  .mx-prompt > label > .mx-prompt-ps[hidden] { display: none; }
+  .mx-prompt-who, .mx-prompt-sym { color: var(--mx-color-accent); white-space: nowrap; }
+  .mx-prompt-who { max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
+  .mx-prompt-sym { margin-right: 1ch; }
+  .mx-prompt-field { position: relative; flex: 1 1 10ch; min-width: 0; }
+  .mx-prompt-field input {
+    display: block;
+    width: 100%;
+    height: 1.6em;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    outline: none;
+    font: inherit;
+    color: var(--mx-color-text-lead);
+    background: none;
+    caret-color: transparent;
+  }
+  .mx-prompt-mirror, .mx-prompt-cursor { position: absolute; left: 0; top: 0.15em; height: 1.3em; line-height: 1.3em; white-space: pre; pointer-events: none; }
+  .mx-prompt-mirror { visibility: hidden; }
+  .mx-prompt-cursor { min-width: 1ch; color: var(--mx-color-on-accent); background: var(--mx-color-accent); }
+  .mx-prompt-cursor[data-blink] { animation: mx-blink var(--mx-motion-blink-duration) steps(1) var(--mx-motion-blink-count); }
+  .mx-prompt-field:not(:focus-within) .mx-prompt-cursor { color: transparent; background: none; box-shadow: inset 0 0 0 1px var(--mx-color-accent); animation: none; }
+  @media (forced-colors: active) {
+    .mx-prompt-cursor { forced-color-adjust: none; color: Canvas; background: Highlight; }
+    .mx-prompt-field:not(:focus-within) .mx-prompt-cursor { box-shadow: inset 0 0 0 1px CanvasText; }
+  }
+  /* Below 720px the prompt takes two lines, the path above and $ below, so there is room to type. */
+  @media (width < 720px) { .mx-prompt-who { flex-basis: 100%; } }
+  /* 16px on touch, so iOS does not zoom into the field (05, "Targets"). */
+  @media (pointer: coarse) { .mx-prompt { font-size: var(--mx-font-size-read-compact); } }
+  :root[data-motion="off"] .mx-prompt-cursor[data-blink] { animation: none; }
+  @media (prefers-reduced-motion: reduce) { .mx-prompt-cursor[data-blink] { animation: none; } }
+}

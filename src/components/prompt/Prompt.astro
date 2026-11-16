@@ -1,0 +1,25 @@
+---
+/**
+ * The command line: a real text field with a drawn block cursor (04, "Prompt"). `mx-terminal` keeps
+ * the prompt text, the mirror and the cursor in step; without scripts the whole form is absent.
+ */
+import { promptText, type Prompt } from "../../lib/index.ts";
+import { strings, type Lang } from "../../strings/index.ts";
+interface Props {
+  /** The field's id; its hint is `<id>-hint`. */
+  id: string;
+  prompt: Prompt;
+  lang?: Lang;
+}
+const { id, prompt, lang = "en" } = Astro.props;
+const t = strings[lang];
+const ps = promptText(prompt);
+---
+<form class="mx-prompt" autocomplete="off">
+  <label for={id}><span class="mx-prompt-ps" aria-hidden="true"><span class="mx-prompt-who">{ps.slice(0, -1)}</span><span class="mx-prompt-sym">{ps.slice(-1)}</span></span><span class="mx-vh">{t.terminal.command}</span></label>
+  <span class="mx-prompt-field">
+    <input id={id} name="cmd" type="text" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="go" aria-describedby={`${id}-hint`} />
+    <span class="mx-prompt-mirror" aria-hidden="true"></span><span class="mx-prompt-cursor" aria-hidden="true"> </span>
+  </span>
+</form>
+<p class="mx-prompt-hint mx-vh" id={`${id}-hint`}>{t.terminal.hint}</p>

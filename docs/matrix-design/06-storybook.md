@@ -97,6 +97,10 @@ The sidebar follows the inventory in 04 one to one.
 
 Each global maps to one root attribute (03). No story sets these itself, and no story reads
 storage: the toolbar is the only state, so a story looks the same for every visitor.
+The terminal would otherwise keep its history and the guide's dismissal in `sessionStorage`
+(03), so the preview sets `MxTerminal.remember = false`, a public static on the element
+class, before the first story; no terminal story then reads or writes `mx-history` or
+`mx-guide`. Nothing but the preview sets it.
 
 | Global | Values | Sets |
 | --- | --- | --- |

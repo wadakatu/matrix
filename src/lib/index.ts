@@ -181,3 +181,6 @@ export function nameMask(lines: readonly string[], { rows = 26, width = 150 } = 
     `</g></mask><rect width="100%" height="100%" mask="url(#m)"/></svg>`;
   return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
 }
+
+export * from "./terminal.ts";
+export { demoInterpreter, type DemoWorld } from "./demo.ts";

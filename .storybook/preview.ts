@@ -5,9 +5,8 @@ import "../dist/matrix.css";
 import "./preview.css";
 import Language from "./Language.astro";
 import Contexts from "../src/fixtures/Contexts.astro";
-// The elements touch the DOM when they load; the framework also reads this file on the server.
+// The elements touch the DOM when they load (beforeAll, below); the framework also reads this file on the server.
 if (typeof document !== "undefined") {
-  import("../src/elements.ts");
   // Stamps the story in the root's language (Language.astro). Defined before any story is on the
   // page, so it runs as the story is inserted, before the accessibility check reads it.
   customElements.get("sb-language") ?? customElements.define("sb-language", class extends HTMLElement {
@@ -49,13 +48,23 @@ export default {
       return { component: Language, slots: { en: render("en"), ja: render("ja") } };
     },
   ],
+  // The elements, before the first story is on the page; the terminal keeps no history or guide
+  // state between stories (03, 06).
+  beforeAll: async () => {
+    if (typeof document === "undefined") return;
+    const [{ MxTerminal }] = await Promise.all([import("../src/components/terminal/mx-terminal.ts"), import("../src/elements.ts")]);
+    MxTerminal.remember = false;
+  },
   // Each global is one root attribute (03). Astro decorators run on the server, so this is where
   // the iframe's <html> is set; it runs again on every toolbar change (S1).
-  beforeEach: ({ globals, parameters }: { globals: Record<string, string>; parameters: { boot?: string } }) => {
+  beforeEach: ({ globals, parameters }: { globals: Record<string, string>; parameters: { boot?: string; shell?: string } }) => {
     const root = document.documentElement;
     // The boot's still is a root attribute too (03); only its stories set it.
     if (parameters.boot) root.dataset.boot = parameters.boot;
     else delete root.dataset.boot;
+    // So is the live shell's (4.3): the stories of its parts that only show in a live shell set it.
+    if (parameters.shell) root.dataset.shell = parameters.shell;
+    else delete root.dataset.shell;
     root.dataset.palette = globals.palette;
     root.dataset.theme = globals.theme;
     root.dataset.reading = globals.reading;

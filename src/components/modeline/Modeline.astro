@@ -1,0 +1,23 @@
+---
+/**
+ * The status line, tmux style: the reading, where the shell is, the time in Japan, and the way back
+ * (04, "Status line"). Without scripts it says `recorded session`.
+ */
+import { strings, type Lang } from "../../strings/index.ts";
+interface Props {
+  /** The static twin in 人間用. */
+  human: string;
+  lang?: Lang;
+  /** What `mx-terminal` writes once it runs (`0:sh* ~`, the time); given here only for stories. */
+  where?: string;
+  time?: string;
+}
+const { human, lang = "en", where, time } = Astro.props;
+const t = strings[lang];
+---
+<p class="mx-modeline">
+  <span class="mx-modeline-mode">[<span lang="ja">機械用</span>]</span>
+  <span class="mx-modeline-where">{where ?? t.terminal.where}</span>
+  <span class="mx-modeline-time">{time}</span>
+  <a class="mx-modeline-way" data-to="human" href={human}><span lang="ja">人間用</span></a>
+</p>

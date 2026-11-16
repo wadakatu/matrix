@@ -149,10 +149,10 @@ export function golden(built, m2) {
 
 // ---------- unknown token ----------
 
-/** Every var(--mx-*) used must be a token or a property declared somewhere in the sources. */
+/** Every var(--mx-*) used must be a token or a property declared somewhere in the sources, in CSS or by an element (`setProperty`). */
 export function unknownTokens(files, built) {
   const known = new Set(Object.keys(built[CONTEXTS[0]]).map(cssName));
-  for (const text of Object.values(files)) for (const [, name] of text.matchAll(/(--mx-[\w-]+)\s*:/g)) known.add(name);
+  for (const text of Object.values(files)) for (const [, a, b] of text.matchAll(/(--mx-[\w-]+)\s*:|setProperty\(\s*["'](--mx-[\w-]+)/g)) known.add(a ?? b);
   const errors = [];
   for (const [file, text] of Object.entries(files)) {
     for (const [, name] of text.matchAll(/var\(\s*(--mx-[\w-]+)/g)) if (!known.has(name)) errors.push(`${file}: ${name} is not a token or a declared property`);
@@ -174,12 +174,12 @@ const ALLOWED = [
   /^dist\/fonts\/[\w-]+\.LICENSE\.txt$/,
   /^tokens\/(matrix\.resolver|base\.tokens|context\/[\w-]+\.tokens)\.json$/,
   /^src\/css\/[\w-]+\.css$/,
-  /^dist\/(elements|head\/head|lib\/index|strings\/[\w-]+|components\/[\w-]+\/mx-[\w-]+|effects\/[\w-]+\/(mx-)?[\w-]+)\.(js|d\.ts)$/,
+  /^dist\/(elements|head\/head|lib\/[\w-]+|strings\/[\w-]+|components\/[\w-]+\/mx-[\w-]+|effects\/[\w-]+\/(mx-)?[\w-]+)\.(js|d\.ts)$/,
   /^src\/components\/[\w-]+\/([\w-]+\.(css|md)|[A-Z]\w*\.astro|mx-[\w-]+\.ts)$/,
   /^src\/effects\/[\w-]+\/([\w-]+\.(css|md|ts)|[A-Z]\w*\.astro)$/,
   /^src\/head\/(head\.ts|Head\.astro)$/,
   /^src\/strings\/[\w-]+\.ts$/,
-  /^src\/lib\/index\.ts$/,
+  /^src\/lib\/[\w-]+\.ts$/,
   /^src\/astro\.ts$/,
 ];
 const REQUIRED = ["dist/elements.js", "dist/head/head.js", "dist/lib/index.js", "dist/strings/index.js", "src/astro.ts", "dist/tokens.css", "dist/tokens.json", "dist/tokens.d.ts", "dist/matrix.css", "dist/fonts.css", "tokens/matrix.resolver.json", "LICENSE",

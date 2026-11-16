@@ -103,3 +103,27 @@ test("the Colour page shows the ratios the contrast gate computes", async ({ pag
     expect(cell?.[2], `${r.fg} on ${r.bg} in ${r.context}`).toBe(`${r.ratio.toFixed(2)} (Lc ${r.lc.toFixed(1)})`);
   }
 });
+
+test("the terminal's stories keep no mx-* storage: a closed guide and a typed command stay in their story (03, 06)", async ({ page }) => {
+  const shell = async (id) => {
+    await story(page, id);
+    await page.waitForFunction(() => document.documentElement.dataset.shell === "live");
+  };
+  const keys = () => page.evaluate(() => Object.keys(sessionStorage).filter((k) => k.startsWith("mx-")));
+  const field = page.locator(".mx-prompt-field input");
+  await shell("terminal-terminal--default");
+  await page.locator(".mx-guide-hide").click();
+  await expect(page.locator(".mx-guide")).toBeHidden();
+  await field.fill("whoami");
+  await field.press("Enter");
+  expect(await keys()).toEqual([]);
+  // Nor is what the site would have left read: the next story has its guide and an empty history.
+  await page.evaluate(() => {
+    sessionStorage.setItem("mx-guide", "off");
+    sessionStorage.setItem("mx-history", JSON.stringify(["whoami"]));
+  });
+  await shell("terminal-terminal--projects");
+  await expect(page.locator(".mx-guide")).toBeVisible();
+  await field.press("ArrowUp");
+  await expect(field).toHaveValue("");
+});

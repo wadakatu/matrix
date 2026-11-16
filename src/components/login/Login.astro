@@ -1,0 +1,23 @@
+---
+/**
+ * The first fetch card as a `<details>`: closed below 720px so the prompt has the screen, just its
+ * contents from 720px (04, "Login card"). Printed by the terminal's one renderer.
+ */
+import { render, renderEcho, renderLogin, type Card, type Prompt } from "../../lib/index.ts";
+import { strings, type Lang } from "../../strings/index.ts";
+interface Props {
+  prompt: Prompt;
+  /** The command that printed the card. */
+  command: string;
+  card: Card;
+  /** Read after the summary: who the card is about. */
+  name: string;
+  lang?: Lang;
+  open?: boolean;
+}
+const { prompt, command, card, name, lang = "en", open } = Astro.props;
+const t = strings[lang].terminal;
+let html = renderLogin(t.login, `${t.login} ${name}`, renderEcho(prompt, command) + render([card], { newTab: t.newTab }));
+if (open) html = html.replace("<details ", "<details open ");
+---
+<Fragment set:html={html} />

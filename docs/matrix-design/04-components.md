@@ -51,17 +51,17 @@ Status values used below:
 | --- | --- | --- | --- | --- |
 | Head | `Head.astro` | approved | head of `ProtoMatrixLayout.astro` | Meta, fonts, the pre-paint script (03). No visible output |
 | Layout | `Layout.astro`, `<mx-root>` | approved | `ProtoMatrixLayout.astro` | Skip link, rain slot, header, `main`, footer, status. `mx-root` owns theme, palette, motion and flag-carrying links |
-| Header | `.mx-header` | approved | `.top` | One row. 69px at 1440; 53px below 720px |
+| Header | `.mx-header` | approved | `.top` | One row. 69px at 1440; 53px below 720px. In the live shell (機械用, `data-shell="live"`) below 1360px, Operator colours and Daylight are not shown: they give way to the `palette` and `theme` commands, so that the row is still 69px at 1100px with Hold rain and the shortcut's off switch in it. From 1360px nothing is hidden. The prototype did this below 720px only; matrix extends it to 1359px (settled 2026-11-16) |
 | Mark | `.mx-mark` | approved | `.mark` | Home link: logo then `wadakatu_`. The wordmark names the link; the logo's `alt` is empty |
 | Logo | `.mx-logo` | approved | `.logo` | Law L5. Sizes: 44px header, 32px compact header, fluid in the fetch card and boot |
 | Nav | `.mx-nav` | approved | `.top nav` | Links in 人間用; a numbered window list (`0:Home*`) in 機械用, by CSS counters |
 | Menu | `.mx-menu`, `<mx-menu>` | approved | `.menu` | A native `<details>`. Below 720px a disclosure; from 720px it lays no box (`display: contents`) |
 | Control | `.mx-control` | approved | `.control` | One look for a button, a link, and a label wrapping a checkbox. Filled when `aria-pressed="true"` |
-| Theme toggle | `.mx-control[data-action="theme"]` | approved | `#theme-toggle` | "Daylight" |
-| Palette toggle | `.mx-control[data-action="palette"]` | approved | `#palette-toggle` | "Operator colours" |
+| Theme toggle | `.mx-control[data-action="theme"]` | approved | `#theme-toggle` | "Daylight". Not shown in the live shell below 1360px, where the `theme` command does its work (Header) |
+| Palette toggle | `.mx-control[data-action="palette"]` | approved | `#palette-toggle` | "Operator colours". Not shown in the live shell below 1360px, where the `palette` command does its work (Header) |
 | Hold rain | `.mx-control` + checkbox | approved | `.hold` | A checkbox, so it works without JavaScript |
 | Switch | `.mx-switch`, `<mx-switch>` | approved | `.switch`, `.pill`, `_Pill.astro` | The reading switch. Specified below |
-| Guide | `.mx-guide` | approved | `.guide` | The first row of 機械用: what this is, and the way to 人間用. Dismissible; remembered |
+| Guide | `.mx-guide` | approved | `.guide` | The first row of 機械用: what this is, and the way to 人間用. Dismissible; remembered for the tab (`sessionStorage['mx-guide']`), not persistently (03) |
 | Status line | `.mx-modeline` | approved | `.modeline` | Accent fill. Mode, location, Japan time, the way back |
 | Footer | `.mx-footer` | approved | `.foot` | Contact links, logo credit, the shortcut's off switch |
 | Moved | `Moved.astro` | approved | `_Moved.astro` | A stub for an old address: refresh, canonical, visible link, query carried |
@@ -101,7 +101,7 @@ Status values used below:
 | Screen | `.mx-terminal-screen` | approved | `.screen` | A labelled, focusable group; the scroll container of the live shell |
 | Line | `.mx-ln` | approved | `.ln` | One line of output. Tone by `data-tone` (`dim`, `hi`, `dir`) on spans |
 | Prompt | `.mx-prompt` | approved | `.ps1`, `.field`, `.cur` | A real `<input>` with a drawn block cursor |
-| Run | `.mx-run` | approved | `.run` | A tappable command in output. A button outside the tab order |
+| Run | `.mx-run` | approved | `.run` | A tappable command in output. A button outside the tab order. Without scripts it is still a button, styled as text, and does nothing (05) |
 | Chips | `.mx-chips`, `.mx-chip` | approved | `.chips` | Suggested commands; on touch, the keys a phone lacks first |
 | Fetch card | `.mx-fetch` | approved | `.fetch` | The mark beside key and value lines (neofetch) |
 | Login card | `.mx-login` | approved | `.login-card` | The first fetch card as a `<details>` below 720px, closed |
@@ -269,12 +269,19 @@ What the site supplies is an interpreter. This is the prototype's existing model
 
 | Member | Shape | Meaning |
 | --- | --- | --- |
-| `prompt()` | user, host, working directory | What to print before the field |
+| `prompt()` | user, host, working directory; optionally `shell` | What to print before the field. `shell` is the process name the status line shows when nothing else runs (`sh` if it is absent) |
 | `motd()` | items | Lines printed on login |
 | `exec(line)` | `{ out: Item[], fx?: Effects }` | Run one line. The interpreter touches nothing; it returns output and asks for effects |
 | `complete(line)` | candidates | For Tab |
-| `Item` | a line, or a card (image with lines beside it) | A line is segments: text, text with a tone, a link, or a tappable command |
+| `key(k)`, optional | the same result as `exec` | A key pressed while a takeover is open, outside its command line: `Escape`, `C-c` or one character. It is how a takeover like `vim` reacts to single keys; without it the keys are the line editor's |
+| `Item` | a line, or a card (image with lines beside it) | A line is segments: text, text with a tone, a link, a tappable command, or `{ swatches: true }`, the eight theme colours (the fetch card's colour row) |
 | `Effects` | `open`, `exit`, `clear`, `theme`, `palette`, `takeover`, `overlay`, `navigate` | Requests the terminal carries out; unknown ones are ignored |
+
+`key`, `prompt().shell` and the swatches segment came out of the implementation and were
+accepted by wadakatu on 2026-11-16. So was one thing that is not part of this contract:
+`MxTerminal.remember`, a public static on the element class, `true` by default. While it is
+`false` the element neither reads nor writes `mx-history` and `mx-guide` (03). Only the
+Storybook preview sets it (06).
 
 Security rules of the renderer, from the prototype's checks: text is always escaped; a
 link exists only where the interpreter returned a link segment; nothing a reader typed

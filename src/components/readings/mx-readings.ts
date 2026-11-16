@@ -145,6 +145,8 @@ export class MxReadings extends HTMLElement {
     const v = other(this.reading);
     if (!moving() || d.dataset.boot || document.querySelector(".mx-curtain[data-on]")) return this.swap(v);
     this.setAttribute("aria-busy", "true");
+    // Taken now: the lines vanishing on the way back hide a focused status-line link, and focus falls to the body.
+    const had = !!this.querySelector(`:scope > [data-reading="${other(v)}"]`)?.contains(document.activeElement);
     const printed = [...this.querySelectorAll<HTMLElement>(PRINTED)];
     const lines = v === "machine" ? printed.slice(-90) : printed.filter(onScreen);
     const keep = (a: Animation) => (this.#held.push(a), a);
@@ -181,7 +183,7 @@ export class MxReadings extends HTMLElement {
       // Back: the session clears from the bottom, the page opens from a line, its headings settle.
       this.#change = new Change([
         { run: () => this.#vanish(lines, 220).map(keep) },
-        { call: () => { this.swap(v); release(); } },
+        { call: () => { this.swap(v, had); release(); } },
         {
           run: () => {
             const open = squash("scaleY(0.004)", "scaleY(1)", origin(), 280, EASE.out, "none");
@@ -197,9 +199,9 @@ export class MxReadings extends HTMLElement {
   }
 
   /** The instant change: everything a reading is, with no motion. */
-  swap(v: Reading) {
+  swap(v: Reading, had = false) {
     const hiding = this.querySelector(`:scope > [data-reading="${other(v)}"]`);
-    const lost = !!hiding?.contains(document.activeElement);
+    const lost = had || !!hiding?.contains(document.activeElement);
     this.#sync(v, true);
     if (lost) {
       // Focus goes to the side just taken in the header, or to the one compact button.

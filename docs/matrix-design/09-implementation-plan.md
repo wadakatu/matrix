@@ -277,8 +277,8 @@ neofetch on a phone" and "Machine first".
   Accept: the prototype's viewport checks, plus the release rule, plus a late-arriving
   element taking the viewport back.
 - [ ] **4.4 Guide, Chips, Status line, Fetch card, Login card, Swatches, Run, Takeover.** ∥
-  Accept: definition of done; guide dismissal remembered; on touch nothing takes focus on
-  arrival and chips run without moving focus.
+  Accept: definition of done; guide dismissal remembered for the tab (03); on touch nothing
+  takes focus on arrival and chips run without moving focus.
 
 **Exit:** specimen "Machine landing" works as a recorded session without scripts and as a
 live shell with them, and matches the prototype's stills at 1440 and 390.

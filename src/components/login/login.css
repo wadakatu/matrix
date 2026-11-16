@@ -1,0 +1,29 @@
+@layer mx.components {
+  /* The login card on a phone: one 44px line, so the prompt has the screen. From 720px the summary
+     hides and the card is just its contents, the same as a session that printed in the open. */
+  @media (width < 720px) {
+    .mx-login { margin-block: var(--mx-space-1) var(--mx-space-0-5); border: var(--mx-border-width-hair) solid var(--mx-color-rule); }
+    .mx-login-summary {
+      display: flex;
+      align-items: center;
+      gap: 1ch;
+      min-height: var(--mx-size-target);
+      padding: 0 10px;
+      cursor: pointer;
+      color: var(--mx-color-accent);
+      list-style: none;
+    }
+    .mx-login-summary::-webkit-details-marker { display: none; }
+    .mx-login-summary::before { content: "▸" / ""; flex: none; }
+    .mx-login[open] > .mx-login-summary::before { content: "▾" / ""; }
+    .mx-login-summary:focus-visible { outline-offset: -2px; }
+    .mx-login[open] > .mx-login-summary { border-bottom: var(--mx-border-width-hair) solid var(--mx-color-rule); }
+  }
+  @supports selector(::details-content) {
+    @media (width >= 720px) {
+      .mx-login, .mx-login::details-content { display: contents; }
+      .mx-login::details-content { content-visibility: visible; }
+      .mx-login-summary { display: none; }
+    }
+  }
+}

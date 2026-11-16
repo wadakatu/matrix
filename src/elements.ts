@@ -5,3 +5,4 @@ import "./components/switch/mx-switch.ts";
 import "./components/readings/mx-readings.ts";
 import "./effects/boot/mx-boot.ts";
 import "./effects/rewards/rewards.ts";
+import "./components/terminal/mx-terminal.ts";

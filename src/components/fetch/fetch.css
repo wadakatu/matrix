@@ -1,0 +1,11 @@
+@layer mx.components {
+  /* neofetch: the mark beside the facts. The image is the real file at its own proportions (L5). */
+  .mx-fetch { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--mx-space-2) 3ch; align-items: center; margin-block: var(--mx-space-1-5); }
+  .mx-fetch-mark { width: 112px; }
+  /* Values that wrap stay in their own column, under themselves. */
+  .mx-fetch-side .mx-ln { padding-left: 10ch; text-indent: -10ch; }
+  @media (width >= 600px) {
+    .mx-fetch { grid-template-columns: auto minmax(0, 1fr); }
+    .mx-fetch-mark { width: clamp(132px, 26vmin, 224px); }
+  }
+}

@@ -1,0 +1,18 @@
+---
+/**
+ * Suggested commands, and on touch the keys a phone keyboard lacks first (04, "Chips"). Buttons in a
+ * labelled group; `mx-terminal` runs them without moving focus. Absent without scripts.
+ */
+import { strings, type Lang } from "../../strings/index.ts";
+interface Props {
+  commands: string[];
+  lang?: Lang;
+}
+const { commands, lang = "en" } = Astro.props;
+const t = strings[lang];
+const keys = [["Tab", "tab", t.terminal.keys.tab], ["ArrowUp", "↑", t.terminal.keys.up], ["ArrowDown", "↓", t.terminal.keys.down], ["C-c", "^C", t.terminal.keys.cancel]];
+---
+<div class="mx-chips" role="group" aria-label={t.terminal.chips}>
+  {keys.map(([key, label, name]) => <button class="mx-chip" type="button" data-key={key} aria-label={name}>{label}</button>)}
+  {commands.map((c) => <button class="mx-chip" type="button" data-run={c}>{c}</button>)}
+</div>
