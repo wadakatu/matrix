@@ -110,6 +110,12 @@ test("no raw values: colour, font-size and z-index literals fail in component CS
   assert.deepEqual(await lint(".mx-x { z-index: 50; }"), ["declaration-property-value-allowed-list"]);
 });
 
+test("the shipped config (@wadakatu/matrix/stylelint) holds the no-raw-values rules without matrix's ledger", async () => {
+  const shipped = async (code) => (await stylelint.lint({ code, codeFilename: join(root, "x.css"), configFile: join(root, "stylelint/index.mjs") })).results[0].warnings.map((w) => w.rule);
+  assert.deepEqual(await shipped(".x { color: var(--mx-color-text); text-autospace: normal; }"), []);
+  assert.deepEqual(await shipped(".x { color: #2bf07a; z-index: 50; }"), ["color-no-hex", "declaration-property-value-allowed-list"]);
+});
+
 test("breakpoints: only 600, 720, 1100 and 1360px, in either notation", async () => {
   assert.deepEqual(await lint("@media (min-width: 720px) { .mx-x { display: grid; } } @media (600px <= width < 1360px) { .mx-x { gap: 0; } }"), []);
   assert.deepEqual(await lint("@media (min-width: 777px) { .mx-x { display: grid; } }"), ["media-feature-name-value-allowed-list"]);
@@ -135,7 +141,7 @@ test("freshness: a stale generated doc fails", () => {
 });
 
 test("package contents: the logo, a stray file, or a missing output fails", () => {
-  const ok = ["package.json", "README.md", "LICENSE", "CHANGELOG.md", "AGENTS.md", "docs/tokens.md", "dist/tokens.css", "dist/tokens.json", "dist/tokens.d.ts", "dist/matrix.css", "dist/fonts.css", "dist/fonts/a-400-normal.woff2", "dist/fonts/dotgothic16.LICENSE.txt", "dist/fonts/ibm-plex-mono.LICENSE.txt", "dist/fonts/m-plus-1-code.LICENSE.txt", "tokens/matrix.resolver.json", "tokens/base.tokens.json", "tokens/context/phosphor-night.tokens.json", "src/css/base.css", "dist/elements.js", "dist/head/head.js", "dist/lib/index.js", "dist/strings/index.js", "src/astro.ts", "src/components/panel/Panel.astro", "src/components/panel/panel.css"];
+  const ok = ["package.json", "README.md", "LICENSE", "CHANGELOG.md", "AGENTS.md", "docs/tokens.md", "dist/tokens.css", "dist/tokens.json", "dist/tokens.d.ts", "dist/matrix.css", "dist/fonts.css", "dist/fonts/a-400-normal.woff2", "dist/fonts/dotgothic16.LICENSE.txt", "dist/fonts/ibm-plex-mono.LICENSE.txt", "dist/fonts/m-plus-1-code.LICENSE.txt", "tokens/matrix.resolver.json", "tokens/base.tokens.json", "tokens/context/phosphor-night.tokens.json", "src/css/base.css", "dist/elements.js", "dist/head/head.js", "dist/lib/index.js", "dist/strings/index.js", "src/astro.ts", "src/components/panel/Panel.astro", "src/components/panel/panel.css", "stylelint/index.mjs"];
   assert.deepEqual(gate.packageContents(ok), []);
   assert.deepEqual(gate.packageContents([...ok, "src/components/panel/Panel.stories.ts"]), ["src/components/panel/Panel.stories.ts: stories are not part of the package"]);
   assert.deepEqual(gate.packageContents([...ok, "assets/logo/logo-400.png"]), ["assets/logo/logo-400.png: the logo and its notice must not be in the package (decision Q3)"]);
