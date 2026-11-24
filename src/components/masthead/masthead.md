@@ -40,7 +40,8 @@ tags: the title, then whatever the site puts in the slot (a meta line), and `.mx
 
 - Below 720px: no strip. From 720px: the strip, 100px wide, four strands (title, date and category,
   tags, file name).
-- From 1100px, on an article, the masthead and the foot span the contents rail and the body.
+- From 1100px on screen, on an article, the masthead and the foot span the contents rail and the body.
+  On paper there is no rail: the masthead and the body are plain flow at the measure (05, "Print").
 - The title is fluid, `font.size.title.min` to `font.size.title.max` (`--mx-text-title`), and balanced
   where `text-wrap: balance` is supported.
 - Every context: the panel's face; path line and meta in `text-muted`, the current file and tags in
