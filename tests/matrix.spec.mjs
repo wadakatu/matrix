@@ -120,10 +120,14 @@ for (const s of SPECIMENS) {
             (e) => e.tabIndex >= 0 && !e.disabled && !e.closest("[inert]") && e.checkVisibility({ visibilityProperty: true }) && (e.localName !== "summary" || e.parentElement.querySelector(":scope > summary") === e),
           );
           tabbable.forEach((e, i) => (e.dataset.mxTab = i));
+          // Tab from a mark before everything else, so no engine's way of wrapping round decides the start.
+          const start = Object.assign(document.createElement("span"), { tabIndex: -1 });
+          document.body.prepend(start);
+          start.focus();
           return tabbable.length;
         });
         const seen = [];
-        for (let i = 0; i < 2 * n + 4 && seen.length < 2 * n + 2; i++) {
+        for (let i = 0; i < n + 4 && seen.length < n + 1; i++) {
           await page.keyboard.press(TAB);
           const f = await page.evaluate(() => {
             const e = document.activeElement;
@@ -135,13 +139,15 @@ for (const s of SPECIMENS) {
             for (let a = e.parentElement, k = 0; !shown && a && k < 4; a = a.parentElement, k++) shown = a.matches(":focus-within") && ring(a);
             const cursor = e.closest(".mx-prompt")?.querySelector(".mx-prompt-cursor");
             if (!shown && cursor) shown = getComputedStyle(cursor).backgroundColor !== "rgba(0, 0, 0, 0)";
-            return { i: e.dataset.mxTab === undefined ? -1 : Number(e.dataset.mxTab), what: `${e.localName}.${[...e.classList].join(".")} "${(e.textContent || e.getAttribute("aria-label") || "").trim().slice(0, 24)}"`, shown };
+            // Firefox also stops on a scroller that overflows (the chips' row at 390): the engine's own stop, not the page's.
+            const c = getComputedStyle(e);
+            const scroller = e.dataset.mxTab === undefined && /auto|scroll/.test(c.overflowX + c.overflowY) && (e.scrollWidth > e.clientWidth || e.scrollHeight > e.clientHeight);
+            return { scroller, i: e.dataset.mxTab === undefined ? -1 : Number(e.dataset.mxTab), what: `${e.localName}.${[...e.classList].join(".")} "${(e.textContent || e.getAttribute("aria-label") || "").trim().slice(0, 24)}"`, shown };
           });
-          if (f) seen.push(f);
+          if (f?.scroller) console.log(`${browserName}, ${s.page} at ${width}: a tab stop on the scroller ${f.what}`);
+          else if (f) seen.push(f);
         }
-        const start = seen.findIndex((f) => f.i === 0);
-        expect(start, "the first focusable thing is reached").toBeGreaterThanOrEqual(0);
-        const cycle = seen.slice(start, start + n);
+        const cycle = seen.slice(0, n);
         expect(cycle.map((f) => f.i), cycle.map((f) => f.what).join(" → ")).toEqual([...Array(n).keys()]);
         expect(cycle.filter((f) => !f.shown).map((f) => f.what), "no indicator").toEqual([]);
       });
