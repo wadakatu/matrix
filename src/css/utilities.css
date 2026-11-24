@@ -26,4 +26,7 @@
   }
   .mx-skip:focus { top: var(--mx-space-3); }
   .mx-skip:hover { color: var(--mx-color-on-accent); }
+
+  /* Navigation goes nowhere on paper (05, "Print"). */
+  @media print { .mx-skip, .mx-status { display: none; } }
 }

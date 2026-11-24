@@ -1,0 +1,22 @@
+---
+/**
+ * Share (04): Post on X (a link), Copy link, and the system sheet where `navigator.share` exists.
+ * The two buttons need `mx-share`; without it they are not shown.
+ */
+import { strings, type Lang } from "../../strings/index.ts";
+interface Props {
+  /** The address to share: the article's canonical one. */
+  url: string;
+  title: string;
+  lang?: Lang;
+}
+const { url, title, lang = "en" } = Astro.props;
+const t = strings[lang].post;
+const x = `https://x.com/intent/post?${new URLSearchParams({ text: title, url })}`;
+---
+<mx-share class="mx-share" data-url={url} data-title={title} data-copied={t.copy.done} data-failed={t.copy.failed}>
+  <span class="mx-share-label">{t.share.label}</span>
+  <a class="mx-control" href={x} rel="noopener">{t.share.x}</a>
+  <button class="mx-control" type="button" data-share="link">{t.share.link}</button>
+  <button class="mx-control" type="button" data-share="sheet" hidden>{t.share.sheet}</button>
+</mx-share>

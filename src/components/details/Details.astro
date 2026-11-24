@@ -1,0 +1,12 @@
+---
+/** `:::details` (04, "Details"): a native disclosure. The summary is the author's text, as written. */
+interface Props {
+  summary: string;
+  open?: boolean;
+}
+const { summary, open = false } = Astro.props;
+---
+<details class="mx-details" open={open}>
+  <summary class="mx-details-summary">{summary}</summary>
+  <div class="mx-details-body"><slot /></div>
+</details>

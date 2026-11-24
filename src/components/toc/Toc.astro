@@ -1,0 +1,40 @@
+---
+/**
+ * Contents (04): every `h2`, numbered from 01, with its `h3` under it; `h4` are not listed. Takes the
+ * headings as Astro's Markdown rendering gives them. A native disclosure, so it works without scripts.
+ */
+import { strings, type Lang } from "../../strings/index.ts";
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+interface Props {
+  headings: Heading[];
+  lang?: Lang;
+}
+const { headings, lang = "en" } = Astro.props;
+const t = strings[lang].post;
+const tree = headings.reduce<(Heading & { sub: Heading[] })[]>((list, h) => {
+  if (h.depth === 2) list.push({ ...h, sub: [] });
+  else if (h.depth === 3) list.at(-1)?.sub.push(h);
+  return list;
+}, []);
+---
+<mx-toc>
+  <aside class="mx-toc mx-panel">
+    <details>
+      <summary class="mx-toc-summary">{t.contents}</summary>
+      <nav aria-label={t.contents}>
+        <ol>
+          {tree.map((h) => (
+            <li>
+              <a href={`#${h.slug}`}>{h.text}</a>
+              {h.sub.length > 0 && <ol>{h.sub.map((s) => <li><a href={`#${s.slug}`}>{s.text}</a></li>)}</ol>}
+            </li>
+          ))}
+        </ol>
+      </nav>
+    </details>
+  </aside>
+</mx-toc>

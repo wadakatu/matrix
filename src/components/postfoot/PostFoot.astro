@@ -1,0 +1,42 @@
+---
+/**
+ * The foot of an article (04, "Post foot"): the end-of-file line, Share, the older and newer posts,
+ * and the three ways back: the index, 人間用 Home, and 機械用 at this file.
+ */
+import Share from "../share/Share.astro";
+import { runLang } from "../../lib/index.ts";
+import { strings, type Lang } from "../../strings/index.ts";
+interface Post {
+  href: string;
+  title: string;
+}
+interface Props {
+  /** The article's canonical address and title, for Share. */
+  url: string;
+  title: string;
+  /** This article's file name, as the shell knows it. */
+  file: string;
+  older?: Post;
+  newer?: Post;
+  /** The ways back: the index, 人間用 Home, and the shell at this file. */
+  ways: { all: string; human: string; machine: string };
+  lang?: Lang;
+}
+const { url, title, file, older, newer, ways, lang = "en" } = Astro.props;
+const t = strings[lang].post;
+---
+<footer class="mx-postfoot mx-panel">
+  <p class="mx-eof" aria-hidden="true">EOF</p>
+  <Share url={url} title={title} lang={lang} />
+  {(older || newer) && (
+    <nav class="mx-pager" aria-label={t.pager.label}>
+      {older && <a href={older.href} rel="prev"><span class="mx-pager-key">{t.pager.older}</span><span lang={runLang(older.title, lang)}>{older.title}</span></a>}
+      {newer && <a href={newer.href} rel="next"><span class="mx-pager-key">{t.pager.newer}</span><span lang={runLang(newer.title, lang)}>{newer.title}</span></a>}
+    </nav>
+  )}
+  <p class="mx-ways">
+    <a href={ways.all}>{t.ways.all}</a>
+    <a href={ways.human}><span lang="ja">人間用</span> {t.ways.home}</a>
+    <a href={ways.machine}><span lang="ja">機械用</span>: <code>cat ~/posts/{file}</code></a>
+  </p>
+</footer>

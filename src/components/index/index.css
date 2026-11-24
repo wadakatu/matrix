@@ -1,0 +1,20 @@
+@layer mx.components {
+  /* The blog's index: date and title per row, newest first (04). */
+  .mx-index { max-width: calc(var(--mx-measure) + 2 * var(--mx-inset)); padding: var(--mx-space-2) var(--mx-inset) var(--mx-space-5); }
+  .mx-index li {
+    display: grid;
+    grid-template-columns: 11ch minmax(0, 1fr);
+    gap: 0 2ch;
+    padding: var(--mx-space-3) 0;
+    border-bottom: var(--mx-border-width-hair) dotted var(--mx-color-rule);
+  }
+  .mx-index time {
+    color: var(--mx-color-text-muted);
+    font-family: var(--mx-font-family-mono);
+    font-size: var(--mx-font-size-meta);
+    line-height: 1.9;
+    font-variant-numeric: tabular-nums;
+  }
+  .mx-index a { font-size: var(--mx-font-size-body); line-height: var(--mx-font-leading-ui); color: var(--mx-color-text-lead); text-decoration: none; overflow-wrap: anywhere; }
+  .mx-index a:hover { text-decoration: underline; text-decoration-color: var(--mx-color-accent); }
+}

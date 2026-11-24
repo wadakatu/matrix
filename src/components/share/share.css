@@ -1,0 +1,7 @@
+@layer mx.components {
+  /* Post on X (a link), Copy link and the system sheet (04). What needs scripts is absent without them. */
+  .mx-share { display: flex; flex-wrap: wrap; align-items: center; gap: var(--mx-space-2); }
+  .mx-share-label { margin-right: 1ch; color: var(--mx-color-text-muted); }
+  .mx-share .mx-control { font-size: var(--mx-font-size-meta); }
+  .mx-share:not(:defined) > button, .mx-share > [hidden] { display: none; }
+}

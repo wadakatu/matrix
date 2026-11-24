@@ -1,0 +1,9 @@
+---
+/** A table's scroll container (04, "Table"): labelled and focusable, so it scrolls from the keyboard. */
+import { strings, type Lang } from "../../strings/index.ts";
+interface Props {
+  lang?: Lang;
+}
+const { lang = "en" } = Astro.props;
+---
+<div class="mx-table" role="group" aria-label={strings[lang].table} tabindex="0"><slot /></div>

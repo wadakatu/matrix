@@ -4,6 +4,8 @@
 /** Hiragana, katakana and CJK ideographs: what makes a run Japanese. */
 const JA = /[぀-ヿ㐀-鿿]/;
 export const hasJa = (s: string): boolean => JA.test(s);
+/** `lang` for a run of the other language on a page in `page` (L6); undefined for the page's own. */
+export const runLang = (s: string, page: "en" | "ja"): "en" | "ja" | undefined => (hasJa(s) ? "ja" : "en") === page ? undefined : hasJa(s) ? "ja" : "en";
 
 /** A Latin sentence that ends in Japanese, split where the Japanese starts, so that part can carry `lang="ja"`. */
 export function splitJa(s: string): [string, string] {

@@ -1,0 +1,27 @@
+@layer mx.components {
+  /* A link whose text is its own address, written alone on a line: host, then path (04). */
+  .mx-ref {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 0.5em;
+    padding: var(--mx-space-2) var(--mx-space-3);
+    background: var(--mx-color-ground);
+    border: var(--mx-border-width-hair) solid var(--mx-color-rule);
+    border-left: var(--mx-border-width-strong) solid var(--mx-color-accent);
+    font-family: var(--mx-font-family-mono);
+    font-size: var(--mx-font-size-meta);
+    line-height: var(--mx-font-leading-ui);
+    color: var(--mx-color-text-muted);
+    text-decoration: none;
+    overflow-wrap: anywhere;
+  }
+  .mx-prose a.mx-ref, .mx-prose a.mx-ref:hover { color: var(--mx-color-text-muted); }
+  .mx-ref::before { content: "\2197" / ""; margin-right: 1ch; color: var(--mx-color-accent); }
+  .mx-ref span { font-family: inherit; }
+  .mx-ref-host { color: var(--mx-color-text-lead); }
+  .mx-ref-path { min-width: 0; }
+  .mx-ref:hover { border-color: var(--mx-color-accent); }
+  .mx-ref:hover .mx-ref-host { text-decoration: underline; }
+  p > .mx-ref:first-child { margin-top: 0; }
+  @media print { .mx-ref { break-inside: avoid; } }
+}

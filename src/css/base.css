@@ -5,7 +5,12 @@
     --mx-text-display: min(15.5rem, calc((100vw - 2 * var(--mx-pad)) / 4.86));
     --mx-text-entry: clamp(var(--mx-font-size-entry-min), 3.2vw, var(--mx-font-size-entry-max));
     --mx-text-prompt: clamp(var(--mx-font-size-prompt-min), 4vw, var(--mx-font-size-prompt-max));
+    --mx-text-title: clamp(var(--mx-font-size-title-min), 3.4vw, var(--mx-font-size-title-max));
+    /* The article's line and its inline padding (04, "Prose"): the measure is 40 full-width characters. */
+    --mx-measure: var(--mx-size-measure-read-compact);
+    --mx-inset: clamp(16px, 4vw, 44px);
   }
+  @media (width >= 720px) { :root { --mx-measure: var(--mx-size-measure-read); } }
   html { background: var(--mx-color-ground); }
   body {
     position: relative;
@@ -51,5 +56,24 @@
   ::selection {
     background: var(--mx-color-accent);
     color: var(--mx-color-on-accent);
+  }
+
+  /* Paper (05, "Print"): every role resolves to its day value in the page's own palette, and no
+     surface is painted, so the paper is the white. An engine without light-dark() has only night's
+     values, so there text and borders are the system's ink. */
+  @media print {
+    :root, [data-theme] { color-scheme: light; }
+    :root, [data-palette] { --mx-color-ground: transparent; --mx-color-panel: transparent; }
+    html { background: none; }
+    @supports not (color: light-dark(#000, #fff)) {
+      :root, [data-palette] {
+        --mx-color-text: CanvasText;
+        --mx-color-text-lead: CanvasText;
+        --mx-color-text-muted: CanvasText;
+        --mx-color-accent: CanvasText;
+        --mx-color-rule: CanvasText;
+        --mx-color-control-border: CanvasText;
+      }
+    }
   }
 }
