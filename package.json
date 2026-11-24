@@ -70,10 +70,11 @@
     "build": "node scripts/build.mjs",
     "docs": "node scripts/tokens-doc.mjs --write && node scripts/agent-docs.mjs",
     "check": "node scripts/check.mjs",
-    "test:specimens": "astro build && playwright test",
+    "test:specimens": "astro build && playwright test --project=chromium",
+    "test:engines": "astro build && playwright test --project=firefox --project=webkit",
     "storybook": "astro build && storybook dev -p 6006",
     "build-storybook": "astro build && storybook build --quiet",
-    "test:stories": "vitest run",
+    "test:stories": "astro build && vitest run",
     "test:visual": "bash scripts/test_visual.sh",
     "test:visual:update": "bash scripts/test_visual.sh --update-snapshots",
     "test:visual:run": "playwright test -c playwright.visual.config.mjs"

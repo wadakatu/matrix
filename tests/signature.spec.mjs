@@ -143,19 +143,7 @@ test.describe("3.2 rain", () => {
     });
   }
 
-  for (const [reading, page_] of [["human", "home"], ["human", "projects"], ["machine", "home"], ["machine", "projects"]]) {
-    for (const width of [1440, 390]) {
-      test(`at most 170 animating elements: ${reading} ${page_} at ${width}`, async ({ page }) => {
-        await page.setViewportSize({ width, height: 900 });
-        await open(page, PAGES[reading][page_]);
-        await ready(page);
-        await page.waitForTimeout(200);
-        const n = await page.evaluate(() => new Set(document.getAnimations().filter((a) => a.playState === "running").map((a) => a.effect.target)).size);
-        console.log(`animating elements, ${reading} ${page_} at ${width}: ${n}`);
-        expect(n).toBeLessThanOrEqual(170);
-      });
-    }
-  }
+  // The budget of at most 170 animating elements is in tests/budgets.spec.mjs, on every specimen (05).
 });
 
 // ---------- 3.3 Name ----------

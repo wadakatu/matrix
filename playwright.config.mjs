@@ -8,5 +8,11 @@ export default defineConfig({
   // The visual and Storybook tests run in the pinned Docker image (npm run test:visual).
   testIgnore: ["visual/**", "storybook/**"],
   reporter: "list",
-  use: { browserName: "chromium" },
+  projects: [
+    { name: "chromium", use: { browserName: "chromium" } },
+    // npm run test:engines: the verification matrix in Playwright's Firefox and WebKit builds (05,
+    // "Where each row runs"). They are Playwright's patched builds, not Firefox or Safari.
+    { name: "firefox", testMatch: "matrix.spec.mjs", use: { browserName: "firefox" } },
+    { name: "webkit", testMatch: "matrix.spec.mjs", use: { browserName: "webkit" } },
+  ],
 });

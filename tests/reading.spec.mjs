@@ -4,8 +4,7 @@
 import { expect, test } from "@playwright/test";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { ORIGIN, axe, root, serve } from "./support/serve.mjs";
-import { ratio } from "../scripts/gates.mjs";
+import { ORIGIN, root, serve } from "./support/serve.mjs";
 
 const DIRS = { "/assets/": "assets", "/specimens/": "dist-specimens" };
 const tokens = JSON.parse(readFileSync(join(root, "dist/tokens.json"), "utf8"));
@@ -498,63 +497,8 @@ test.describe("5.4 print", () => {
 // ---------- The verification matrix (05), automated rows, on the Article specimens ----------
 
 test.describe("verification matrix on the articles", () => {
-  for (const [name, path] of Object.entries({ ...ARTICLES, index: "/specimens/blog.html" })) {
-    test(`${name}: no other origin, no page error, no horizontal overflow at nine widths`, async ({ page }) => {
-      for (const width of [320, 360, 390, 601, 719, 720, 1100, 1360, 1440]) {
-        await page.setViewportSize({ width, height: 900 });
-        const { errors, requests } = await open(page, path);
-        expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), `${width}px`).toBe(true);
-        expect(requests.filter((u) => !u.startsWith(ORIGIN))).toEqual([]);
-        expect(errors).toEqual([]);
-      }
-    });
-  }
-
-  for (const [w, h] of [[1440, 900], [390, 844]]) {
-    for (const [name, path] of Object.entries({ ...ARTICLES, index: "/specimens/blog.html" })) {
-      test(`axe at ${w}, ${name}, with and without scripts`, async ({ page, browser }) => {
-        await page.setViewportSize({ width: w, height: h });
-        await open(page, path);
-        await defined(page);
-        expect(await axe(page)).toEqual([]);
-        // axe needs timers, which a page without JavaScript does not run: the no-JS DOM, its scripts removed.
-        const [ctx, off] = await nojs(browser, { viewport: { width: w, height: h } });
-        await open(off, path);
-        const html = (await off.content()).replace(/<script\b[\s\S]*?<\/script>/g, "");
-        await ctx.close();
-        const audit = await browser.newPage({ viewport: { width: w, height: h } });
-        await serve(audit, DIRS);
-        await audit.route(`${ORIGIN}/__nojs.html`, (r) => r.fulfill({ contentType: "text/html", body: html }));
-        await audit.goto(`${ORIGIN}/__nojs.html`);
-        expect(await axe(audit)).toEqual([]);
-        await audit.close();
-      });
-    }
-  }
-
-  for (const [context, q] of Object.entries(CONTEXTS)) {
-    test(`rendered contrast of the article's text in ${context}`, async ({ page }) => {
-      await page.setViewportSize({ width: 1440, height: 900 });
-      await open(page, `${ARTICLES.c}?${q}`);
-      // Each text's colour against the first painted surface under it.
-      const pairs = await page.evaluate(() => {
-        const bg = (el) => {
-          for (let e = el; e; e = e.parentElement) {
-            const c = getComputedStyle(e).backgroundColor;
-            if (c !== "rgba(0, 0, 0, 0)") return c;
-          }
-          return getComputedStyle(document.documentElement).backgroundColor;
-        };
-        const sel = ".mx-masthead-id :is(a, span, h1, time, li), .mx-toc :is(a, summary), .mx-prose :is(p, li, h2, h3, h4, a, strong, code, th, td, blockquote, summary, .mx-callout-label, .mx-code-title, .line span, .mx-ref-host, .mx-ref-path), .mx-copy button, .mx-postfoot :is(p, a, span, code)";
-        return [...document.querySelectorAll(sel)].filter((e) => e.textContent.trim() && e.getClientRects().length).map((e) => [getComputedStyle(e).color, bg(e), e.className || e.tagName]);
-      });
-      const hex = (c) => `#${c.match(/\d+/g).slice(0, 3).map((n) => Number(n).toString(16).padStart(2, "0")).join("")}`;
-      const low = pairs.filter(([fg, b]) => ratio(hex(fg), hex(b)) < 4.5).map(([fg, b, what]) => `${what}: ${fg} on ${b} = ${ratio(hex(fg), hex(b)).toFixed(2)}`);
-      console.log(`${context}: ${pairs.length} texts checked, ${low.length} under 4.5:1`);
-      expect(low).toEqual([]);
-    });
-  }
-
+  // Overflow at nine widths, axe with and without scripts, rendered contrast, reduced motion and Hold
+  // run on every specimen in tests/matrix.spec.mjs (05, "Where each row runs").
   test("keyboard path through an article at 1440: skip link, header, contents, body, foot, in order", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await open(page, ARTICLES.a);
@@ -586,20 +530,6 @@ test.describe("verification matrix on the articles", () => {
       );
       expect(small, `${width}px`).toEqual([]);
     }
-  });
-
-  test("reduced motion and Hold: nothing runs on an article", async ({ browser }) => {
-    const ctx = await browser.newContext({ reducedMotion: "reduce" });
-    const page = await ctx.newPage();
-    await open(page, ARTICLES.a);
-    expect(await page.evaluate(() => document.getAnimations().filter((a) => a.playState === "running").length)).toBe(0);
-    await ctx.close();
-    const held = await browser.newPage();
-    await open(held, ARTICLES.a);
-    await defined(held);
-    await held.locator('[data-action="hold"]').click();
-    expect(await held.evaluate(() => document.getAnimations().filter((a) => a.playState === "running" && a.effect.getComputedTiming().iterations === Infinity).length)).toBe(0);
-    await held.close();
   });
 
   test("forced colours: no rain, the diff's signs, the current section's rule", async ({ browser }) => {
