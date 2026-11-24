@@ -1,0 +1,14 @@
+---
+/** `:::message` and `:::message alert` (04, "Callout"): a note in the article, labelled by its word. */
+import { strings, type Lang } from "../../strings/index.ts";
+interface Props {
+  variant?: "alert";
+  lang?: Lang;
+}
+const { variant, lang = "en" } = Astro.props;
+const t = strings[lang].callout;
+---
+<aside class="mx-callout" data-variant={variant}>
+  <p class="mx-callout-label">{variant === "alert" ? t.alert : t.message}</p>
+  <slot />
+</aside>

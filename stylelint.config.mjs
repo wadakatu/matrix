@@ -18,6 +18,10 @@ const baseline = {
     "scrollbar-color": ["/.*/"], // Newly available. The screen's thin scrollbar in rule; elsewhere the browser's own colours (terminal.css)
     "overscroll-behavior": ["/.*/"], // Newly available. Scrolling the session does not chain to the locked window; without it the window is still locked (terminal.css)
     "word-break": ["auto-phrase"], // Limited (Chromium). Japanese headings break by phrase where supported; elsewhere the default breaking applies (03)
+    "text-wrap": ["balance"], // Newly available. The article's title is balanced where supported; elsewhere it wraps as any line does (04, "Prose")
+    "break-after": ["avoid"], // Print only. A heading stays with what follows it where the engine honours it; elsewhere a page may break after one (05, "Print")
+    orphans: ["/.*/"], // Print only. Three lines of a paragraph at the foot or head of a page where supported; elsewhere the engine's own (05, "Print")
+    widows: ["/.*/"], // Print only, as orphans (05, "Print")
   },
 };
 

@@ -1,0 +1,177 @@
+@layer mx.components {
+  /* Long-form reading, tuned for Japanese (04, "Prose"). One solid panel; everything a Markdown
+     renderer can emit is styled. The line is the measure: 40 full-width characters of the body size. */
+  .mx-prose {
+    max-width: calc(var(--mx-measure) + 2 * var(--mx-inset));
+    padding: var(--mx-space-7) var(--mx-inset) 44px;
+    font-family: var(--mx-font-family-ja);
+    font-size: var(--mx-font-size-read-compact);
+    font-weight: var(--mx-font-weight-regular);
+    line-height: var(--mx-font-leading-read);
+    line-break: strict;
+    overflow-wrap: anywhere;
+    --mx-text-code: 0.9em; /* inline code, one use: the formula is the component's (02) */
+  }
+  @media (width >= 720px) { .mx-prose { font-size: var(--mx-font-size-read); } }
+  .mx-prose > * + * { margin-top: 1.5em; }
+
+  .mx-prose :is(h2, h3, h4) {
+    margin-bottom: 0;
+    color: var(--mx-color-text-lead);
+    font-weight: var(--mx-font-weight-medium);
+    line-height: 1.55;
+    scroll-margin-top: var(--mx-space-5);
+    word-break: auto-phrase;
+  }
+  .mx-prose h2 {
+    margin-top: 3.2em;
+    padding-top: 1.3em;
+    border-top: var(--mx-border-width-hair) solid var(--mx-color-rule);
+    font-size: var(--mx-font-size-heading);
+    color: var(--mx-color-accent);
+  }
+  .mx-prose h3 { margin-top: 2.6em; font-size: var(--mx-font-size-lead); }
+  .mx-prose h4 { margin-top: 2.2em; font-size: inherit; color: var(--mx-color-accent); }
+  .mx-prose > :first-child { margin-top: 0; padding-top: 0; border-top: 0; }
+  /* The Markdown marker each heading was written with: seen, not read. */
+  .mx-prose :is(h2, h3, h4)::before {
+    margin-right: 1ch;
+    color: var(--mx-color-text-muted);
+    font-family: var(--mx-font-family-mono);
+    font-weight: var(--mx-font-weight-regular);
+  }
+  .mx-prose h2::before { content: "##" / ""; }
+  .mx-prose h3::before { content: "###" / ""; }
+  .mx-prose h4::before { content: "####" / ""; }
+  .mx-prose :is(h2, h3, h4) + * { margin-top: 0.9em; }
+
+  .mx-prose a { color: var(--mx-color-accent); }
+  .mx-prose a:hover { color: var(--mx-color-text-lead); }
+  .mx-prose strong { font-weight: var(--mx-font-weight-medium); color: var(--mx-color-text-lead); }
+  .mx-prose hr { border: 0; border-top: var(--mx-border-width-hair) dashed var(--mx-color-rule); margin-block: 2.4em; }
+  .mx-prose blockquote {
+    margin-inline: 0;
+    margin-bottom: 0;
+    padding-left: 2ch;
+    border-left: var(--mx-border-width-strong) solid var(--mx-color-rule);
+    color: var(--mx-color-text-muted);
+  }
+  .mx-prose blockquote > * + * { margin-top: 1.5em; }
+
+  .mx-prose :is(ul, ol) { padding-left: 3ch; }
+  .mx-prose li { position: relative; }
+  .mx-prose li + li { margin-top: 0.35em; }
+  .mx-prose li::before {
+    position: absolute;
+    right: 100%;
+    margin-right: 1ch;
+    color: var(--mx-color-accent);
+    font-family: var(--mx-font-family-mono);
+    white-space: nowrap;
+  }
+  .mx-prose ul > li::before { content: "-" / ""; }
+  .mx-prose ol { counter-reset: mx-item; }
+  .mx-prose ol > li::before { counter-increment: mx-item; content: counter(mx-item) "." / ""; }
+
+  /* Images are the real files, unrecoloured, inside a rule. */
+  .mx-prose img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin-top: 0.6em;
+    border: var(--mx-border-width-hair) solid var(--mx-color-rule);
+    background: var(--mx-color-ground);
+  }
+
+  .mx-prose :is(code, kbd, samp) { font-family: var(--mx-font-family-mono); }
+  .mx-prose :not(pre) > code {
+    padding: 0.1em 0.4em;
+    border: var(--mx-border-width-hair) solid var(--mx-color-rule);
+    border-radius: var(--mx-radius-control);
+    background: var(--mx-color-ground);
+    font-size: var(--mx-text-code);
+    color: var(--mx-color-text-lead);
+  }
+
+  /* ---------- Table (draft, 04): scrolls inside its own labelled, focusable wrapper ---------- */
+  .mx-table { overflow-x: auto; }
+  .mx-prose table {
+    min-width: 100%;
+    border-collapse: collapse;
+    font-size: var(--mx-font-size-body);
+    line-height: var(--mx-font-leading-ui);
+    font-variant-numeric: tabular-nums;
+  }
+  /* Cells break between words; what still does not fit scrolls. Without the wrapper it cannot scroll,
+     so there the prose's breaking applies. */
+  .mx-table table { overflow-wrap: normal; }
+  .mx-prose :is(th, td) { padding: var(--mx-space-2) var(--mx-space-3); vertical-align: top; }
+  .mx-prose :is(th, td):first-child { padding-left: 0; }
+  .mx-prose :is(th, td):last-child { padding-right: 0; }
+  .mx-prose th { color: var(--mx-color-text-muted); font-weight: var(--mx-font-weight-medium); }
+  .mx-prose th:not([align]) { text-align: start; }
+  .mx-prose thead tr { border-bottom: var(--mx-border-width-hair) solid var(--mx-color-rule); }
+  .mx-prose tbody tr + tr { border-top: var(--mx-border-width-hair) dotted var(--mx-color-rule); }
+
+  /* ---------- Task list (draft, 04): the marker is what the author typed ---------- */
+  .mx-prose .task-list-item::before { content: "[ ]" / ""; }
+  .mx-prose .task-list-item:has(input:checked)::before { content: "[x]" / ""; }
+  .mx-prose .task-list-item input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  /* ---------- Footnotes (draft, 04): GFM's markup ---------- */
+  .mx-prose sup { line-height: 0; }
+  .mx-prose [data-footnote-ref] { font-family: var(--mx-font-family-mono); font-size: var(--mx-font-size-label); }
+  .mx-prose [data-footnote-ref]::before { content: "[" / ""; }
+  .mx-prose [data-footnote-ref]::after { content: "]" / ""; }
+  .mx-prose [data-footnotes] {
+    margin-top: 2.4em;
+    padding-top: 2.4em;
+    border-top: var(--mx-border-width-hair) dashed var(--mx-color-rule);
+  }
+  .mx-prose [data-footnotes] > h2 {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .mx-prose [data-footnotes] > h2::before { content: none; }
+  .mx-prose [data-footnotes] li { font-size: var(--mx-font-size-body); line-height: var(--mx-font-leading-ui); color: var(--mx-color-text); scroll-margin-top: var(--mx-space-5); }
+  /* The footnote arrived at: a rule that takes up width, so it shows without colour too. */
+  .mx-prose [data-footnotes] li:target {
+    padding-left: var(--mx-space-2);
+    border-left: var(--mx-border-width-strong) solid var(--mx-color-accent);
+    color: var(--mx-color-text-lead);
+  }
+
+  /* ---------- Paper (05, "Print") ---------- */
+  @media print {
+    /* An address on paper: only an absolute http(s) link in the prose, and never a Reference link,
+       whose text is its address already. */
+    .mx-prose :is(a[href^="http://"], a[href^="https://"]):not(.mx-ref)::after {
+      content: " (" attr(href) ")";
+      color: var(--mx-color-text-muted);
+      font-family: var(--mx-font-family-mono);
+      font-size: var(--mx-font-size-meta);
+      overflow-wrap: anywhere;
+    }
+    .mx-prose [data-footnote-backref] { display: none; }
+    .mx-prose img, .mx-prose tr { break-inside: avoid; }
+    .mx-prose :is(h2, h3, h4) { break-after: avoid; }
+    .mx-prose p { orphans: 3; widows: 3; }
+    .mx-table { overflow: visible; }
+    .mx-table table { min-width: 0; width: 100%; overflow-wrap: anywhere; }
+  }
+}

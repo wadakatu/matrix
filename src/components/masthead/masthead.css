@@ -1,0 +1,70 @@
+@layer mx.components {
+  /* The article (04, "Article page"): the masthead, then the contents beside the body, then the foot.
+     The column is set from the left, as the rest of 人間用 is; what is left of the frame is open ground. */
+  .mx-post { display: grid; gap: var(--mx-space-6); padding-top: clamp(20px, 6vh, 56px); }
+  .mx-post .mx-panel { margin-top: 0; }
+  .mx-post-grid { display: grid; gap: var(--mx-space-6); align-items: start; }
+  .mx-post-grid > * { min-width: 0; }
+  @media (width >= 1100px) {
+    .mx-post-grid { grid-template-columns: var(--mx-size-rail) minmax(0, 1fr); }
+  }
+
+  .mx-masthead {
+    display: flex;
+    gap: clamp(20px, 3vw, 40px);
+    max-width: calc(var(--mx-measure) + 2 * var(--mx-inset));
+    padding: var(--mx-space-6) var(--mx-inset) var(--mx-space-7);
+  }
+  /* The strip of the article's own words (Stream's strands); drawn from 720px. */
+  .mx-masthead > .mx-stream-fall { display: none; }
+  .mx-masthead-id { flex: 1; min-width: 0; }
+  .mx-crumb, .mx-crumb * { font-family: var(--mx-font-family-mono); }
+  .mx-crumb {
+    font-size: var(--mx-font-size-meta);
+    line-height: var(--mx-font-leading-ui);
+    color: var(--mx-color-text-muted);
+    overflow-wrap: anywhere;
+  }
+  .mx-crumb a { padding: 0 0.5ch; }
+  .mx-crumb [aria-current] { padding-left: 0.5ch; color: var(--mx-color-accent); }
+  .mx-masthead-title {
+    margin-top: 10px;
+    font-family: var(--mx-font-family-ja);
+    font-size: var(--mx-text-title);
+    font-weight: var(--mx-font-weight-medium);
+    line-height: var(--mx-font-leading-title);
+    color: var(--mx-color-text-lead);
+    overflow-wrap: anywhere;
+    word-break: auto-phrase;
+    text-wrap: balance;
+  }
+  .mx-masthead .mx-meta { display: flex; flex-wrap: wrap; gap: var(--mx-space-0-5) 2ch; margin-top: 14px; }
+  .mx-masthead .mx-meta span::before { content: "\00b7" / ""; margin-right: 2ch; }
+  .mx-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--mx-space-1) 2ch;
+    margin-top: var(--mx-space-1-5);
+    font-family: var(--mx-font-family-mono);
+    font-size: var(--mx-font-size-meta);
+    line-height: var(--mx-font-leading-ui);
+    color: var(--mx-color-accent);
+  }
+
+  @media (width >= 720px) {
+    .mx-masthead > .mx-stream-fall { display: block; width: 100px; min-height: 0; margin-block: 0; }
+    .mx-masthead .mx-strand:nth-child(4) { display: block; }
+  }
+  /* Desk width: the masthead spans the contents and the body. */
+  @media (width >= 1100px) {
+    .mx-post:has(> .mx-post-grid) > :is(.mx-masthead, .mx-postfoot) {
+      max-width: calc(var(--mx-size-rail) + var(--mx-space-6) + var(--mx-measure) + 2 * var(--mx-inset));
+    }
+  }
+  /* On paper the masthead stays whole, its path line included; its strip is rain (05, "Print"). */
+  @media print {
+    .mx-masthead > .mx-stream-fall { display: none; }
+    /* The article's panels are plain flow at the measure on paper (Panel's print rule, over their own padding). */
+    .mx-post .mx-panel { padding-inline: 0; }
+  }
+}

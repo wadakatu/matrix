@@ -1,0 +1,22 @@
+@layer mx.components {
+  /* :::message and :::message alert (draft, 04): a note in the article, told apart by its word. */
+  .mx-callout {
+    padding: var(--mx-space-3) var(--mx-space-4);
+    background: var(--mx-color-ground);
+    border: var(--mx-border-width-hair) solid var(--mx-color-rule);
+    border-left: var(--mx-border-width-strong) solid var(--mx-color-text-muted);
+  }
+  .mx-callout[data-variant="alert"] { border-left-color: var(--mx-color-accent); }
+  .mx-callout > * + * { margin-top: var(--mx-space-3); }
+  .mx-callout > .mx-callout-label + * { margin-top: var(--mx-space-1); }
+  /* The face is the page's chrome face, by :lang() (03). */
+  .mx-callout-label {
+    font-size: var(--mx-font-size-meta);
+    font-weight: var(--mx-font-weight-medium);
+    line-height: var(--mx-font-leading-ui);
+    color: var(--mx-color-text-muted);
+  }
+  .mx-callout[data-variant="alert"] > .mx-callout-label { color: var(--mx-color-accent); }
+  .mx-callout[data-variant="alert"] > .mx-callout-label::before { content: "!" / ""; margin-right: 1ch; }
+  @media print { .mx-callout { break-inside: avoid; } }
+}

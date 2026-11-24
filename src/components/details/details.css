@@ -1,0 +1,35 @@
+@layer mx.components {
+  /* :::details (draft, 04): a native disclosure, boxed as the login card is. No fill of its own, so a
+     code block or a callout inside is still a cut. It does not animate. */
+  .mx-details { border: var(--mx-border-width-hair) solid var(--mx-color-rule); }
+  .mx-details-summary {
+    display: flex;
+    align-items: center;
+    gap: 1ch;
+    min-height: var(--mx-size-target);
+    padding-inline: var(--mx-space-4);
+    color: var(--mx-color-accent);
+    font-weight: var(--mx-font-weight-medium);
+    line-height: var(--mx-font-leading-title);
+    cursor: pointer;
+    list-style: none;
+  }
+  .mx-details-summary::-webkit-details-marker { display: none; }
+  .mx-details-summary::before { content: "▸" / ""; flex: none; }
+  .mx-details[open] > .mx-details-summary::before { content: "▾" / ""; }
+  .mx-details-summary:focus-visible { outline-offset: -2px; }
+  .mx-details[open] > .mx-details-summary { border-bottom: var(--mx-border-width-hair) solid var(--mx-color-rule); }
+  .mx-details-body { padding: var(--mx-space-4); }
+  .mx-details-body > * + * { margin-top: var(--mx-space-3); }
+
+  /* Paper (05, "Print"): printed open. An engine without ::details-content prints it closed, and its
+     summary still says what was left out. */
+  @media print {
+    .mx-details { break-inside: avoid; }
+    @supports selector(::details-content) {
+      .mx-details::details-content { content-visibility: visible; }
+      .mx-details > .mx-details-summary::before { content: "▾" / ""; }
+      .mx-details > .mx-details-summary { border-bottom: var(--mx-border-width-hair) solid var(--mx-color-rule); }
+    }
+  }
+}

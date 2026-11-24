@@ -1,0 +1,21 @@
+---
+/**
+ * The code block's wrapper (04, "Code block: the wrapper"): the highlighter's `<pre>`, given as the
+ * slot and kept as written, then Copy. With `title` it is a `figure` and the title its caption.
+ * `diff`: the lines carry `data-diff` (the Markdown step's reading of the fence).
+ */
+import { strings, type Lang } from "../../strings/index.ts";
+interface Props {
+  title?: string;
+  diff?: boolean;
+  lang?: Lang;
+}
+const { title, diff, lang = "en" } = Astro.props;
+const t = strings[lang].post.copy;
+const Tag = title ? "figure" : "div";
+---
+<Tag class="mx-code" data-diff={diff ? "" : undefined}>
+  {title && <figcaption class="mx-code-title">{title}</figcaption>}
+  <slot />
+  <mx-copy class="mx-copy" data-copied={t.done} data-failed={t.failed}><button type="button">{t.label}</button></mx-copy>
+</Tag>

@@ -15,4 +15,5 @@
   @media (width < 720px) {
     .mx-footer { margin-top: var(--mx-space-12); }
   }
+  @media print { .mx-footer { display: none; } }
 }

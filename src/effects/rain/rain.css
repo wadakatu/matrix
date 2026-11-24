@@ -59,4 +59,7 @@
 
   /* Forced colours flatten the gradient into nothing readable; the rain is not drawn (05). */
   @media (forced-colors: active) { .mx-rain { display: none; } }
+
+  /* Not printed (05, "Print"). */
+  @media print { .mx-rain { display: none; } }
 }

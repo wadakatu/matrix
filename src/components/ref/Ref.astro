@@ -1,0 +1,10 @@
+---
+/** A Reference link (04): a link whose text is its own address, host then path. */
+interface Props {
+  /** An absolute address. */
+  href: string;
+}
+const { href } = Astro.props;
+const [, host = href, path = ""] = href.match(/^https?:\/\/([^/?#]+)(.*)$/) ?? [];
+---
+<a class="mx-ref" href={href}><span class="mx-ref-host">{host.replace(/^www\./, "")}</span><span class="mx-ref-path">{path}</span></a>

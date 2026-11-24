@@ -1,0 +1,51 @@
+---
+/**
+ * The head of an article (04, "Masthead"): the path line, the title as the page's one `h1`, the date,
+ * category, reading time and tags, and from 720px a strip of the article's own words beside it (the
+ * Stream's strands, hidden from assistive technology: every word in them is in the masthead). Without
+ * `path` and `date` it is the head of the blog's index: the title, then the slot.
+ */
+import { runLang, streamStrands } from "../../lib/index.ts";
+import { strings, type Lang } from "../../strings/index.ts";
+interface Props {
+  title: string;
+  lang?: Lang;
+  /** The path line: home, the index, and this article's file name. */
+  path?: { home: string; index: string; file: string };
+  /** `YYYY-MM-DD`. */
+  date?: string;
+  category?: string;
+  /** Reading time, in minutes. */
+  minutes?: number;
+  tags?: string[];
+}
+const { title, lang = "en", path, date, category, minutes, tags = [] } = Astro.props;
+const t = strings[lang].post;
+const seed = path ? parseInt(path.file.slice(0, 6), 16) || 0 : 0;
+const strands = path && date ? streamStrands([title, [date, category].filter(Boolean).join(" "), tags.join(" "), path.file], seed) : [];
+---
+<header class="mx-masthead mx-panel">
+  {strands.length > 0 && (
+    <div class="mx-stream-fall" aria-hidden="true">
+      {strands.map((s, j) => (
+        <span class="mx-strand" style={`--j:${j}`}>
+          {s.drops.map((d) => (
+            <span class="mx-drop" lang={d.ja ? "ja" : undefined} style={`--t:${d.t}s;--d:${d.d}s;--rest:${d.rest}%`}>{d.text}</span>
+          ))}
+        </span>
+      ))}
+    </div>
+  )}
+  <div class="mx-masthead-id">
+    {path && (
+      <nav class="mx-crumb" aria-label={t.crumb}><a href={path.home} aria-label={t.home}>~</a>/<a href={path.index}>posts</a>/<span aria-current="page">{path.file}</span></nav>
+    )}
+    <h1 class="mx-masthead-title">{title}</h1>
+    {date ? (
+      <p class="mx-meta"><time datetime={date}>{date}</time> {category && <span>{category}</span>} {minutes !== undefined && <span>{t.minutes.before}{minutes}{t.minutes.after}</span>}</p>
+    ) : (
+      <slot />
+    )}
+    {tags.length > 0 && <ul class="mx-tags" aria-label={t.tags}>{tags.map((tag) => <li lang={runLang(tag, lang)}>#{tag}</li>)}</ul>}
+  </div>
+</header>

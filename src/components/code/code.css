@@ -1,0 +1,110 @@
+@layer mx.components {
+  /* Shiki's css-variables theme (Astro's prefix), mapped onto the roles, so both palettes and both
+     themes follow. The diff variables are mapped too, for a fence Shiki's own diff grammar highlights. */
+  :where(.mx-prose, .mx-code) {
+    --astro-code-foreground: var(--mx-color-text);
+    --astro-code-background: var(--mx-color-ground);
+    --astro-code-token-comment: var(--mx-color-text-muted);
+    --astro-code-token-keyword: var(--mx-color-accent);
+    --astro-code-token-function: var(--mx-color-accent);
+    --astro-code-token-constant: var(--mx-color-text-lead);
+    --astro-code-token-string: var(--mx-color-text-lead);
+    --astro-code-token-string-expression: var(--mx-color-text-lead);
+    --astro-code-token-parameter: var(--mx-color-text);
+    --astro-code-token-punctuation: var(--mx-color-text-muted);
+    --astro-code-token-link: var(--mx-color-accent);
+    --astro-code-token-inserted: var(--mx-color-text-lead);
+    --astro-code-token-deleted: var(--mx-color-text-muted);
+    --astro-code-token-changed: var(--mx-color-text);
+  }
+
+  /* The block: ground cut into the panel, a hairline round it; its language is the tab. Long lines wrap. */
+  .mx-code {
+    position: relative;
+    background: var(--mx-color-ground);
+    border: var(--mx-border-width-hair) solid var(--mx-color-rule);
+    font-size: var(--mx-font-size-ui);
+    line-height: var(--mx-font-leading-code);
+  }
+  :where(figure.mx-code) { margin: 0; }
+  .mx-code > pre { margin: 0; padding: var(--mx-space-10) var(--mx-space-4) var(--mx-space-4); tab-size: 2; }
+  .mx-code :is(pre, pre *) { font-family: var(--mx-font-family-mono); }
+  .mx-code > pre::before {
+    content: attr(data-language) / "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: var(--mx-space-0-5) var(--mx-space-3);
+    border: solid var(--mx-color-rule);
+    border-width: 0 var(--mx-border-width-hair) var(--mx-border-width-hair) 0;
+    font-size: var(--mx-font-size-label);
+    color: var(--mx-color-text-muted);
+  }
+
+  /* Copy: after the code, in its corner. Absent until the element is defined (05). */
+  .mx-copy { position: absolute; top: 0; right: 0; }
+  .mx-copy:not(:defined) { display: none; }
+  .mx-copy > button {
+    min-width: 44px;
+    padding: var(--mx-space-0-5) var(--mx-space-3);
+    cursor: pointer;
+    background: var(--mx-color-ground);
+    border: solid var(--mx-color-rule);
+    border-width: 0 0 var(--mx-border-width-hair) var(--mx-border-width-hair);
+    font: inherit;
+    font-size: var(--mx-font-size-label);
+    line-height: var(--mx-font-leading-code);
+    color: var(--mx-color-text-muted);
+  }
+  .mx-copy > button:hover { color: var(--mx-color-text-lead); }
+  .mx-copy > button:focus-visible { outline-offset: -2px; }
+  .mx-copy > button[data-done] { background: var(--mx-color-accent); color: var(--mx-color-on-accent); }
+  @media (forced-colors: active) { .mx-copy > button[data-done] { background: Highlight; color: HighlightText; } }
+
+  /* ---------- Code title (draft, 04): the file name takes the tab's place, in the flow ---------- */
+  .mx-code:has(> .mx-code-title) { display: grid; grid-template-columns: minmax(0, max-content) 1fr auto; }
+  .mx-code-title {
+    grid-area: 1 / 1;
+    padding: var(--mx-space-0-5) var(--mx-space-3);
+    border: solid var(--mx-color-rule);
+    border-width: 0 var(--mx-border-width-hair) var(--mx-border-width-hair) 0;
+    font-family: var(--mx-font-family-mono);
+    font-size: var(--mx-font-size-label);
+    font-weight: var(--mx-font-weight-regular);
+    line-height: var(--mx-font-leading-code);
+    color: var(--mx-color-text-lead);
+    overflow-wrap: anywhere;
+  }
+  .mx-code:has(> .mx-code-title) > pre { grid-area: 2 / 1 / 3 / -1; padding-top: var(--mx-space-4); }
+  .mx-code:has(> .mx-code-title) > pre::before { content: none; }
+  .mx-code:has(> .mx-code-title) > .mx-copy { grid-area: 1 / 3; position: static; }
+
+  /* ---------- Diff (draft, 04): the line's own sign and its weight, never a hue alone ---------- */
+  /* Every line hangs by two characters, so a wrapped line continues clear of the signs. */
+  .mx-code[data-diff] .line { display: inline-block; width: 100%; padding-left: 2ch; text-indent: -2ch; }
+  /* Inside a changed line every token takes the line's tone. */
+  .mx-code .line[data-diff] {
+    color: var(--mx-diff-tone);
+    --astro-code-foreground: var(--mx-diff-tone);
+    --astro-code-token-comment: var(--mx-diff-tone);
+    --astro-code-token-keyword: var(--mx-diff-tone);
+    --astro-code-token-function: var(--mx-diff-tone);
+    --astro-code-token-constant: var(--mx-diff-tone);
+    --astro-code-token-string: var(--mx-diff-tone);
+    --astro-code-token-string-expression: var(--mx-diff-tone);
+    --astro-code-token-parameter: var(--mx-diff-tone);
+    --astro-code-token-punctuation: var(--mx-diff-tone);
+    --astro-code-token-link: var(--mx-diff-tone);
+    --astro-code-token-inserted: var(--mx-diff-tone);
+    --astro-code-token-deleted: var(--mx-diff-tone);
+    --astro-code-token-changed: var(--mx-diff-tone);
+  }
+  .mx-code .line[data-diff="add"] { --mx-diff-tone: var(--mx-color-text-lead); font-weight: var(--mx-font-weight-medium); }
+  .mx-code .line[data-diff="del"] { --mx-diff-tone: var(--mx-color-text-muted); font-weight: var(--mx-font-weight-regular); }
+
+  /* ---------- Paper (05, "Print"): no Copy. Shiki's own wrapping (`word-wrap: break-word`) breaks a line anywhere at the edge ---------- */
+  @media print {
+    .mx-copy { display: none; }
+    .mx-code { break-inside: avoid; }
+  }
+}

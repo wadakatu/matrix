@@ -13,4 +13,6 @@
     color: var(--mx-color-accent);
     margin-bottom: var(--mx-space-2);
   }
+  /* On paper a panel is plain flow at its measure: no fill, no border, no inline padding (05, "Print"). */
+  @media print { .mx-panel { border: 0; padding-inline: 0; } }
 }

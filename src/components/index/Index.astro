@@ -1,0 +1,15 @@
+---
+/** The blog's index (04, "Index"): date and title per row. Give the posts newest first. */
+import { runLang } from "../../lib/index.ts";
+import type { Lang } from "../../strings/index.ts";
+interface Props {
+  posts: { date: string; title: string; href: string }[];
+  lang?: Lang;
+}
+const { posts, lang = "en" } = Astro.props;
+---
+<ol class="mx-index mx-panel" reversed>
+  {posts.map((p) => (
+    <li><time datetime={p.date}>{p.date}</time><a href={p.href} lang={runLang(p.title, lang)}>{p.title}</a></li>
+  ))}
+</ol>

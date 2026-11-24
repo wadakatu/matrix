@@ -1,0 +1,74 @@
+@layer mx.components {
+  /* Contents: one <details>. A disclosure above the article below 1100px; from there a rail that stays
+     beside it, always open. `mx-toc` lays no box. */
+  mx-toc { display: contents; }
+  .mx-toc {
+    max-width: calc(var(--mx-measure) + 2 * var(--mx-inset));
+    padding: 0;
+    font-family: var(--mx-font-family-mono);
+    font-size: var(--mx-font-size-meta);
+    line-height: 1.6;
+  }
+  .mx-toc-summary {
+    display: flex;
+    align-items: center;
+    gap: 1ch;
+    min-height: var(--mx-size-target);
+    padding: 0 var(--mx-inset);
+    cursor: pointer;
+    color: var(--mx-color-accent);
+    font-weight: var(--mx-font-weight-medium);
+    list-style: none;
+  }
+  .mx-toc-summary::-webkit-details-marker { display: none; }
+  .mx-toc-summary::before { content: "▸" / ""; }
+  .mx-toc details[open] > .mx-toc-summary::before { content: "▾" / ""; }
+  .mx-toc-summary:focus-visible { outline-offset: -2px; }
+  .mx-toc nav { padding: 0 var(--mx-inset) var(--mx-space-4); }
+  .mx-toc nav > ol { counter-reset: mx-section; }
+  .mx-toc nav > ol > li { counter-increment: mx-section; border-top: var(--mx-border-width-hair) dotted var(--mx-color-rule); }
+  /* em, not ch: the number is set in the Latin face and the title in the Japanese one, and their ch differ. */
+  .mx-toc a {
+    display: block;
+    margin-left: -10px;
+    padding: 7px 0 7px calc(2.4em + 8px);
+    border-left: var(--mx-border-width-strong) solid transparent;
+    text-indent: -2.4em;
+    text-decoration: none;
+    color: var(--mx-color-text-muted);
+    overflow-wrap: anywhere;
+  }
+  .mx-toc nav > ol > li > a::before {
+    content: counter(mx-section, decimal-leading-zero) / "";
+    display: inline-block;
+    width: 2.4em;
+    text-indent: 0;
+    color: var(--mx-color-accent);
+    font-family: var(--mx-font-family-mono);
+  }
+  .mx-toc ol ol a { padding-left: calc(3.4em + 8px); text-indent: 0; }
+  .mx-toc a:hover { color: var(--mx-color-text-lead); }
+  /* The section being read: the word's colour and the rule, so not colour alone. */
+  .mx-toc a[aria-current] { color: var(--mx-color-text-lead); border-left-color: var(--mx-color-accent); }
+
+  @media (width >= 1100px) {
+    .mx-toc {
+      position: sticky;
+      top: var(--mx-space-5);
+      max-height: calc(100vh - 2 * var(--mx-space-5));
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--mx-color-rule) transparent;
+    }
+    .mx-toc-summary, .mx-toc nav { padding-inline: var(--mx-space-4); }
+    /* Always open here, so the button gives way to a label: the nav's own name, seen and not read
+       twice. An engine without ::details-content keeps the disclosure, which the element opens. */
+    @supports selector(::details-content) {
+      .mx-toc details::details-content { content-visibility: visible; }
+      .mx-toc-summary { display: none; }
+      .mx-toc nav::before { content: attr(aria-label) / ""; display: block; padding-block: var(--mx-space-3) var(--mx-space-2); color: var(--mx-color-text-muted); }
+    }
+  }
+  /* Navigation goes nowhere on paper (05, "Print"). */
+  @media print { .mx-toc { display: none; } }
+}
