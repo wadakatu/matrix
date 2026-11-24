@@ -60,7 +60,8 @@ work; the mark is absent (05).
 An `aside` holding a `nav` named Contents (目次). The summary is a native disclosure, 44px tall, its
 marker generated with empty alternative text; focus ring inside the box. Keyboard: Tab to the
 summary, Enter or Space opens it, Tab through the links; from 1100px straight to the links. The mark
-is the word's colour and a rule, never colour alone. Not printed (05).
+is the word's colour and a rule, never colour alone. A heading in the other language carries `lang`.
+Not printed (05).
 
 ## Do / Don't
 

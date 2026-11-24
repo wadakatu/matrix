@@ -65,6 +65,20 @@ test("language: the chrome strings passed to the story follow the toolbar", asyn
   expect(await page.locator(".fixture-scope .mx-control").allTextContents()).toEqual(Array(4).fill("オペレーター配色"));
 });
 
+test("language: on an English page the article's Japanese title, category and headings carry lang=\"ja\" (L6)", async ({ page }) => {
+  const langs = (sel) => page.locator(`#storybook-root ${sel}`).evaluateAll((els) => els.map((e) => e.lang));
+  for (const [language, ja] of [["en", "ja"], ["ja", ""]]) {
+    await story(page, "reading-masthead--default", `language:${language}`);
+    expect(await langs(".mx-masthead-title"), language).toEqual([ja]);
+    // The category, then the reading time in the chrome's language.
+    expect(await langs(".mx-masthead .mx-meta > span"), language).toEqual([ja, ""]);
+    await story(page, "reading-contents--default", `language:${language}`);
+    const links = await langs(".mx-toc nav a");
+    expect(links.length).toBeGreaterThan(0);
+    expect(links, language).toEqual(Array(links.length).fill(ja));
+  }
+});
+
 test("the Control's state stories show their state: hovered takes the accent border, focused the ring", async ({ page }) => {
   // The pointer starts at (0, 0), over the control; move it off so only the story sets hover.
   const look = async () => (await page.mouse.move(600, 600), page.locator(".mx-control").first()).evaluate((el) => ({ border: getComputedStyle(el).borderColor, outline: getComputedStyle(el).outlineStyle }));

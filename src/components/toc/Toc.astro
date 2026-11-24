@@ -3,6 +3,7 @@
  * Contents (04): every `h2`, numbered from 01, with its `h3` under it; `h4` are not listed. Takes the
  * headings as Astro's Markdown rendering gives them. A native disclosure, so it works without scripts.
  */
+import { runLang } from "../../lib/index.ts";
 import { strings, type Lang } from "../../strings/index.ts";
 interface Heading {
   depth: number;
@@ -29,8 +30,8 @@ const tree = headings.reduce<(Heading & { sub: Heading[] })[]>((list, h) => {
         <ol>
           {tree.map((h) => (
             <li>
-              <a href={`#${h.slug}`}>{h.text}</a>
-              {h.sub.length > 0 && <ol>{h.sub.map((s) => <li><a href={`#${s.slug}`}>{s.text}</a></li>)}</ol>}
+              <a href={`#${h.slug}`} lang={runLang(h.text, lang)}>{h.text}</a>
+              {h.sub.length > 0 && <ol>{h.sub.map((s) => <li><a href={`#${s.slug}`} lang={runLang(s.text, lang)}>{s.text}</a></li>)}</ol>}
             </li>
           ))}
         </ol>

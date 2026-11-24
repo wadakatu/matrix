@@ -40,9 +40,9 @@ const strands = path && date ? streamStrands([title, [date, category].filter(Boo
     {path && (
       <nav class="mx-crumb" aria-label={t.crumb}><a href={path.home} aria-label={t.home}>~</a>/<a href={path.index}>posts</a>/<span aria-current="page">{path.file}</span></nav>
     )}
-    <h1 class="mx-masthead-title">{title}</h1>
+    <h1 class="mx-masthead-title" lang={runLang(title, lang)}>{title}</h1>
     {date ? (
-      <p class="mx-meta"><time datetime={date}>{date}</time> {category && <span>{category}</span>} {minutes !== undefined && <span>{t.minutes.before}{minutes}{t.minutes.after}</span>}</p>
+      <p class="mx-meta"><time datetime={date}>{date}</time> {category && <span lang={runLang(category, lang)}>{category}</span>} {minutes !== undefined && <span>{t.minutes.before}{minutes}{t.minutes.after}</span>}</p>
     ) : (
       <slot />
     )}

@@ -63,9 +63,9 @@ inset (`--mx-measure`, `--mx-inset` in `base.css`); `size.rail`; `space.0-5`, `s
 ## Accessibility
 
 The title is the page's one `h1`. The path line is a `nav` named Breadcrumb (パンくずリスト), its
-`~` named Home and the file name `aria-current="page"`. Tags are a named list; a tag in the other
-language carries `lang`. The strip is `aria-hidden`: every word in it is in the masthead. Keyboard:
-the two path links, in order. Printed whole, without the strip (05, "Print").
+`~` named Home and the file name `aria-current="page"`. Tags are a named list. The title, the
+category or a tag in the other language carries `lang`. The strip is `aria-hidden`: every word in it
+is in the masthead. Keyboard: the two path links, in order. Printed whole, without the strip (05, "Print").
 
 ## Do / Don't
 
