@@ -14,5 +14,5 @@ docker run --rm --init --platform linux/amd64 --ipc=host \
   "mcr.microsoft.com/playwright:v${version}-noble" \
   bash -c 'curl -fsSL "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.gz" | tar -xz -C /opt \
     && export PATH="/opt/node-v$NODE_VERSION-linux-x64/bin:$PATH" && node --version && npm ci --no-audit --no-fund \
-    && npm run build && npx astro build && npm run build-storybook \
+    && npm run build && npm run build-storybook \
     && npm run test:visual:run -- "$@"' -- "$@"

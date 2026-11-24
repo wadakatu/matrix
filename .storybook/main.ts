@@ -7,6 +7,7 @@ write();
 export default {
   stories: [
     "../docs/storybook/*.mdx",
+    "../docs/storybook/specimens/*.mdx",
     "../src/**/*.stories.ts",
     // A story with a deliberate contrast violation, to show that test:stories fails on one (09, task 2.1).
     ...(process.env.MX_A11Y_SELFTEST ? ["../tests/a11y-selftest/*.stories.ts"] : []),
@@ -14,6 +15,7 @@ export default {
   addons: ["@storybook/addon-docs", "@storybook/addon-a11y", "@storybook/addon-vitest"],
   core: { disableTelemetry: true },
   framework: { name: "@storybook-astro/framework", options: {} },
-  // The logo is shown on its own page and in the Mark; it is not in the package (decision Q3).
-  staticDirs: [{ from: "../assets/logo", to: "/assets/logo" }],
+  // The logo is shown on its own page and in the Mark; it is not in the package (decision Q3). The
+  // specimen build (astro build, base /specimens/) is framed by the Specimens pages (06).
+  staticDirs: [{ from: "../assets/logo", to: "/assets/logo" }, { from: "../dist-specimens", to: "/specimens" }],
 };
