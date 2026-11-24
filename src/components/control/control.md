@@ -2,6 +2,7 @@
 name: Control
 status: approved
 class: mx-control
+attributes: [aria-pressed, data-action]
 tokens: [color.text, color.text-lead, color.ground, color.control-border, color.accent, color.on-accent, color.focus, font.size.ui, font.leading.ui, radius.control, border.width.hair, border.width.strong, space.1, space.2, space.3]
 ---
 

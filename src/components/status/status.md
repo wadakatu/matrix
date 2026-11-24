@@ -2,6 +2,7 @@
 name: Status
 status: approved
 class: mx-status
+attributes: []
 tokens: []
 ---
 

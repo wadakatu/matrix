@@ -2,6 +2,7 @@
 name: Nav
 status: approved
 class: mx-nav
+attributes: [aria-current, data-reading]
 tokens: [color.text-muted, color.text-lead, color.accent, border.width.strong, space.6]
 ---
 

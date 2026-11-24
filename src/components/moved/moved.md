@@ -2,6 +2,7 @@
 name: Moved
 status: approved
 class: mx-moved
+attributes: []
 tokens: []
 ---
 

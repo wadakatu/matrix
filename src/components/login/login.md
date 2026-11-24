@@ -2,6 +2,7 @@
 name: Login card
 status: approved
 class: mx-login
+attributes: []
 tokens: [color.accent, color.rule, size.target, border.width.hair, space.0-5, space.1]
 ---
 

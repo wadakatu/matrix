@@ -2,6 +2,7 @@
 name: Prose
 status: approved
 class: mx-prose
+attributes: []
 tokens: [color.accent, color.ground, color.rule, color.text, color.text-lead, color.text-muted, font.family.ja, font.family.mono, font.size.read, font.size.read-compact, font.size.heading, font.size.lead, font.size.body, font.size.label, font.size.meta, font.weight.medium, font.weight.regular, font.leading.read, font.leading.ui, border.width.hair, border.width.strong, radius.control, size.measure.read, size.measure.read-compact, space.2, space.3, space.5, space.7]
 ---
 

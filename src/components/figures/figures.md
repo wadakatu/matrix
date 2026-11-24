@@ -2,6 +2,7 @@
 name: Figures
 status: approved
 class: mx-figures
+attributes: []
 tokens: [color.text-muted, color.rule, space.1, space.4, border.width.hair]
 ---
 

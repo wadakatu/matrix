@@ -1,7 +1,8 @@
 ---
 name: Scan lines
 status: approved
-tokens: [color.scanline, layer.scanline, layer.lifted, layer.status]
+attributes: [data-reading]
+tokens: [color.scanline, layer.scanline, layer.lifted]
 ---
 
 # Scan lines
@@ -29,7 +30,8 @@ CSS only; no pointer events.
 
 ## Tokens
 
-`color.scanline`; `layer.scanline`, `layer.lifted`, `layer.status`.
+`color.scanline`; `layer.scanline`, `layer.lifted`. It sits under `layer.status`, which the status
+line reads.
 
 ## Accessibility
 

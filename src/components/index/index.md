@@ -2,6 +2,7 @@
 name: Index
 status: approved
 class: mx-index
+attributes: []
 tokens: [color.accent, color.rule, color.text-lead, color.text-muted, font.family.mono, font.size.meta, font.size.body, font.leading.ui, border.width.hair, size.measure.read, size.measure.read-compact, space.2, space.3, space.5]
 ---
 

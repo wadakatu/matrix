@@ -2,6 +2,7 @@
 name: Reference link
 status: approved
 class: mx-ref
+attributes: []
 tokens: [color.accent, color.ground, color.rule, color.text-lead, color.text-muted, font.family.mono, font.size.meta, font.leading.ui, border.width.hair, border.width.strong, space.2, space.3]
 ---
 

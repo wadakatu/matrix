@@ -2,6 +2,7 @@
 name: Footer
 status: approved
 class: mx-footer
+attributes: []
 tokens: [color.ground, color.rule, color.text-muted, font.size.meta, border.width.hair, space.2, space.5, space.7, space.10, space.12, space.18]
 ---
 

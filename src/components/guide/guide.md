@@ -2,6 +2,7 @@
 name: Guide
 status: approved
 class: mx-guide
+attributes: []
 tokens: [color.text-muted, color.text, color.text-lead, color.accent, color.on-accent, color.rule, font.size.meta, size.target, border.width.hair, space.0-5, space.1-5, space.2, space.3]
 ---
 

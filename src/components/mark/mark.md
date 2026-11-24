@@ -2,6 +2,7 @@
 name: Mark
 status: approved
 class: mx-mark
+attributes: []
 tokens: [color.accent, font.size.read-compact, font.weight.medium, size.logo.header, size.logo.header-compact, size.target]
 ---
 

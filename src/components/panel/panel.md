@@ -2,6 +2,7 @@
 name: Panel
 status: approved
 class: mx-panel
+attributes: []
 tokens: [color.panel, color.rule, color.accent, font.size.body, font.weight.medium, font.leading.ui, space.2, space.5, space.6, space.7, border.width.hair]
 ---
 

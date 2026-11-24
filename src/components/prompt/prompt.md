@@ -2,6 +2,7 @@
 name: Prompt
 status: approved
 class: mx-prompt
+attributes: []
 tokens: [color.accent, color.on-accent, color.text-lead, font.size.read-compact, motion.blink.duration, motion.blink.count, space.1-5]
 ---
 

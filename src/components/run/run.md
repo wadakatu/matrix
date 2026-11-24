@@ -2,6 +2,7 @@
 name: Run
 status: approved
 class: mx-run
+attributes: []
 tokens: [color.accent]
 ---
 

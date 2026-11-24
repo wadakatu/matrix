@@ -2,6 +2,7 @@
 name: Callout
 status: draft
 class: mx-callout
+attributes: [data-variant]
 tokens: [color.accent, color.ground, color.rule, color.text-muted, font.size.meta, font.weight.medium, font.leading.ui, border.width.hair, border.width.strong, space.1, space.3, space.4]
 ---
 

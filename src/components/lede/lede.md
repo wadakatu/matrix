@@ -2,6 +2,7 @@
 name: Lede
 status: approved
 class: mx-lede
+attributes: []
 tokens: [color.text-muted, size.measure.lede]
 ---
 

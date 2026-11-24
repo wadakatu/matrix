@@ -2,7 +2,8 @@
 name: Rain
 status: approved
 class: mx-rain
-tokens: [color.rain.tail, color.rain.body, color.rain.head, color.ground, font.family.dot, font.size.rain, layer.rain, motion.rain.duration.min, motion.rain.duration.max]
+attributes: [data-variant, data-rain, data-motion]
+tokens: [color.rain.tail, color.rain.body, color.rain.head, color.ground, font.family.dot, font.size.rain, layer.rain]
 ---
 
 # Rain
@@ -49,7 +50,9 @@ Works without scripts, held included.
 ## Tokens
 
 `color.rain.tail`, `color.rain.body`, `color.rain.head`, `color.ground` (the band's mask);
-`font.family.dot`, `font.size.rain`; `layer.rain`; `motion.rain.duration.min`, `.max`.
+`font.family.dot`, `font.size.rain`; `layer.rain`. The columns' falls are `rainColumns` in `lib`,
+whose 9s and 21s defaults are the values of `motion.rain.duration.min` and `.max`; no file reads the
+tokens.
 
 ## Accessibility
 

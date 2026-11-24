@@ -3,7 +3,8 @@ name: Menu
 status: approved
 class: mx-menu
 element: mx-menu
-tokens: [color.text-muted, color.accent, color.on-accent, color.rule, size.target, space.1, space.2, space.3]
+attributes: []
+tokens: [color.text-muted, color.accent, color.on-accent, color.rule, border.width.hair, size.target, space.1, space.2, space.3]
 ---
 
 # Menu
@@ -43,9 +44,9 @@ JavaScript except those four.
 
 ## Tokens
 
-`color.text-muted`, `color.accent`, `color.on-accent`, `color.rule`, `size.target`, `space.1`,
-`space.2`, `space.3`. The 46px cell, 3px row padding and the 16×12 three-rule glyph are the
-prototype's one-off numbers.
+`color.text-muted`, `color.accent`, `color.on-accent`, `color.rule`, `border.width.hair`,
+`size.target`, `space.1`, `space.2`, `space.3`. The 46px cell, 3px row padding and the 16×12
+three-rule glyph are the prototype's one-off numbers.
 
 ## Accessibility
 

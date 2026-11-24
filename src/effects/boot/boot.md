@@ -3,7 +3,8 @@ name: Boot
 status: approved
 class: mx-boot
 element: mx-boot
-tokens: [color.ground, color.text-muted, color.accent, color.text-lead, font.family.dot, font.size.ui, font.leading.terminal, layer.boot, motion.boot.failsafe, space.3, space.4, space.10]
+attributes: [data-boot]
+tokens: [color.ground, color.text-muted, color.accent, color.text-lead, font.family.dot, font.size.ui, font.leading.terminal, layer.boot, layer.lifted, space.3, space.4, space.10]
 ---
 
 # Boot
@@ -53,8 +54,9 @@ ends behind it, the curtain lifts. An early end drops the rest; reduced motion s
 ## Tokens
 
 `color.ground`, `color.text-muted`, `color.accent`, `color.text-lead`; `font.family.dot`,
-`font.size.ui`, `font.leading.terminal`; `layer.boot`; `motion.boot.failsafe`; `space.3`, `space.4`,
-`space.10`. The line size `--mx-text-boot` is the effect's own fluid formula.
+`font.size.ui`, `font.leading.terminal`; `layer.boot`, `layer.lifted` (the cover over the logo);
+`space.3`, `space.4`, `space.10`. The line size `--mx-text-boot` is the effect's own fluid formula.
+`motion.boot.failsafe` is read by the head script, which ends the boot (Head).
 
 ## Accessibility
 

@@ -2,6 +2,7 @@
 name: Swatches
 status: approved
 class: mx-swatch
+attributes: [data-swatch]
 tokens: [color.panel, color.rule, color.rain.tail, color.rain.body, color.text-muted, color.text, color.text-lead, color.accent]
 ---
 

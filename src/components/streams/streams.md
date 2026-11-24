@@ -2,6 +2,7 @@
 name: Streams
 status: approved
 class: mx-streams
+attributes: [data-variant]
 tokens: [color.rule, color.accent, border.width.hair, font.size.entry.min, font.size.entry.max, font.size.body, font.leading.tight, space.3, space.4, space.5, space.6]
 ---
 

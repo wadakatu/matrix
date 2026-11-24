@@ -2,6 +2,7 @@
 name: Takeover
 status: approved
 class: mx-takeover
+attributes: []
 tokens: [color.text-muted, color.text-lead]
 ---
 
