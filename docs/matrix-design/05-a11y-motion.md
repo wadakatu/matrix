@@ -181,6 +181,67 @@ prints one form for both.
   (`Highlight` / `HighlightText`); gradient-clipped text gets its text colour back; rain is
   not drawn; borders that separate regions are kept.
 
+## Print
+
+An article on paper is a designed state, like the page without scripts. The prototype has no
+print layer. TOMBO had one (`docs/history/tombo/print.md`); its method carries over and its
+trim marks do not (08). The layer is designed for the Article page and tested on the Article
+specimens. The rules that drop the rain and the chrome are those components' own, so they
+hold on every page, but no other page is designed for paper.
+
+| Rule | How |
+| --- | --- |
+| **No rain** | The rain layer, the masthead's strip and the scan lines are not printed. Nothing animates |
+| **No chrome** | Not printed: the skip link, the header with everything in it, the footer, the status region, Contents, every Copy button, and the post foot (end-of-file line, Share, pager, ways back). They are navigation and controls, and go nowhere on paper. The masthead stays whole, its path line included: it is the article's own |
+| **Dark ink** | The page prints with `color-scheme: light` on the root and on every theme scope, so each colour role resolves to its day value (03) in the page's own palette. No colour is written for print |
+| **On white** | No surface is painted: `ground`, `panel` and every fill are dropped, and the paper is the white. Borders stay. Nothing depends on the browser's "print backgrounds" setting, and nothing sets `print-color-adjust` |
+| **Link addresses** | In `.mx-prose`, a link to an absolute `http` or `https` address is followed by that address in brackets: `text-muted`, the mono face, `font.size.meta`, breaking anywhere |
+| **Not followed by an address** | A Reference link, whose text is its address already. A link to a place on the same page (`#…`): a footnote's reference prints as its number, and its back reference is not printed. A link to another page of this site. Everything outside `.mx-prose` |
+| **Panels** | No fill, no border and no inline padding: the article is plain flow at its measure |
+| **Details** | Printed open, with `▾` |
+| **Code** | Wraps, as on screen, and breaks anywhere rather than be cut at the paper's edge. It keeps its hairline `rule`, its tab or title, and its syntax colours, which are the day values |
+| **Table** | Its wrapper does not scroll on paper: the table is the measure wide and its cells break anywhere |
+| **Breaks** | `break-inside: avoid` on a code block, a callout, a details box, an image, a reference link and a table row; `break-after: avoid` on `h2`, `h3` and `h4`; `orphans` and `widows` of 3 on paragraphs |
+| **The page** | No `@page` rule. Paper size and margins stay the reader's |
+
+Why these and not others:
+
+- **Day roles, not black.** The standard reset paints everything `#000` on `#fff` with
+  `!important`
+  ([HTML5 Boilerplate](https://github.com/h5bp/html5-boilerplate/blob/main/dist/css/style.css),
+  v9.0.1). matrix writes no colour outside its tokens, and its day text roles are already dark
+  ink, so it switches to them and paints nothing. Paper is lighter than any day `ground` or
+  `panel`, so every text role of the contrast contract (02) measures higher on it than its
+  gated figure. The muted, lead and accent roles stay apart, which a single black would lose.
+- **An engine without `light-dark()`** has no day values (03) and would print night's pale
+  text on white. There, and only there, the print layer sets text and borders to the system
+  colour `CanvasText`.
+- **Addresses.** The technique is the standard one, `content: " (" attr(href) ")"` on
+  `a[href]::after`, with the same exception for `#` links (same file). matrix narrows it to
+  absolute addresses, because a relative one is no use on paper. The site writes a link out
+  in full if it should survive printing.
+- **No `print-color-adjust`.** It would be needed only to force a fill onto paper, and no
+  fill is printed. It is also Baseline newly available, since May 2025
+  ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/print-color-adjust)), which the
+  Baseline gate (02) would have to excuse.
+- **Each component carries its own `@media print` block** in its own stylesheet and layer, as
+  the scan lines do already. A separate print stylesheet is the commoner shape
+  ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_media_queries/Printing)); here a
+  component's stylesheet can be loaded by itself (01), so its print rules travel with it.
+- **Details** are opened by keeping `::details-content` visible, as the login card is from
+  720px. An engine without that selector prints a closed box closed, and its summary still
+  says what was left out. No script opens it for printing.
+
+How it is checked: Playwright with print media emulated, on the three Article specimens (04)
+in all four contexts. The computed styles show that each thing in "No rain" and "No chrome"
+is not displayed, that body text has the day `text` value of its palette, that no article
+surface has a background, and that the generated address is there after a link to another
+site and absent after a reference link, a link to this site and a link to a place on the
+page. Emulation checks computed styles, not sheets (TOMBO's note). So once for each release
+candidate one article is printed to PDF and read: page breaks, a code block longer than a
+page (`break-inside: avoid` cannot hold one), wide tables, and whether images far down the
+page are in it.
+
 ## Motion
 
 ### Principles
@@ -338,6 +399,7 @@ notes are committed.
 | Hold: zero running endless animations in both readings | Playwright | Yes |
 | Rapid reading changes (six patterns) | Playwright | Yes |
 | Forced colours | Playwright emulation, stills reviewed | Partly |
+| Print: the Article specimens | Playwright print emulation, computed styles; one PDF read by hand | Partly |
 | Flash check of boot and reading change | Frame capture and luminance analysis | Yes |
 | Target sizes | Playwright, bounding boxes | Yes |
 | Screen reader: landing, switch, shell session, takeover, article | VoiceOver on macOS and iOS; NVDA on Windows | No |
