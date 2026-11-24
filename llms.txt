@@ -1,0 +1,22 @@
+# matrix
+
+> wadakatu's personal design system for wadakatu.dev, the package `@wadakatu/matrix`: design tokens, CSS, custom elements and Astro components. These files document the version they ship in. Every link is a path from the package root, which is `node_modules/@wadakatu/matrix/` in a repository that installs it.
+
+Before building any UI, search the component index; if a component fits, read its page and use its contract. Colours, type sizes and layers are tokens, read by role, never raw values.
+
+## Docs
+
+- [Agent skill](skills/matrix/SKILL.md): how to build UI with matrix. Search first, tokens by role, the seven laws and the check that catches each, adding a component, and a worked example.
+- [Component index](docs/components.json): one entry per component page, sorted by name. Each entry holds `name`; `status` (`approved` or `draft`); `class` and `element` where it has one; `attributes`, the `data-*` and ARIA attributes that are its variants and states; `tokens`, every token it reads; `purpose`, the first sentence of its page; `classes`, every class in its stylesheet and its contract; and `doc`, the path of its page.
+- [Tokens](docs/tokens.md): every token with its custom property, its value in each of the four contexts, and what it is for.
+- [Changelog](CHANGELOG.md): what changed in each version.
+
+## Optional
+
+- [Full reference](llms-full.txt): the skill, the tokens page, the changelog and every component page in one file, for clients that cannot follow links.
+- [Token resolver](tokens/matrix.resolver.json): the DTCG 2025.10 resolver; its one modifier is the context.
+- [Base tokens](tokens/base.tokens.json): the scales, the same in every context.
+- [phosphor-night](tokens/context/phosphor-night.tokens.json): the colours of the phosphor-night context.
+- [phosphor-day](tokens/context/phosphor-day.tokens.json): the colours of the phosphor-day context.
+- [operator-night](tokens/context/operator-night.tokens.json): the colours of the operator-night context.
+- [operator-day](tokens/context/operator-day.tokens.json): the colours of the operator-day context.

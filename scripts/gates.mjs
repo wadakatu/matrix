@@ -182,8 +182,14 @@ const ALLOWED = [
   /^src\/lib\/[\w-]+\.ts$/,
   /^src\/astro\.ts$/,
   /^stylelint\/index\.mjs$/,
+  // The agent layer (07): the index, llms.txt, the skill and the drift check a consumer runs.
+  /^docs\/components\.json$/,
+  /^llms(-full)?\.txt$/,
+  /^skills\/matrix\/(SKILL|references\/[\w-]+)\.md$/,
+  /^scripts\/drift\.mjs$/,
 ];
 const REQUIRED = ["dist/elements.js", "dist/head/head.js", "dist/lib/index.js", "dist/strings/index.js", "src/astro.ts", "dist/tokens.css", "dist/tokens.json", "dist/tokens.d.ts", "dist/matrix.css", "dist/fonts.css", "tokens/matrix.resolver.json", "LICENSE", "stylelint/index.mjs",
+  "docs/components.json", "llms.txt", "llms-full.txt", "skills/matrix/SKILL.md", "skills/matrix/references/index.md", "scripts/drift.mjs",
   // OFL-1.1: each font's copyright notice and licence ships with its files.
   ...["dotgothic16", "ibm-plex-mono", "m-plus-1-code"].map((f) => `dist/fonts/${f}.LICENSE.txt`)];
 
