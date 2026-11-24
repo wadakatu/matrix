@@ -309,15 +309,36 @@ verification matrix in 05.
 - [ ] **6.1 Specimens complete**: machine landing, human home, both Projects readings,
   article, blog index, moved, 404, offline. `npm run test:specimens` covers no-JavaScript,
   keyboard journeys, print and forced colours.
+  Read 04 ("Notice", "The specimen set") and 06 ("How a specimen is shown"). All but the
+  last two exist. Build Notice as a draft, with its stories, baselines and the two pages;
+  write the one list of specimens; add the Specimens section and the Changelog page to the
+  Storybook.
+  Accept: definition of done for Notice; the offline page requests nothing but its own
+  document, with scripts and without; each Specimens page shows its specimen live.
 - [ ] **6.2 The verification matrix** (05), automated rows in CI, manual rows done once
   and written up in `docs/verification/1.0.md`: VoiceOver (macOS, iOS), NVDA, real iOS
   Safari and Android Chrome with the on-screen keyboard, Safari and Firefox, 200% text and
   400% zoom, Japanese reading. Each finding is fixed or listed as a known limitation.
+  Read 05 ("Where each row runs", "The manual rows, and who can do them"). The page-wide
+  rows run on every specimen from the one list; the same file runs in Playwright's Firefox
+  and WebKit as a CI job; the forced-colours stills are saved. The report is filled in from
+  its outline: an automated row with the test that shows it, an emulated row with what was
+  run, and every manual row **open** until wadakatu has done it on the thing it names.
+  Accept: every automated row of 05 is green on every specimen, with each skip in an engine
+  listed and explained; no manual row says passed without a person, a device and a date.
 - [ ] **6.3 Performance budgets** measured and recorded; ceilings set (05).
+  Read 05 ("How each budget is measured"). `docs/verification/budgets.md` holds each
+  ceiling beside its measurement, and the gates read their ceilings from it.
+  Accept: each of the six rows is shown failing on a deliberate breach and passing without
+  it; the terminal's ceiling is a figure measured on the prototype in this task, with its
+  row in table M5.
 - [ ] **6.4 Agent layer complete.** Read 07. Every component page; `components.json`;
   `llms.txt`, `llms-full.txt`; the skill; the consumer stylelint config; all freshness checks.
   Accept: a fresh agent session given only `AGENTS.md` can answer "which component renders
   a key and value list, and which tokens does it read" from the files.
+  What each of those is, and how the accept run is made and shown, is in 07 ("What Phase 6
+  builds"). Also accept: each freshness check is shown failing on a deliberate fault; the
+  repository lints itself through the config it ships.
 - [ ] **6.5 Publish the Storybook.** Depends on the DNS gate, not on the rename. Read 06
   ("Hosting"). **[wadakatu]** OKs the record, saves `matrix.wadakatu.dev` as the custom
   domain in Pages settings, then creates the `CNAME`. Only then is the deploy job added to
@@ -326,8 +347,32 @@ verification matrix in 05.
   Accept: `https://matrix.wadakatu.dev/` loads over HTTPS from a clean browser profile;
   `/llms.txt` and one `.md` mirror resolve; no deployment of this repository is reachable
   under `www.wadakatu.dev`.
+  Before the gate, only what 06 ("Before the gate") lists: the static build takes the
+  published shape and a test shows it, and CI goes on uploading it as an artefact. No deploy
+  job, no Pages action, no `CNAME` file, no setting, and the repository's homepage stays empty.
 
 **Exit:** every automated check green; the manual report committed; Storybook public.
+
+The pull requests of 6.1 to 6.4 can merge with the gate uncleared and with manual rows open
+in the report. 6.2 is complete, and the exit met, only when wadakatu's rows are in the report
+and 6.5 is done.
+
+### Questions for wadakatu from Phase 6
+
+None stops 6.1 to 6.4 being built; each task goes ahead on the default given, which is what
+the design pages already say or imply. Where no page implies an answer there is no default,
+and the thing is left as it is.
+
+| # | Question | Default until answered |
+| --- | --- | --- |
+| P1 | **Animated properties.** 05's budget allows four properties and says the prototype is the same. The cursor's blink, the name doubling and déjà vu animate `opacity`, `text-shadow` and `visibility`, in the prototype too (05, "How each budget is measured"). Is the row about endless motion and the wipes, or should those three effects be rebuilt on the four properties? | The gate holds the four for endless animations; the others are recorded and not added to the ceiling; no effect is changed |
+| P2 | **The Notice stylesheet** repeats about a dozen declarations of `base.css` so that the offline page is two inlined stylesheets, as 01, 04 and 08 say (04, "Notice"). The other ways change the package surface or inline the whole stylesheet | As 04 specifies |
+| P3 | **Notice's words**, in English and Japanese (04, "Notice") | The proposed words, as a draft, reviewed with the other Japanese strings |
+| P4 | **Reloading when the network returns.** Production's offline page does; Notice has no script | Not in matrix; the site keeps its own two lines if it wants them |
+| P5 | **The stylesheet's size.** The prototype's two stylesheets were 15.3 KB gzip together, and 05 calls that a starting reference. matrix's one stylesheet was 20.2 KB at `0803d93` (`gzip -9` of `dist/matrix.css`, 20,200 bytes, measured when this was written): it also carries the drafts, print, forced colours and Japanese. Is a ceiling a little above what is measured in 6.3 the right one, or is there a figure it should be brought under first? | The next whole KiB above the first measurement (05) |
+| P6 | **A timing gate on the hosted runner.** If the long-task or the first-frame row cannot be held in CI without failing at random, is it gated on the runner or only measured there? | Gated, until it is shown to fail at random; then asked |
+| P7 | **Japanese reading.** The row asks for real posts, and matrix has fixture sentences. Is reading the Article specimens enough to close it for 1.0, or does it stay open until the portfolio shows its posts through matrix (7.2)? | Stays open until 7.2 |
+| P8 | **When the manual rows are done.** Before the gate the pages reach a phone only over the local network, where Copy and the share sheet cannot be judged (05). Do the device rows wait for `matrix.wadakatu.dev`? | Either; the report records which address was used |
 
 ## Phase 7 — Release and adoption
 

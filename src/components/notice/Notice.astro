@@ -1,0 +1,33 @@
+---
+/**
+ * The 404 page and the offline page (04, "Notice"): a whole document, as Moved is, that requests
+ * nothing. `tokens.css` and `notice.css` are inlined in one style element and Head's script is
+ * inline. A site that wants its fonts here links `fonts.css` in the `head` slot; the offline page
+ * leaves the slot empty.
+ */
+import Head from "../../head/Head.astro";
+import NoticeBody, { type NoticeLink } from "./NoticeBody.astro";
+import tokens from "../../../dist/tokens.css?raw";
+import notice from "./notice.css?raw";
+import { strings, type Lang } from "../../strings/index.ts";
+interface Props {
+  kind: "not-found" | "offline";
+  /** The site's name, after the title. */
+  site: string;
+  links: NoticeLink[];
+  lang?: Lang;
+}
+const { kind, site, links, lang = "en" } = Astro.props;
+---
+<!doctype html>
+<html lang={lang} data-theme="night">
+  <head>
+    <Head title={`${strings[lang].notice[kind].title} | ${site}`} />
+    <meta name="robots" content="noindex" />
+    <style is:inline set:html={tokens + notice} />
+    <slot name="head" />
+  </head>
+  <body class="mx-notice">
+    <NoticeBody kind={kind} links={links} lang={lang} />
+  </body>
+</html>

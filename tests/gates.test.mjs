@@ -8,6 +8,7 @@ import { join } from "node:path";
 import { test } from "node:test";
 import stylelint from "stylelint";
 import * as gate from "../scripts/gates.mjs";
+import * as budget from "../scripts/budgets.mjs";
 import { CONTEXTS } from "../scripts/terrazzo-matrix.mjs";
 import { readSources } from "../scripts/tokens-doc.mjs";
 
@@ -110,6 +111,12 @@ test("no raw values: colour, font-size and z-index literals fail in component CS
   assert.deepEqual(await lint(".mx-x { z-index: 50; }"), ["declaration-property-value-allowed-list"]);
 });
 
+test("the shipped config (@wadakatu/matrix/stylelint) holds the no-raw-values rules without matrix's ledger", async () => {
+  const shipped = async (code) => (await stylelint.lint({ code, codeFilename: join(root, "x.css"), configFile: join(root, "stylelint/index.mjs") })).results[0].warnings.map((w) => w.rule);
+  assert.deepEqual(await shipped(".x { color: var(--mx-color-text); text-autospace: normal; }"), []);
+  assert.deepEqual(await shipped(".x { color: #2bf07a; z-index: 50; }"), ["color-no-hex", "declaration-property-value-allowed-list"]);
+});
+
 test("breakpoints: only 600, 720, 1100 and 1360px, in either notation", async () => {
   assert.deepEqual(await lint("@media (min-width: 720px) { .mx-x { display: grid; } } @media (600px <= width < 1360px) { .mx-x { gap: 0; } }"), []);
   assert.deepEqual(await lint("@media (min-width: 777px) { .mx-x { display: grid; } }"), ["media-feature-name-value-allowed-list"]);
@@ -135,13 +142,22 @@ test("freshness: a stale generated doc fails", () => {
 });
 
 test("package contents: the logo, a stray file, or a missing output fails", () => {
-  const ok = ["package.json", "README.md", "LICENSE", "CHANGELOG.md", "AGENTS.md", "docs/tokens.md", "dist/tokens.css", "dist/tokens.json", "dist/tokens.d.ts", "dist/matrix.css", "dist/fonts.css", "dist/fonts/a-400-normal.woff2", "dist/fonts/dotgothic16.LICENSE.txt", "dist/fonts/ibm-plex-mono.LICENSE.txt", "dist/fonts/m-plus-1-code.LICENSE.txt", "tokens/matrix.resolver.json", "tokens/base.tokens.json", "tokens/context/phosphor-night.tokens.json", "src/css/base.css", "dist/elements.js", "dist/head/head.js", "dist/lib/index.js", "dist/strings/index.js", "src/astro.ts", "src/components/panel/Panel.astro", "src/components/panel/panel.css"];
+  const ok = ["package.json", "README.md", "LICENSE", "CHANGELOG.md", "AGENTS.md", "docs/tokens.md", "dist/tokens.css", "dist/tokens.json", "dist/tokens.d.ts", "dist/matrix.css", "dist/fonts.css", "dist/fonts/a-400-normal.woff2", "dist/fonts/dotgothic16.LICENSE.txt", "dist/fonts/ibm-plex-mono.LICENSE.txt", "dist/fonts/m-plus-1-code.LICENSE.txt", "tokens/matrix.resolver.json", "tokens/base.tokens.json", "tokens/context/phosphor-night.tokens.json", "src/css/base.css", "dist/elements.js", "dist/head/head.js", "dist/lib/index.js", "dist/strings/index.js", "src/astro.ts", "src/components/panel/Panel.astro", "src/components/panel/panel.css", "stylelint/index.mjs", "docs/components.json", "llms.txt", "llms-full.txt", "skills/matrix/SKILL.md", "skills/matrix/references/index.md", "scripts/drift.mjs"];
   assert.deepEqual(gate.packageContents(ok), []);
   assert.deepEqual(gate.packageContents([...ok, "src/components/panel/Panel.stories.ts"]), ["src/components/panel/Panel.stories.ts: stories are not part of the package"]);
   assert.deepEqual(gate.packageContents([...ok, "assets/logo/logo-400.png"]), ["assets/logo/logo-400.png: the logo and its notice must not be in the package (decision Q3)"]);
   assert.deepEqual(gate.packageContents([...ok, "scripts/check.mjs"]), ["scripts/check.mjs: not an intended package file"]);
   assert.deepEqual(gate.packageContents(ok.filter((p) => p !== "dist/tokens.css")), ["dist/tokens.css: missing from the package"]);
   assert.deepEqual(gate.packageContents(ok.filter((p) => p !== "dist/fonts/ibm-plex-mono.LICENSE.txt")), ["dist/fonts/ibm-plex-mono.LICENSE.txt: missing from the package"]);
+});
+
+test("astro barrel: the shipped barrel exports Notice, and a component left out of it fails", () => {
+  const components = JSON.parse(readFileSync("docs/components.json", "utf8"));
+  const barrel = readFileSync("src/astro.ts", "utf8");
+  const exists = (f) => f === "src/components/notice/Notice.astro" || f === "src/components/panel/Panel.astro";
+  assert.deepEqual(gate.astroBarrel(components, barrel, exists), []);
+  const without = barrel.replace(/^export \{ default as Notice \}.*\n/m, "");
+  assert.deepEqual(gate.astroBarrel(components, without, exists), ["src/components/notice/Notice.astro: not exported from src/astro.ts"]);
 });
 
 test("version consistency: package, lockfile, changelog and tag must agree", () => {
@@ -153,4 +169,15 @@ test("version consistency: package, lockfile, changelog and tag must agree", () 
   assert.equal(gate.versionConsistency({ pkg, lock, changelog, tag: "v1.0.0-alpha.1" }).length, 1);
   assert.equal(gate.versionConsistency({ pkg, lock, changelog: "## 0.14.1\n" }).length, 1);
   assert.equal(gate.versionConsistency({ pkg, lock: { ...lock, version: "0.0.0" }, changelog }).length, 1);
+});
+
+test("budgets: the ceilings are read from budgets.md, and a size over its ceiling or unrecorded fails", () => {
+  const b = budget.budgets();
+  assert.equal(b.animating, 170);
+  assert.deepEqual(b.endless, ["transform", "background-position", "mask-position", "clip-path"]);
+  assert.ok(b.stylesheet.ceiling > 0 && b.terminal.ceiling > 0 && b.readingChange === 200 && b.longTasks === 0);
+  assert.deepEqual(budget.sizeGate("x", 100, { ceiling: 100, measured: 100 }), []);
+  assert.equal(budget.sizeGate("x", 101, { ceiling: 100, measured: 101 }).length, 1);
+  assert.equal(budget.sizeGate("x", 99, { ceiling: 100, measured: 100 }).length, 1);
+  assert.throws(() => budget.budgets("# Budgets\n"), /no "## Ceilings" section/);
 });

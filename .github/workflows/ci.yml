@@ -31,6 +31,31 @@ jobs:
           name: specimens-report
           path: test-results/
           retention-days: 7
+      # Chromium's PDF of Article C, read by hand once per release candidate (05, "The manual rows").
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: article-c-pdf
+          path: test-results/1.0/article-c.pdf
+          retention-days: 30
+  engines:
+    # The verification matrix in Playwright's Firefox and WebKit builds (05, "Where each row runs").
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: jdx/mise-action@v5
+      - run: npm ci
+      - run: npx playwright install --with-deps firefox webkit
+      - run: npm run build
+      - run: npm run test:engines
+      # A still of each specimen at 1440 and 390 from both engines, looked at and not compared.
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: engine-stills
+          path: test-results/engines/
+          retention-days: 30
   stories:
     runs-on: ubuntu-24.04
     timeout-minutes: 15

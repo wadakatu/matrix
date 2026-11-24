@@ -3,6 +3,7 @@ name: Share
 status: approved
 class: mx-share
 element: mx-share
+attributes: []
 tokens: [color.text-muted, font.size.meta, space.2]
 ---
 

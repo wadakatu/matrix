@@ -2,6 +2,7 @@
 name: Inline list
 status: approved
 class: mx-inline-list
+attributes: [data-variant]
 tokens: [color.text-muted, font.size.meta, space.1, space.3, space.5, space.6, space.7]
 ---
 

@@ -1,0 +1,1361 @@
+[
+  {
+    "name": "Boot",
+    "status": "approved",
+    "class": "mx-boot",
+    "element": "mx-boot",
+    "attributes": [
+      "data-boot"
+    ],
+    "tokens": [
+      "color.ground",
+      "color.text-muted",
+      "color.accent",
+      "color.text-lead",
+      "font.family.dot",
+      "font.size.ui",
+      "font.leading.terminal",
+      "layer.boot",
+      "layer.lifted",
+      "space.3",
+      "space.4",
+      "space.10"
+    ],
+    "purpose": "The intro on the first visit to Home in a tab: the data file's keys, their real values decoding out of corpus glyphs, then the logo, then the curtain (L1, L4, L5).",
+    "classes": [
+      "mx-boot",
+      "mx-boot-cover",
+      "mx-boot-exit",
+      "mx-boot-key",
+      "mx-boot-line",
+      "mx-boot-lines",
+      "mx-boot-logo",
+      "mx-boot-mark",
+      "mx-boot-note",
+      "mx-boot-skip",
+      "mx-boot-value",
+      "mx-control",
+      "mx-curtain",
+      "mx-logo",
+      "mx-status",
+      "mx-switch"
+    ],
+    "doc": "src/effects/boot/boot.md"
+  },
+  {
+    "name": "Callout",
+    "status": "draft",
+    "class": "mx-callout",
+    "attributes": [
+      "data-variant"
+    ],
+    "tokens": [
+      "color.accent",
+      "color.ground",
+      "color.rule",
+      "color.text-muted",
+      "font.size.meta",
+      "font.weight.medium",
+      "font.leading.ui",
+      "border.width.hair",
+      "border.width.strong",
+      "space.1",
+      "space.3",
+      "space.4"
+    ],
+    "purpose": "`:::message` and `:::message alert`: a note inside the article, told apart by its word, not by a hue (L7).",
+    "classes": [
+      "mx-callout",
+      "mx-callout-label"
+    ],
+    "doc": "src/components/callout/callout.md"
+  },
+  {
+    "name": "Chips",
+    "status": "approved",
+    "class": "mx-chips",
+    "attributes": [
+      "data-key"
+    ],
+    "tokens": [
+      "color.text-muted",
+      "color.text-lead",
+      "color.accent",
+      "color.ground",
+      "color.rule",
+      "color.control-border",
+      "font.size.meta",
+      "radius.control",
+      "border.width.hair",
+      "space.0-5",
+      "space.1-5",
+      "space.2",
+      "space.3"
+    ],
+    "purpose": "Suggested commands to tap, and on touch the keys a phone keyboard lacks (L3).",
+    "classes": [
+      "mx-chip",
+      "mx-chips"
+    ],
+    "doc": "src/components/chips/chips.md"
+  },
+  {
+    "name": "Code block",
+    "status": "approved",
+    "class": "mx-code",
+    "element": "mx-copy",
+    "attributes": [
+      "data-diff"
+    ],
+    "tokens": [
+      "color.accent",
+      "color.ground",
+      "color.on-accent",
+      "color.rule",
+      "color.text",
+      "color.text-lead",
+      "color.text-muted",
+      "font.family.mono",
+      "font.size.ui",
+      "font.size.label",
+      "font.leading.code",
+      "font.weight.medium",
+      "font.weight.regular",
+      "border.width.hair",
+      "space.0-5",
+      "space.3",
+      "space.4",
+      "space.10"
+    ],
+    "purpose": "Code in an article: the ground cut into the panel, its language as a tab, and Copy.",
+    "classes": [
+      "mx-code",
+      "mx-code-title",
+      "mx-copy",
+      "mx-prose"
+    ],
+    "doc": "src/components/code/code.md"
+  },
+  {
+    "name": "Contents",
+    "status": "approved",
+    "class": "mx-toc",
+    "element": "mx-toc",
+    "attributes": [
+      "aria-current"
+    ],
+    "tokens": [
+      "color.accent",
+      "color.rule",
+      "color.text-lead",
+      "color.text-muted",
+      "font.family.mono",
+      "font.size.meta",
+      "font.weight.medium",
+      "border.width.hair",
+      "border.width.strong",
+      "size.target",
+      "size.measure.read",
+      "size.measure.read-compact",
+      "space.2",
+      "space.3",
+      "space.4",
+      "space.5"
+    ],
+    "purpose": "The article's sections, so a long Japanese post can be read in any order: every `h2` numbered from 01, its `h3` under it.",
+    "classes": [
+      "mx-panel",
+      "mx-toc",
+      "mx-toc-summary"
+    ],
+    "doc": "src/components/toc/toc.md"
+  },
+  {
+    "name": "Control",
+    "status": "approved",
+    "class": "mx-control",
+    "attributes": [
+      "aria-pressed",
+      "data-action"
+    ],
+    "tokens": [
+      "color.text",
+      "color.text-lead",
+      "color.ground",
+      "color.control-border",
+      "color.accent",
+      "color.on-accent",
+      "color.focus",
+      "font.size.ui",
+      "font.leading.ui",
+      "radius.control",
+      "border.width.hair",
+      "border.width.strong",
+      "space.1",
+      "space.2",
+      "space.3"
+    ],
+    "purpose": "One look for a button, a link, and a label wrapping a checkbox.",
+    "classes": [
+      "mx-control",
+      "mx-footer-row"
+    ],
+    "doc": "src/components/control/control.md"
+  },
+  {
+    "name": "Curtain",
+    "status": "approved",
+    "class": "mx-curtain",
+    "attributes": [
+      "data-on"
+    ],
+    "tokens": [
+      "color.ground",
+      "color.rain.body",
+      "color.rain.head",
+      "font.family.dot",
+      "font.size.rain",
+      "font.leading.tight",
+      "layer.curtain"
+    ],
+    "purpose": "Slabs of the site's running text that cover the page as the boot ends (L1).",
+    "classes": [
+      "mx-curtain",
+      "mx-curtain-slab"
+    ],
+    "doc": "src/effects/curtain/curtain.md"
+  },
+  {
+    "name": "Decode",
+    "status": "approved",
+    "attributes": [],
+    "tokens": [],
+    "purpose": "Text that settles out of the corpus's own glyphs into its real words, for the effects that change text in place (L1, L4).",
+    "classes": [],
+    "doc": "src/effects/decode/decode.md"
+  },
+  {
+    "name": "Details",
+    "status": "draft",
+    "class": "mx-details",
+    "attributes": [],
+    "tokens": [
+      "color.accent",
+      "color.rule",
+      "font.weight.medium",
+      "font.leading.title",
+      "border.width.hair",
+      "size.target",
+      "space.3",
+      "space.4"
+    ],
+    "purpose": "`:::details title`: part of the article folded away, a native disclosure boxed as the login card is.",
+    "classes": [
+      "mx-details",
+      "mx-details-body",
+      "mx-details-summary"
+    ],
+    "doc": "src/components/details/details.md"
+  },
+  {
+    "name": "Fetch card",
+    "status": "approved",
+    "class": "mx-fetch",
+    "attributes": [],
+    "tokens": [
+      "space.1-5",
+      "space.2"
+    ],
+    "purpose": "neofetch's card: the real mark beside key and value lines (L1, L5).",
+    "classes": [
+      "mx-fetch",
+      "mx-fetch-mark",
+      "mx-fetch-side",
+      "mx-ln",
+      "mx-logo"
+    ],
+    "doc": "src/components/fetch/fetch.md"
+  },
+  {
+    "name": "Figures",
+    "status": "approved",
+    "class": "mx-figures",
+    "attributes": [],
+    "tokens": [
+      "color.text-muted",
+      "color.rule",
+      "space.1",
+      "space.4",
+      "border.width.hair"
+    ],
+    "purpose": "Keys and values from the site's data: every number shown is real (L1).",
+    "classes": [
+      "mx-figures"
+    ],
+    "doc": "src/components/figures/figures.md"
+  },
+  {
+    "name": "Footer",
+    "status": "approved",
+    "class": "mx-footer",
+    "attributes": [],
+    "tokens": [
+      "color.ground",
+      "color.rule",
+      "color.text-muted",
+      "font.size.meta",
+      "border.width.hair",
+      "space.2",
+      "space.5",
+      "space.7",
+      "space.10",
+      "space.12",
+      "space.18"
+    ],
+    "purpose": "Contact links and the logo's credit, at the end of every page (L5: the designer is credited).",
+    "classes": [
+      "mx-footer",
+      "mx-footer-row",
+      "mx-frame"
+    ],
+    "doc": "src/components/footer/footer.md"
+  },
+  {
+    "name": "Foundations",
+    "status": "approved",
+    "attributes": [
+      "data-reading"
+    ],
+    "tokens": [
+      "color.ground",
+      "color.text",
+      "color.text-lead",
+      "color.accent",
+      "color.on-accent",
+      "color.focus",
+      "font.family.mono",
+      "font.family.ja",
+      "font.size.body",
+      "font.size.entry.min",
+      "font.size.entry.max",
+      "font.size.prompt.min",
+      "font.size.prompt.max",
+      "font.size.title.min",
+      "font.size.title.max",
+      "font.weight.regular",
+      "font.leading.ui",
+      "border.width.hair",
+      "border.width.strong",
+      "radius.control",
+      "size.frame",
+      "size.measure.read",
+      "size.measure.read-compact",
+      "layer.skip",
+      "space.1",
+      "space.1-5",
+      "space.2",
+      "space.3",
+      "space.4"
+    ],
+    "purpose": "What every page has before any component: the layer order, the reset, base type, links, the focus ring, the derived properties, and the three utilities `.mx-frame`, `.mx-vh` and `.mx-skip` (L2, L6).",
+    "classes": [
+      "mx-frame",
+      "mx-skip",
+      "mx-status",
+      "mx-vh"
+    ],
+    "doc": "src/css/foundations.md"
+  },
+  {
+    "name": "Guide",
+    "status": "approved",
+    "class": "mx-guide",
+    "attributes": [],
+    "tokens": [
+      "color.text-muted",
+      "color.text",
+      "color.text-lead",
+      "color.accent",
+      "color.on-accent",
+      "color.rule",
+      "font.size.meta",
+      "size.target",
+      "border.width.hair",
+      "space.0-5",
+      "space.1-5",
+      "space.2",
+      "space.3"
+    ],
+    "purpose": "The first row of 機械用: what this is, in plain words, and the way to 人間用 for a reader who did not ask for a shell (L3).",
+    "classes": [
+      "mx-control",
+      "mx-guide",
+      "mx-guide-hide",
+      "mx-guide-live",
+      "mx-guide-say",
+      "mx-guide-way"
+    ],
+    "doc": "src/components/guide/guide.md"
+  },
+  {
+    "name": "Head",
+    "status": "approved",
+    "attributes": [
+      "data-theme",
+      "data-palette",
+      "data-motion",
+      "data-boot",
+      "data-shell"
+    ],
+    "tokens": [
+      "color.ground",
+      "motion.boot.failsafe",
+      "motion.shell.fallback"
+    ],
+    "purpose": "The page's meta and the pre-paint script, which sets the root's attributes before the first paint so that no frame shows the wrong theme, palette or motion (L4, L7).",
+    "classes": [],
+    "doc": "src/head/head.md"
+  },
+  {
+    "name": "Header",
+    "status": "approved",
+    "class": "mx-header",
+    "attributes": [],
+    "tokens": [
+      "color.ground",
+      "color.rule",
+      "font.size.ui",
+      "border.width.hair",
+      "space.2",
+      "space.3",
+      "space.7"
+    ],
+    "purpose": "The page's one row of chrome: the Mark, the Nav and the controls (L7: the palette and the theme are chosen here).",
+    "classes": [
+      "mx-control",
+      "mx-controls",
+      "mx-frame",
+      "mx-header",
+      "mx-lang",
+      "mx-mark",
+      "mx-menu",
+      "mx-menu-label",
+      "mx-nav",
+      "mx-switch"
+    ],
+    "doc": "src/components/header/header.md"
+  },
+  {
+    "name": "Index",
+    "status": "approved",
+    "class": "mx-index",
+    "attributes": [],
+    "tokens": [
+      "color.accent",
+      "color.rule",
+      "color.text-lead",
+      "color.text-muted",
+      "font.family.mono",
+      "font.size.meta",
+      "font.size.body",
+      "font.leading.ui",
+      "border.width.hair",
+      "size.measure.read",
+      "size.measure.read-compact",
+      "space.2",
+      "space.3",
+      "space.5"
+    ],
+    "purpose": "The blog's posts as one list, newest first: date and title per row.",
+    "classes": [
+      "mx-index",
+      "mx-panel",
+      "mx-post"
+    ],
+    "doc": "src/components/index/index.md"
+  },
+  {
+    "name": "Inline list",
+    "status": "approved",
+    "class": "mx-inline-list",
+    "attributes": [
+      "data-variant"
+    ],
+    "tokens": [
+      "color.text-muted",
+      "font.size.meta",
+      "space.1",
+      "space.3",
+      "space.5",
+      "space.6",
+      "space.7"
+    ],
+    "purpose": "A wrapping row of words or links: skills, a panel's trailing links, an entry's addresses.",
+    "classes": [
+      "mx-inline-list"
+    ],
+    "doc": "src/components/inline-list/inline-list.md"
+  },
+  {
+    "name": "Language link",
+    "status": "draft",
+    "class": "mx-lang",
+    "attributes": [],
+    "tokens": [
+      "color.text-muted",
+      "color.text-lead",
+      "color.rule",
+      "size.target",
+      "space.2",
+      "border.width.hair"
+    ],
+    "purpose": "A plain link to the same page in the other language, so a reader can change language without a bilingual page (L6, decision Q8).",
+    "classes": [
+      "mx-controls",
+      "mx-lang"
+    ],
+    "doc": "src/components/lang/lang.md"
+  },
+  {
+    "name": "Layout",
+    "status": "approved",
+    "attributes": [
+      "data-reading"
+    ],
+    "tokens": [],
+    "purpose": "The page frame every page of the site shares: skip link, rain, header, `main`, footer and the status region inside `<mx-root>`, with every root attribute at its no-script value in the markup (L4, L7).",
+    "classes": [
+      "mx-footer",
+      "mx-frame",
+      "mx-header",
+      "mx-skip",
+      "mx-status",
+      "mx-vh"
+    ],
+    "doc": "src/components/layout/layout.md"
+  },
+  {
+    "name": "Lede",
+    "status": "approved",
+    "class": "mx-lede",
+    "attributes": [],
+    "tokens": [
+      "color.text-muted",
+      "size.measure.lede"
+    ],
+    "purpose": "The muted sentence under a heading that says what follows, dimmed by colour (L2).",
+    "classes": [
+      "mx-lede"
+    ],
+    "doc": "src/components/lede/lede.md"
+  },
+  {
+    "name": "Log",
+    "status": "approved",
+    "class": "mx-log",
+    "attributes": [],
+    "tokens": [
+      "color.rule",
+      "font.size.meta",
+      "space.1",
+      "space.4",
+      "border.width.hair"
+    ],
+    "purpose": "A list of the repository's real commit subjects, the material the rain is made of (L1).",
+    "classes": [
+      "mx-log"
+    ],
+    "doc": "src/components/log/log.md"
+  },
+  {
+    "name": "Login card",
+    "status": "approved",
+    "class": "mx-login",
+    "attributes": [],
+    "tokens": [
+      "color.accent",
+      "color.rule",
+      "size.target",
+      "border.width.hair",
+      "space.0-5",
+      "space.1"
+    ],
+    "purpose": "The login command's fetch card as a disclosure on a phone, so the prompt has the screen (L3).",
+    "classes": [
+      "mx-fetch",
+      "mx-ln",
+      "mx-ln-echo",
+      "mx-login",
+      "mx-login-summary"
+    ],
+    "doc": "src/components/login/login.md"
+  },
+  {
+    "name": "Logo",
+    "status": "approved",
+    "class": "mx-logo",
+    "attributes": [],
+    "tokens": [],
+    "purpose": "The mark by Chisato Satoh, shown whole wherever it appears (L5).",
+    "classes": [
+      "mx-logo"
+    ],
+    "doc": "src/components/logo/logo.md"
+  },
+  {
+    "name": "Mark",
+    "status": "approved",
+    "class": "mx-mark",
+    "attributes": [],
+    "tokens": [
+      "color.accent",
+      "font.size.read-compact",
+      "font.weight.medium",
+      "size.logo.header",
+      "size.logo.header-compact",
+      "size.target"
+    ],
+    "purpose": "The home link at the start of the header: the logo, then the wordmark that names the link (L5).",
+    "classes": [
+      "mx-logo",
+      "mx-mark"
+    ],
+    "doc": "src/components/mark/mark.md"
+  },
+  {
+    "name": "Masthead",
+    "status": "approved",
+    "class": "mx-masthead",
+    "attributes": [
+      "aria-current"
+    ],
+    "tokens": [
+      "color.accent",
+      "color.text-lead",
+      "color.text-muted",
+      "font.family.ja",
+      "font.family.mono",
+      "font.size.title.min",
+      "font.size.title.max",
+      "font.size.meta",
+      "font.weight.medium",
+      "font.leading.title",
+      "font.leading.ui",
+      "size.measure.read",
+      "size.measure.read-compact",
+      "size.rail",
+      "space.0-5",
+      "space.1",
+      "space.1-5",
+      "space.6",
+      "space.7"
+    ],
+    "purpose": "The head of an article: where it is, what it is called, when it was written and what it is about, with a strip of its own words beside it (L1).",
+    "classes": [
+      "mx-crumb",
+      "mx-drop",
+      "mx-index",
+      "mx-masthead",
+      "mx-masthead-id",
+      "mx-masthead-title",
+      "mx-meta",
+      "mx-panel",
+      "mx-post",
+      "mx-post-grid",
+      "mx-postfoot",
+      "mx-strand",
+      "mx-stream-fall",
+      "mx-tags"
+    ],
+    "doc": "src/components/masthead/masthead.md"
+  },
+  {
+    "name": "Menu",
+    "status": "approved",
+    "class": "mx-menu",
+    "element": "mx-menu",
+    "attributes": [],
+    "tokens": [
+      "color.text-muted",
+      "color.accent",
+      "color.on-accent",
+      "color.rule",
+      "border.width.hair",
+      "size.target",
+      "space.1",
+      "space.2",
+      "space.3"
+    ],
+    "purpose": "Folds the nav and the controls into one native disclosure below 720px, so the header is one slim row on a phone.",
+    "classes": [
+      "mx-control",
+      "mx-controls",
+      "mx-header",
+      "mx-lang",
+      "mx-menu",
+      "mx-menu-label",
+      "mx-nav"
+    ],
+    "doc": "src/components/menu/menu.md"
+  },
+  {
+    "name": "Meta",
+    "status": "approved",
+    "class": "mx-meta",
+    "attributes": [],
+    "tokens": [
+      "color.text-muted",
+      "font.size.meta",
+      "space.1"
+    ],
+    "purpose": "The small line of facts under an entry: its language, its date, its category.",
+    "classes": [
+      "mx-meta"
+    ],
+    "doc": "src/components/meta/meta.md"
+  },
+  {
+    "name": "Moved",
+    "status": "approved",
+    "class": "mx-moved",
+    "attributes": [],
+    "tokens": [],
+    "purpose": "A stub page for an old address, because GitHub Pages cannot answer 301.",
+    "classes": [
+      "mx-frame",
+      "mx-moved"
+    ],
+    "doc": "src/components/moved/moved.md"
+  },
+  {
+    "name": "Name",
+    "status": "approved",
+    "class": "mx-name",
+    "attributes": [
+      "data-double"
+    ],
+    "tokens": [
+      "color.accent",
+      "color.glow",
+      "color.rain.body",
+      "font.family.mono",
+      "font.weight.bold",
+      "font.weight.medium",
+      "font.size.prompt.min",
+      "font.size.prompt.max",
+      "motion.blink.duration",
+      "motion.blink.count",
+      "motion.double.duration",
+      "space.5",
+      "space.7"
+    ],
+    "purpose": "The page's one `h1`, shared by both readings (L3): giant and cut out of the site's own commit log in 人間用 (L1), a terminal line with a cursor in 機械用.",
+    "classes": [
+      "mx-name"
+    ],
+    "doc": "src/components/name/name.md"
+  },
+  {
+    "name": "Nav",
+    "status": "approved",
+    "class": "mx-nav",
+    "attributes": [
+      "aria-current",
+      "data-reading"
+    ],
+    "tokens": [
+      "color.text-muted",
+      "color.text-lead",
+      "color.accent",
+      "border.width.strong",
+      "space.6"
+    ],
+    "purpose": "The site's main links in the header.",
+    "classes": [
+      "mx-nav"
+    ],
+    "doc": "src/components/nav/nav.md"
+  },
+  {
+    "name": "Notice",
+    "status": "draft",
+    "class": "mx-notice",
+    "attributes": [],
+    "tokens": [
+      "color.ground",
+      "color.panel",
+      "color.rule",
+      "color.text",
+      "color.text-lead",
+      "color.accent",
+      "color.focus",
+      "font.family.mono",
+      "font.family.ja",
+      "font.size.body",
+      "font.weight.regular",
+      "font.weight.medium",
+      "font.leading.ui",
+      "border.width.hair",
+      "border.width.strong",
+      "space.1",
+      "space.2",
+      "space.4",
+      "space.5",
+      "space.7",
+      "size.measure.lede",
+      "size.target-min"
+    ],
+    "purpose": "The 404 page and the offline page: one panel, no chrome, and nothing to fetch.",
+    "classes": [
+      "mx-notice"
+    ],
+    "doc": "src/components/notice/notice.md"
+  },
+  {
+    "name": "Panel",
+    "status": "approved",
+    "class": "mx-panel",
+    "attributes": [],
+    "tokens": [
+      "color.panel",
+      "color.rule",
+      "color.accent",
+      "font.size.body",
+      "font.weight.medium",
+      "font.leading.ui",
+      "space.2",
+      "space.5",
+      "space.6",
+      "space.7",
+      "border.width.hair"
+    ],
+    "purpose": "The solid surface reading text sits on, so that no paragraph is ever read over rain (L2).",
+    "classes": [
+      "mx-panel"
+    ],
+    "doc": "src/components/panel/panel.md"
+  },
+  {
+    "name": "Post foot",
+    "status": "approved",
+    "class": "mx-postfoot",
+    "attributes": [],
+    "tokens": [
+      "color.accent",
+      "color.ground",
+      "color.rule",
+      "color.text-lead",
+      "color.text-muted",
+      "font.family.mono",
+      "font.size.meta",
+      "font.size.body",
+      "font.leading.ui",
+      "border.width.hair",
+      "size.measure.read",
+      "size.measure.read-compact",
+      "space.0-5",
+      "space.1-5",
+      "space.3",
+      "space.4",
+      "space.5",
+      "space.6",
+      "space.7"
+    ],
+    "purpose": "The end of an article: the end-of-file line, Share, the older and newer posts, and the ways back to both readings (L3).",
+    "classes": [
+      "mx-eof",
+      "mx-pager",
+      "mx-pager-key",
+      "mx-panel",
+      "mx-postfoot",
+      "mx-share",
+      "mx-ways"
+    ],
+    "doc": "src/components/postfoot/postfoot.md"
+  },
+  {
+    "name": "Prompt",
+    "status": "approved",
+    "class": "mx-prompt",
+    "attributes": [],
+    "tokens": [
+      "color.accent",
+      "color.on-accent",
+      "color.text-lead",
+      "font.size.read-compact",
+      "motion.blink.duration",
+      "motion.blink.count",
+      "space.1-5"
+    ],
+    "purpose": "The command line: a real text field with the prompt before it and a drawn block cursor (L3).",
+    "classes": [
+      "mx-prompt",
+      "mx-prompt-cursor",
+      "mx-prompt-field",
+      "mx-prompt-hint",
+      "mx-prompt-mirror",
+      "mx-prompt-ps",
+      "mx-prompt-sym",
+      "mx-prompt-who",
+      "mx-vh"
+    ],
+    "doc": "src/components/prompt/prompt.md"
+  },
+  {
+    "name": "Prose",
+    "status": "approved",
+    "class": "mx-prose",
+    "attributes": [],
+    "tokens": [
+      "color.accent",
+      "color.ground",
+      "color.rule",
+      "color.text",
+      "color.text-lead",
+      "color.text-muted",
+      "font.family.ja",
+      "font.family.mono",
+      "font.size.read",
+      "font.size.read-compact",
+      "font.size.heading",
+      "font.size.lead",
+      "font.size.body",
+      "font.size.label",
+      "font.size.meta",
+      "font.weight.medium",
+      "font.weight.regular",
+      "font.leading.read",
+      "font.leading.ui",
+      "border.width.hair",
+      "border.width.strong",
+      "radius.control",
+      "size.measure.read",
+      "size.measure.read-compact",
+      "space.2",
+      "space.3",
+      "space.5",
+      "space.7"
+    ],
+    "purpose": "Long-form reading, tuned for Japanese, on one solid panel (L2).",
+    "classes": [
+      "mx-panel",
+      "mx-prose",
+      "mx-ref",
+      "mx-table"
+    ],
+    "doc": "src/components/prose/prose.md"
+  },
+  {
+    "name": "Rain",
+    "status": "approved",
+    "class": "mx-rain",
+    "attributes": [
+      "data-variant",
+      "data-rain",
+      "data-motion"
+    ],
+    "tokens": [
+      "color.rain.tail",
+      "color.rain.body",
+      "color.rain.head",
+      "color.ground",
+      "font.family.dot",
+      "font.size.rain",
+      "layer.rain"
+    ],
+    "purpose": "The ambient rain behind 人間用: columns of drops, each drop a piece of one of the site's own phrases (L1).",
+    "classes": [
+      "mx-drop",
+      "mx-rain",
+      "mx-rain-col"
+    ],
+    "doc": "src/effects/rain/rain.md"
+  },
+  {
+    "name": "Readings",
+    "status": "approved",
+    "element": "mx-readings",
+    "attributes": [
+      "data-reading",
+      "aria-busy"
+    ],
+    "tokens": [
+      "font.size.ui",
+      "font.leading.terminal",
+      "space.1"
+    ],
+    "purpose": "Both readings of one page in one document, and the in-place change between them (L3).",
+    "classes": [
+      "mx-controls",
+      "mx-footer-row",
+      "mx-name"
+    ],
+    "doc": "src/components/readings/readings.md"
+  },
+  {
+    "name": "Reference link",
+    "status": "approved",
+    "class": "mx-ref",
+    "attributes": [],
+    "tokens": [
+      "color.accent",
+      "color.ground",
+      "color.rule",
+      "color.text-lead",
+      "color.text-muted",
+      "font.family.mono",
+      "font.size.meta",
+      "font.leading.ui",
+      "border.width.hair",
+      "border.width.strong",
+      "space.2",
+      "space.3"
+    ],
+    "purpose": "A link whose text is its own address, written alone on a line: host, then path, so the reader sees where it goes (L1).",
+    "classes": [
+      "mx-prose",
+      "mx-ref",
+      "mx-ref-host",
+      "mx-ref-path"
+    ],
+    "doc": "src/components/ref/ref.md"
+  },
+  {
+    "name": "Rewards",
+    "status": "approved",
+    "class": "mx-ghost",
+    "attributes": [
+      "data-reward",
+      "data-double"
+    ],
+    "tokens": [
+      "color.panel",
+      "color.accent",
+      "motion.echo.duration",
+      "space.1"
+    ],
+    "purpose": "Three small one-shot effects made of the site's own material (L1): déjà vu, a title turning into the commit that shipped it, and the Name doubling.",
+    "classes": [
+      "mx-ghost",
+      "mx-stream",
+      "mx-stream-name"
+    ],
+    "doc": "src/effects/rewards/rewards.md"
+  },
+  {
+    "name": "Root",
+    "status": "approved",
+    "element": "mx-root",
+    "attributes": [
+      "data-theme",
+      "data-palette",
+      "data-motion",
+      "data-rain"
+    ],
+    "tokens": [],
+    "purpose": "The controller of the page's state: theme, palette, motion and the flags in-site links carry, kept in step with the attributes the head script set before the first paint (L7).",
+    "classes": [],
+    "doc": "src/components/root/root.md"
+  },
+  {
+    "name": "Run",
+    "status": "approved",
+    "class": "mx-run",
+    "attributes": [],
+    "tokens": [
+      "color.accent"
+    ],
+    "purpose": "A command in output that can be tapped to run: a file name in a listing, a suggestion in a message (L3).",
+    "classes": [
+      "mx-run"
+    ],
+    "doc": "src/components/run/run.md"
+  },
+  {
+    "name": "Scan lines",
+    "status": "approved",
+    "attributes": [
+      "data-reading"
+    ],
+    "tokens": [
+      "color.scanline",
+      "layer.scanline",
+      "layer.lifted"
+    ],
+    "purpose": "The tube in 機械用: a fixed wash of `color.scanline` on one pixel row in three, over the whole screen.",
+    "classes": [
+      "mx-control",
+      "mx-header",
+      "mx-logo",
+      "mx-switch"
+    ],
+    "doc": "src/effects/scanlines/scanlines.md"
+  },
+  {
+    "name": "Share",
+    "status": "approved",
+    "class": "mx-share",
+    "element": "mx-share",
+    "attributes": [],
+    "tokens": [
+      "color.text-muted",
+      "font.size.meta",
+      "space.2"
+    ],
+    "purpose": "Ways to pass an article on: Post on X, Copy link, and the system's share sheet where there is one.",
+    "classes": [
+      "mx-control",
+      "mx-share",
+      "mx-share-label"
+    ],
+    "doc": "src/components/share/share.md"
+  },
+  {
+    "name": "Status",
+    "status": "approved",
+    "class": "mx-status",
+    "attributes": [],
+    "tokens": [],
+    "purpose": "The page's one polite live region, where a change of reading is announced (L3).",
+    "classes": [
+      "mx-status",
+      "mx-vh"
+    ],
+    "doc": "src/components/status/status.md"
+  },
+  {
+    "name": "Status line",
+    "status": "approved",
+    "class": "mx-modeline",
+    "attributes": [],
+    "tokens": [
+      "color.accent",
+      "color.on-accent",
+      "font.size.meta",
+      "font.weight.medium",
+      "layer.status",
+      "space.1"
+    ],
+    "purpose": "tmux's status line for 機械用: the reading, where the shell is, the time in Japan, and the way back (L3).",
+    "classes": [
+      "mx-modeline",
+      "mx-modeline-mode",
+      "mx-modeline-time",
+      "mx-modeline-way",
+      "mx-modeline-where"
+    ],
+    "doc": "src/components/modeline/modeline.md"
+  },
+  {
+    "name": "Stream",
+    "status": "approved",
+    "class": "mx-stream",
+    "attributes": [],
+    "tokens": [
+      "color.rule",
+      "color.text-lead",
+      "color.accent",
+      "color.focus",
+      "font.family.mono",
+      "font.family.ja",
+      "font.size.body",
+      "font.size.ui",
+      "font.weight.medium",
+      "font.size.rain",
+      "border.width.hair",
+      "border.width.strong",
+      "space.2",
+      "space.3",
+      "space.4"
+    ],
+    "purpose": "One entry of the wall: strands of its own words fall beside (or above) its readable text, and settle into it (L1, L2).",
+    "classes": [
+      "mx-blurb",
+      "mx-drop",
+      "mx-meta",
+      "mx-strand",
+      "mx-stream",
+      "mx-stream-entry",
+      "mx-stream-fall",
+      "mx-stream-name"
+    ],
+    "doc": "src/components/stream/stream.md"
+  },
+  {
+    "name": "Streams",
+    "status": "approved",
+    "class": "mx-streams",
+    "attributes": [
+      "data-variant"
+    ],
+    "tokens": [
+      "color.rule",
+      "color.accent",
+      "border.width.hair",
+      "font.size.entry.min",
+      "font.size.entry.max",
+      "font.size.body",
+      "font.leading.tight",
+      "space.3",
+      "space.4",
+      "space.5",
+      "space.6"
+    ],
+    "purpose": "The list of Streams: a wall on Home, rows on Projects (L1).",
+    "classes": [
+      "mx-blurb",
+      "mx-strand",
+      "mx-stream",
+      "mx-stream-entry",
+      "mx-stream-fall",
+      "mx-stream-name",
+      "mx-streams"
+    ],
+    "doc": "src/components/streams/streams.md"
+  },
+  {
+    "name": "Swatches",
+    "status": "approved",
+    "class": "mx-swatch",
+    "attributes": [
+      "data-swatch"
+    ],
+    "tokens": [
+      "color.panel",
+      "color.rule",
+      "color.rain.tail",
+      "color.rain.body",
+      "color.text-muted",
+      "color.text",
+      "color.text-lead",
+      "color.accent"
+    ],
+    "purpose": "The eight theme colours of the context, as neofetch shows a terminal's colours (L7).",
+    "classes": [
+      "mx-swatch",
+      "mx-swatches"
+    ],
+    "doc": "src/components/swatch/swatch.md"
+  },
+  {
+    "name": "Switch",
+    "status": "approved",
+    "class": "mx-switch",
+    "element": "mx-switch",
+    "attributes": [
+      "data-variant",
+      "aria-current"
+    ],
+    "tokens": [
+      "color.ground",
+      "color.panel",
+      "color.text",
+      "color.text-muted",
+      "color.text-lead",
+      "color.accent",
+      "color.on-accent",
+      "color.rain.head",
+      "color.control-border",
+      "color.reading.human",
+      "color.reading.machine",
+      "font.family.dot",
+      "font.family.mono",
+      "font.size.rain",
+      "font.size.meta",
+      "font.size.label",
+      "font.leading.ui",
+      "radius.control",
+      "radius.capsule",
+      "border.width.hair",
+      "size.target",
+      "motion.drip.duration",
+      "motion.wipe.duration",
+      "motion.wipe.steps",
+      "space.3",
+      "space.5"
+    ],
+    "purpose": "The choice between the two readings (L3): two real links to the two static routes, so it works without scripts.",
+    "classes": [
+      "mx-header",
+      "mx-switch",
+      "mx-switch-label",
+      "mx-switch-side"
+    ],
+    "doc": "src/components/switch/switch.md"
+  },
+  {
+    "name": "Takeover",
+    "status": "approved",
+    "class": "mx-takeover",
+    "attributes": [],
+    "tokens": [
+      "color.text-muted",
+      "color.text-lead"
+    ],
+    "purpose": "A full-screen view inside the screen whose command line is the prompt: the site's `vim` (L3).",
+    "classes": [
+      "mx-takeover",
+      "mx-takeover-buffer",
+      "mx-takeover-message",
+      "mx-terminal-screen",
+      "mx-terminal-tty"
+    ],
+    "doc": "src/components/takeover/takeover.md"
+  },
+  {
+    "name": "Terminal",
+    "status": "approved",
+    "class": "mx-terminal",
+    "element": "mx-terminal",
+    "attributes": [
+      "data-shell",
+      "data-keyboard",
+      "data-zoom",
+      "data-overlay",
+      "data-tone"
+    ],
+    "tokens": [
+      "color.text-muted",
+      "color.text-lead",
+      "color.accent",
+      "color.panel",
+      "color.ground",
+      "color.rule",
+      "font.size.ui",
+      "font.leading.terminal",
+      "font.weight.medium",
+      "space.1-5",
+      "space.3",
+      "space.4",
+      "space.6",
+      "layer.overlay"
+    ],
+    "purpose": "機械用 as one shell in one viewport: the same facts as 人間用, typed for and printed as a session (L3).",
+    "classes": [
+      "mx-chips",
+      "mx-controls",
+      "mx-footer",
+      "mx-frame",
+      "mx-guide",
+      "mx-guide-hide",
+      "mx-guide-live",
+      "mx-header",
+      "mx-ln",
+      "mx-ln-echo",
+      "mx-modeline",
+      "mx-modeline-time",
+      "mx-name",
+      "mx-nav",
+      "mx-prompt",
+      "mx-prompt-hint",
+      "mx-prompt-ps",
+      "mx-rain",
+      "mx-takeover",
+      "mx-terminal",
+      "mx-terminal-screen",
+      "mx-terminal-tty",
+      "mx-vh"
+    ],
+    "doc": "src/components/terminal/terminal.md"
+  }
+]

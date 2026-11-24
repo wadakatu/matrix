@@ -2,6 +2,7 @@
 name: Log
 status: approved
 class: mx-log
+attributes: []
 tokens: [color.rule, font.size.meta, space.1, space.4, border.width.hair]
 ---
 

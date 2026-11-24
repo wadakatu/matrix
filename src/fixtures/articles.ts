@@ -6,6 +6,7 @@ import room from "./images/room.svg?url";
 import servers from "./images/servers.svg?url";
 import sign from "./images/sign.svg?url";
 import timetable from "./images/timetable.svg?url";
+import { at } from "../specimens/base.ts";
 
 /** A run inside a paragraph or a list item. */
 export type Inline =
@@ -249,7 +250,7 @@ const C: Article = {
   body: [
     { h: 2, id: "text", text: "文章の要素" },
     { p: [ja(60, 0), ["fn", 1], ja(30, 1)] },
-    { p: [ja(20, 2), ["a", "見本の外のサイト", "https://example.com/fixture/elsewhere"], "と", ["a", "見本の記事一覧", "/blog.html"], "と", ["a", "この頁の表", "#tables"], ja(14, 3)] },
+    { p: [ja(20, 2), ["a", "見本の外のサイト", "https://example.com/fixture/elsewhere"], "と", ["a", "見本の記事一覧", at("/blog.html")], "と", ["a", "この頁の表", "#tables"], ja(14, 3)] },
     { quote: [p(70, 4), p(40, 5)] },
     { ol: [[ja(20, 6)], [ja(24, 7), ["ul", [[ja(14, 8)], [ja(18, 9)]]]], [ja(16, 10)]] },
     { ul: [[ja(18, 11), ["ol", [[ja(12, 12)], [ja(15, 13)]]]], [ja(20, 14)]] },

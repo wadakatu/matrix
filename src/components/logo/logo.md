@@ -2,7 +2,8 @@
 name: Logo
 status: approved
 class: mx-logo
-tokens: [size.logo.header, size.logo.header-compact]
+attributes: []
+tokens: []
 ---
 
 # Logo

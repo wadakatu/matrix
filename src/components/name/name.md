@@ -2,6 +2,7 @@
 name: Name
 status: approved
 class: mx-name
+attributes: [data-double]
 tokens: [color.accent, color.glow, color.rain.body, font.family.mono, font.weight.bold, font.weight.medium, font.size.prompt.min, font.size.prompt.max, motion.blink.duration, motion.blink.count, motion.double.duration, space.5, space.7]
 ---
 

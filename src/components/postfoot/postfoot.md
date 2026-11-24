@@ -2,6 +2,7 @@
 name: Post foot
 status: approved
 class: mx-postfoot
+attributes: []
 tokens: [color.accent, color.ground, color.rule, color.text-lead, color.text-muted, font.family.mono, font.size.meta, font.size.body, font.leading.ui, border.width.hair, size.measure.read, size.measure.read-compact, space.0-5, space.1-5, space.3, space.4, space.5, space.6, space.7]
 ---
 

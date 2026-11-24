@@ -2,6 +2,7 @@
 name: Language link
 status: draft
 class: mx-lang
+attributes: []
 tokens: [color.text-muted, color.text-lead, color.rule, size.target, space.2, border.width.hair]
 ---
 

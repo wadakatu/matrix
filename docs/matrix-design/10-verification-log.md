@@ -132,7 +132,13 @@ Method: `wc -c` and `gzip -9`.
 | `matrix-blog.css` | 11,185 | 3,479 |
 | `proto-matrix.js` | 20,133 | 7,271 |
 | `proto-matrix-blog.js` | 2,266 | 1,119 |
+| `_Terminal.astro` script, built (`dist/_astro/_Terminal.astro_astro_type_script_index_0_lang.*.js`) | 30,206 | 13,063 |
 | `logo-400.png` / `logo-400.webp` | 240,877 / 44,312 | — |
+
+The built shell script was measured for task 6.3 (05, "How each budget is measured"): `astro build`
+of `93ca12d` in a scratch worktree (Astro 5.16.7, Node 23.4.0; the prototype pins neither), the one
+script `/proto/matrix/` loads for the shell. It imports nothing by a relative path. Its gzip is the
+terminal budget's ceiling.
 
 ## M6 — Baseline status of CSS and platform features
 

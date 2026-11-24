@@ -2,6 +2,7 @@
 name: Details
 status: draft
 class: mx-details
+attributes: []
 tokens: [color.accent, color.rule, font.weight.medium, font.leading.title, border.width.hair, size.target, space.3, space.4]
 ---
 

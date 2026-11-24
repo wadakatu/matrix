@@ -13,6 +13,10 @@ export default {
   reading: "Reading",
   status: { machine: "Machine reading", human: "Human reading" },
   moved: { title: "Moved", text: "This page moved." },
+  notice: {
+    "not-found": { title: "Not found", text: "Nothing is at this address." },
+    offline: { title: "Offline", text: "There is no network connection.", retry: "Try again" },
+  },
   other: { lang: "ja", label: "日本語" },
   guide: { live: { before: " Type ", after: ", or tap a command below." }, way: "Read it as an ordinary page: ", hide: "Hide this note" },
   post: {

@@ -3,6 +3,7 @@ name: Switch
 status: approved
 class: mx-switch
 element: mx-switch
+attributes: [data-variant, aria-current]
 tokens: [color.ground, color.panel, color.text, color.text-muted, color.text-lead, color.accent, color.on-accent, color.rain.head, color.control-border, color.reading.human, color.reading.machine, font.family.dot, font.family.mono, font.size.rain, font.size.meta, font.size.label, font.leading.ui, radius.control, radius.capsule, border.width.hair, size.target, motion.drip.duration, motion.wipe.duration, motion.wipe.steps, space.3, space.5]
 ---
 

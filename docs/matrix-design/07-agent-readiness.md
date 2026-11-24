@@ -155,6 +155,128 @@ gate in this repository and, where marked, is shipped for the consumer to run to
 
 The exact lint rules and plugins are chosen in Phase 1; the behaviour above is the requirement.
 
+## What Phase 6 builds (task 6.4)
+
+At `0803d93` the layer has `AGENTS.md`, `CLAUDE.md`, 46 component pages, `docs/tokens.md` with
+its freshness check, and the repository's own stylelint config. It has no `components.json`,
+no `llms.txt` or `llms-full.txt`, no skill, no config a consumer can extend, and no check on
+anything in this section. `AGENTS.md` is kept: it is edited where a line below says so and
+stays under 100 lines.
+
+### Every component page
+
+- Every directory under `src/components/` and `src/effects/` has its `<name>.md`. Three do
+  not: `layout`, `root` (`<mx-root>`) and `decode`. Two pages cover what has no directory of
+  its own: `src/head/head.md` (Head and the pre-paint script) and `src/css/foundations.md`
+  (reset, base, the focus ring, `.mx-frame`, `.mx-vh`, `.mx-skip`). That is every row of 04's
+  inventory, either as a page or as a part named on its owner's page (Screen and Line on
+  Terminal's; code title and diff on Code block's; table, task list and footnotes on Prose's).
+- Front matter, the same on every page: `name`, `status`, `class` and `element` where there is
+  one, `attributes` (every `data-*` and ARIA attribute that is a variant or a state in the
+  contract; an empty list when there is none), and `tokens`.
+- **`tokens` is checked against the code.** A token the component's own files read through
+  its custom property must be listed. A token that is listed must be read: directly, through a
+  derived property the files read (02, "Derived properties"), or by its id in the
+  component's script. A first pass at `0803d93` found two tokens read and not listed
+  (`border.width.hair` in Menu, `layer.lifted` in Boot) and thirteen pages listing a token
+  their own files do not read directly; for each of those the check finds one of the other
+  two routes, or the page is corrected.
+
+### `docs/components.json`
+
+Generated, committed, sorted by name. One entry per page:
+
+| Field | From |
+| --- | --- |
+| `name`, `status`, `class`, `element`, `attributes`, `tokens` | The page's front matter |
+| `purpose` | The first sentence under the page's "Purpose" heading. It is what makes "is there a component for this" a search of one file |
+| `classes` | Every `mx-*` class in the component's stylesheet. Generated, so the class check below knows a part's class without anyone listing it |
+| `doc` | The page's path from the package root |
+
+### `llms.txt` and `llms-full.txt`
+
+- Both at the repository root, generated, committed and in the package.
+- `llms.txt` follows the format: the `H1`, a blockquote of one paragraph, sections of links,
+  and `Optional` last. It stays near 40 lines, so it does not list the pages one by one. It
+  links the skill, the component index (`docs/components.json`, with one line saying what each
+  entry holds), `docs/tokens.md`, and the changelog; under `Optional`, `llms-full.txt` and the
+  token sources.
+- Its links are relative paths from the package root to files that are in the package. That is
+  what makes the copy in `node_modules/@wadakatu/matrix/` work with no network. The published
+  copy is the same file with each path replaced by its mirror, `docs/<name>.md` (06, "Before
+  the gate"); two pages with one file name fail the script.
+- `llms-full.txt` is every page `llms.txt` and the index lead to, joined in that order, each
+  under a line with its path.
+
+### One script, one command
+
+`scripts/agent-docs.mjs` writes `docs/components.json`, `llms.txt` and `llms-full.txt`.
+`npm run docs` runs it after the tokens page, so one command regenerates everything that is
+generated (09, constraint 10). With `--check` it writes nothing and fails on a difference,
+which is how `npm run check` uses it. It is Node, as every script here is; TOMBO's was Python
+and only the habit carries over.
+
+### The package
+
+The tarball gains `docs/components.json`, `llms.txt`, `llms-full.txt`, `skills/matrix/`,
+the consumer stylelint config and the drift script, and the package-contents gate lists them.
+"Docs" in 01 means these and `docs/tokens.md`: the design set, the research, the history and
+the verification stills are not reference for a consumer and stay out.
+
+### The skill
+
+`skills/matrix/SKILL.md`, to the outline above. Settled here:
+
+- It names every file by its path from the package root, and says once that the root is
+  `node_modules/@wadakatu/matrix/` in a consuming repository and the repository itself here.
+  A path that climbs out of the skill (`../../docs/…`) is not used: the consumer reaches the
+  skill through a link (above), and a tool that tidies the path before opening it would land
+  beside the link, not in the package. `references/index.md` is the one reference file: each
+  topic and the path that answers it.
+- The body stays under 200 lines, which is stricter than the specification's 500
+  (<https://agentskills.io/specification>).
+- Its table of colour roles and its "how you will be caught" lines name tokens and commands,
+  so the checks below read it too.
+
+### The consumer's checks
+
+| Shipped | What it is | How the consumer runs it |
+| --- | --- | --- |
+| `@wadakatu/matrix/stylelint` | The no-raw-values rules as a shareable config. This repository's `stylelint.config.mjs` extends it and adds only what is its own: the Baseline ledger and the exception for `dist/tokens.css`. The rules a consumer runs are the rules matrix is held to | `extends` in its stylelint config ([docs](https://stylelint.io/user-guide/configure#extends)). stylelint is the consumer's own development dependency |
+| `scripts/drift.mjs` | Unknown `--mx-*` property, and `mx-*` class that is not in `components.json`, in the files it is given. No dependency. `npm run check` runs the same file on `src/` | By its path: `node node_modules/@wadakatu/matrix/scripts/drift.mjs src`. 01's exports have no name for it, and none is added |
+
+`MxToken` (`dist/tokens.d.ts`) already gives the type error on an unknown token in TypeScript.
+
+### The freshness checks, all in `npm run check`
+
+| Check | Fails when |
+| --- | --- |
+| `docs/tokens.md` (exists) | The page differs from what the tokens generate |
+| `docs/components.json`, `llms.txt`, `llms-full.txt` | Any differs from what the script generates |
+| Pages | A directory has no page; a page lacks one of the seven headings or a front matter field |
+| Tokens on a page | The rule under "Every component page" |
+| Links | A path in `llms.txt`, the skill or its reference file is not a file, or is not in the package |
+| Tokens and classes in prose | The skill or `llms.txt` names a token or an `mx-*` class that does not exist |
+| The skill | `name` is not `matrix`; the description is over 1024 characters; the body is over 200 lines |
+| `AGENTS.md` | It is 100 lines or more; it names an `npm run` command that `package.json` does not have; `CLAUDE.md` is anything but `@AGENTS.md` |
+
+### The accept run
+
+The question of 09, task 6.4: "which component renders a key and value list, and which tokens
+does it read".
+
+- Asked of a session that has nothing but a checkout of the commit and this sentence: "Read
+  `AGENTS.md`, then answer from the files in this repository", followed by the question. No
+  other context, no hint of the answer, no network.
+- It passes when the answer names Figures (`.mx-figures`), its token list is the list in
+  `docs/components.json`, and the files it opened are in the repository. It may mention the
+  Fetch card, whose lines are keys and values too; it must not give it as the answer.
+- The pull request shows the prompt, the files opened and the answer, as they came. The
+  implementing agent can run it as a subagent that is given only that prompt, and says that is
+  what it was. wadakatu can repeat it in a session of his own.
+- For it to pass, `AGENTS.md` loses its note that `components.json` "is generated once
+  components exist", and gains the one command that regenerates it.
+
 ## Standard practice, and the departures
 
 | Practice | Source | matrix |

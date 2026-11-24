@@ -2,6 +2,7 @@
 name: Fetch card
 status: approved
 class: mx-fetch
+attributes: []
 tokens: [space.1-5, space.2]
 ---
 

@@ -65,6 +65,7 @@ Status values used below:
 | Status line | `.mx-modeline` | approved | `.modeline` | Accent fill. Mode, location, Japan time, the way back |
 | Footer | `.mx-footer` | approved | `.foot` | Contact links, logo credit, the shortcut's off switch |
 | Moved | `Moved.astro` | approved | `_Moved.astro` | A stub for an old address: refresh, canonical, visible link, query carried |
+| Notice | `.mx-notice`, `Notice.astro` | draft | — | The 404 page and the offline page: one panel, no chrome, and nothing to fetch. Specified below |
 | Language link | `.mx-lang` | draft | TOMBO's Pages site | A plain link to the same page in the other language, with `hreflang` (L6). Not rendered on articles, which have no twin (decision Q8) |
 
 ### Surfaces and data
@@ -135,7 +136,7 @@ Markdown feature counts come from the 18 files in `src/content/blog/` at `93ca12
 | Missing | Why it matters | Proposed handling |
 | --- | --- | --- |
 | About page | The header links to `/about/`, which is still the TOMBO page | Compose from Panel, Figures, Stream and Prose. A site-level design task (08); no new component expected |
-| 404 and offline | Both exist in production; offline must render with no network | `Moved`-like single-panel page. Offline inlines `tokens.css` and one component stylesheet, which the per-component exports allow |
+| 404 and offline | Both exist in production; offline must render with no network | `Moved`-like single-panel page. Offline inlines `tokens.css` and one component stylesheet, which the per-component exports allow. Designed as Notice, below (task 6.1) |
 | Japanese chrome | L6 needs chrome strings in `ja`; the prototype's chrome is English only | `strings/ja.ts`, shipped with `strings/en.ts` and reviewed by wadakatu before 1.0 (09, task 2.6) |
 | Print | TOMBO has print hardening; the prototype has none | A minimal print layer for articles: no rain, no chrome, ink on paper, URLs after links. Specified in 05 ("Print") |
 | OG image, favicons | The prototype uses the logo file as the OG image | Site tooling reads `tokens.json`. Not components |
@@ -618,6 +619,107 @@ None stops the drafts being built as written above. They are asked when the draf
    VitePress does, would need a fill or a hue to mark the line, which is question 1 again.
 4. **Print margins** (05, "Print"). The layer sets none. TOMBO set 16mm.
 
+### Notice: the 404 page and the offline page (task 6.1)
+
+A draft: neither page is in the prototype. Production has both as TOMBO pages
+(`src/pages/404.astro` and `offline.astro` at `93ca12d`), and its service worker answers a
+failed navigation with `/offline/` from the precache (`public/sw.js`). This is the shape the
+Gaps table asked for: a page like Moved, with one panel, that needs nothing but itself.
+
+```html
+<!doctype html>
+<html lang="en" data-theme="night">
+  <head>
+    <!-- Head (03): meta, the title, the pre-paint script, all inline -->
+    <meta name="robots" content="noindex">
+    <style>/* tokens.css, then notice.css */</style>
+  </head>
+  <body class="mx-notice">
+    <main>
+      <h1>Not found</h1>
+      <p>Nothing is at this address.</p>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/blog/">Blog</a></li>
+      </ul>
+    </main>
+  </body>
+</html>
+```
+
+- **One component, two kinds.** `Notice.astro` is a whole document, as `Moved.astro` is, with
+  a `head` slot. `kind` is `not-found` or `offline`; `site` goes after the title; `links` are
+  the site's (label and address), as the footer's are. `NoticeBody.astro` is the body alone,
+  for the stories, as `MovedLine.astro` is for Moved.
+- **Offline** has the same markup with its own words, and its first link is "Try again", a
+  link to the page's own address (`href=""`). It is a link and not a button, so it works
+  without scripts and there is no dead control (05). The service worker serves this page at
+  the address that failed, so following the link asks for that address again.
+- **Nothing is requested.** Both kinds inline `tokens.css` and `notice.css` in one `style`
+  element and use `Head`, whose script is inline. There is no linked stylesheet, no font
+  file, no image and no element script. Text falls to the system faces at the end of
+  `font.family.mono` and `font.family.ja`. A site that wants its fonts on the 404 page
+  links `fonts.css` in the `head` slot; the offline page leaves the slot empty.
+- **The flags work**, because `Head` is there: `?theme=`, `?palette=`, a stored `mx-theme`.
+  Without scripts the page is night and phosphor.
+- **The one panel** is `main`: `panel` on `ground`, a hairline `rule`, the Panel's padding, no
+  wider than `size.measure.lede`, 20% of the window down as Moved is. The `h1` is set as a
+  panel's heading is (`body` size, medium, `accent`): it is the page's one visible heading.
+  The links are a wrapping row, each at least `size.target-min` tall.
+- **No chrome and no rain**: no header, footer, switch, skip link or logo. There is one
+  block, so there is nothing to skip, and nothing moves, so there is no still and no row in
+  the motion catalogue (05).
+- **Keyboard**: Tab goes through the links in order ("Try again" first when offline) and
+  each shows the focus ring. Nothing else takes focus.
+- **Paper and forced colours**: on paper the day ink, no fill, the border kept (05, "Print":
+  the stylesheet carries its own block). Forced colours need no rule: the border and the
+  underlines stay.
+- **Words** are chrome strings in both languages (`strings.notice`), proposed here and
+  reviewed with the other Japanese strings before `1.0.0`:
+
+  | | English | Japanese |
+  | --- | --- | --- |
+  | Not found: title, sentence | Not found. Nothing is at this address. | 見つかりません。このアドレスにはページがありません。 |
+  | Offline: title, sentence, link | Offline. There is no network connection. Try again | オフライン。ネットワークに接続されていません。もう一度試す |
+
+- **Tokens**: `color.ground`, `color.panel`, `color.rule`, `color.text`, `color.text-lead`,
+  `color.accent`, `color.focus`; `font.family.mono`, `font.family.ja`, `font.size.body`,
+  `font.weight.regular`, `font.weight.medium`, `font.leading.ui`; `border.width.hair`,
+  `border.width.strong`; `space.1`, `space.2`, `space.4`, `space.5`, `space.7`;
+  `size.measure.lede`, `size.target-min`. No new token.
+
+**The stylesheet stands by itself, and that is the one new thing here.** The ground, the body
+type, the link and the focus ring are in `base.css`, and the frame is in `utilities.css`.
+Neither is a per-component export (01), so `tokens.css` and `panel.css` alone would give a
+panel on the browser's white page in the browser's own face. `notice.css` therefore sets those
+few things itself, on `.mx-notice` and inside it, from the same tokens. That keeps this page,
+01 and 08 true as written (two inlined stylesheets, no new export), at the cost of about a dozen
+declarations said twice. A test keeps the two copies the same: in each context the Notice
+specimen's ground, text colour, face, size, leading, link and focus ring are computed equal to
+the Chrome specimen's.
+
+#### Standard practice, and the departure
+
+| Topic | What others do | matrix | Why |
+| --- | --- | --- | --- |
+| 404 on GitHub Pages | A file named `404.html` in the publishing source ([docs](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-custom-404-page-for-your-github-pages-site)) | The same file, built from Notice | The route is the site's (08) |
+| Offline fallback | A page precached by the service worker and returned when a navigation fails; everything it needs is cached too, or inlined so that it is self-contained ([web.dev](https://web.dev/articles/offline-fallback-page)) | Inlined, all of it | Production already does it this way, and a page with nothing to fetch cannot half load |
+| Styles of a small page | Link the site's stylesheet | Two inlined stylesheets, one of which repeats a little of `base.css` | The Gaps table and 08; the paragraph above |
+
+#### Questions for wadakatu
+
+None stops Notice being built as written. They are asked when it is shown with the other
+drafts (09, gate "Approval of draft components").
+
+1. **The stylesheet that stands by itself.** The other ways are to export the foundation files
+   and inline five stylesheets, which changes the package surface in 01, or to inline the whole
+   of `@wadakatu/matrix/css` in every offline response. The default above is the one 01, 04
+   and 08 already describe.
+2. **The words**, in both languages (the table above).
+3. **Reloading when the network comes back.** Production's offline page reloads itself on the
+   `online` event. Notice has no script. The site can keep its two lines beside the service
+   worker, which is the site's (01, "What stays in the site"); matrix does not ship them.
+
 ## Patterns
 
 Compositions that are not components but are part of the system, each with a specimen page.
@@ -629,6 +731,7 @@ Compositions that are not components but are part of the system, each with a spe
 | **Single-reading document** | An article has one address. Its switch shows 人間用 as current and links into the shell at its file |
 | **Article page** | Masthead, then contents beside a single solid body panel; rain as a band; nothing moves beside the text |
 | **Moved address** | A stub page, because GitHub Pages cannot send a redirect |
+| **Notice page** | An address with nothing at it, and the page shown when there is no network: one panel, no chrome, nothing to fetch |
 | **Language twin** | The same page in the other language at its own address: English at the root, Japanese under `/ja/` (decision Q8), linked with `hreflang` and a language link (L6). Articles are the exception: one address, one language, no twin |
 
 ### The Article specimens
@@ -695,6 +798,41 @@ Fixture rules for these pages:
 - The Blog index specimen is the masthead's title and a meta line, then `.mx-index` over the
   fixture's posts, newest first. The prototype's "published site" note on a row is not ported:
   it marked the 15 posts the prototype had no page for, and in matrix every row is a page.
+
+### The specimen set (task 6.1)
+
+The specimens of 09, task 6.1, are eleven pages in `src/specimens/`. Astro builds each
+at `/<file>.html` for the tests, and under `/specimens/` inside the Storybook (06).
+
+| Specimen | Page | Pattern | At `0803d93` |
+| --- | --- | --- | --- |
+| Machine landing | `home` | Machine-first landing | Exists |
+| Human home | `human-home` | Twin routes | Exists |
+| Projects, 機械用 | `projects` | Twin routes | Exists |
+| Projects, 人間用 | `human-projects` | Twin routes | Exists |
+| Article | `article-a`, `article-b`, `article-c` | Article page, Single-reading document | Exist |
+| Blog index | `blog` | Article page | Exists |
+| Moved | `moved` | Moved address | Exists |
+| 404 | `not-found` | Notice page | **Missing** |
+| Offline | `offline` | Notice page | **Missing** |
+
+`chrome`, `chrome.ja` and the two `bare` pages are the test pages of Phases 1 and 2. They stay,
+and they are not specimens of a pattern: they are not in the Storybook's sidebar.
+
+- The two new pages are in English, with `example.com` links from the fixture. `not-found`
+  links `fonts.css` in its `head` slot, as a site would; `offline` adds nothing. Japanese is
+  the `Japanese` story, as it is for Moved.
+- **One list of the specimens** (`tests/support/specimens.mjs`: page, language, reading, and
+  whether it has rain, a shell or an article) is read by the tests of the verification matrix
+  (05) and by the visual tests, so a page added to the set is in every check without being
+  named again.
+- What `npm run test:specimens` must show for the set, beyond what each phase's tests show
+  for its own components, is in 05 ("Where each row runs"). For the two Notice pages it is:
+  the page requests nothing but its own document, with scripts and without; the four
+  contexts by flag; the Tab order above; day ink and no fill under print emulation; the
+  border kept under forced colours; and the equal-to-Chrome test above.
+- Visual baselines: both Notice pages in the four contexts at 1440 and 390, with the other
+  specimens (`tests/visual/specimens.spec.mjs`).
 
 ## Class rename map (prototype → matrix)
 

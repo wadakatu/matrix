@@ -3,7 +3,8 @@ name: Contents
 status: approved
 class: mx-toc
 element: mx-toc
-tokens: [color.accent, color.rule, color.text-lead, color.text-muted, font.family.mono, font.size.meta, font.weight.medium, border.width.hair, border.width.strong, size.target, size.rail, size.measure.read, size.measure.read-compact, space.2, space.3, space.4, space.5]
+attributes: [aria-current]
+tokens: [color.accent, color.rule, color.text-lead, color.text-muted, font.family.mono, font.size.meta, font.weight.medium, border.width.hair, border.width.strong, size.target, size.measure.read, size.measure.read-compact, space.2, space.3, space.4, space.5]
 ---
 
 # Contents
@@ -53,7 +54,7 @@ work; the mark is absent (05).
 
 `color.accent`, `color.rule`, `color.text-lead`, `color.text-muted`; `font.family.mono`,
 `font.size.meta`, `font.weight.medium`; `border.width.hair`, `border.width.strong`; `size.target`,
-`size.rail`, `size.measure.*` (`--mx-measure`); `space.2`, `space.3`, `space.4`, `space.5`.
+`size.measure.*` (`--mx-measure`); `space.2`, `space.3`, `space.4`, `space.5`.
 
 ## Accessibility
 

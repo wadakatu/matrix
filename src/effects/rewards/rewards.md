@@ -2,7 +2,8 @@
 name: Rewards
 status: approved
 class: mx-ghost
-tokens: [color.panel, color.accent, color.rain.body, motion.echo.duration, motion.double.duration, motion.decode.duration, space.1]
+attributes: [data-reward, data-double]
+tokens: [color.panel, color.accent, motion.echo.duration, space.1]
 ---
 
 # Rewards
@@ -43,8 +44,10 @@ leaving the page removes what it added.
 
 ## Tokens
 
-`color.panel`, `color.accent`, `color.rain.body`; `motion.echo.duration`, `motion.double.duration`,
-`motion.decode.duration`; `space.1`.
+`color.panel`, `color.accent`; `motion.echo.duration`; `space.1`. The doubling reads
+`motion.double.duration` and `color.rain.body` in Name's stylesheet. Title to commit decodes for
+300ms and 250ms, numbers in `rewards.ts`; headings and the switch side decode for 450ms, the value of
+`motion.decode.duration`, a number in `mx-readings.ts`. No file reads that token.
 
 ## Accessibility
 

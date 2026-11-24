@@ -2,7 +2,8 @@
 name: Stream
 status: approved
 class: mx-stream
-tokens: [color.rule, color.text-lead, color.accent, color.focus, color.rain.body, color.rain.tail, font.family.mono, font.family.ja, font.size.body, font.size.ui, font.weight.medium, font.size.rain, border.width.hair, border.width.strong, space.2, space.3, space.4, motion.strand.duration.min, motion.strand.duration.max]
+attributes: []
+tokens: [color.rule, color.text-lead, color.accent, color.focus, font.family.mono, font.family.ja, font.size.body, font.size.ui, font.weight.medium, font.size.rain, border.width.hair, border.width.strong, space.2, space.3, space.4]
 ---
 
 # Stream
@@ -45,10 +46,12 @@ CSS only. The rewards (déjà vu, title to commit) attach to it without markup o
 
 ## Tokens
 
-`color.rule`, `color.text-lead`, `color.accent`, `color.focus`, `color.rain.body`, `color.rain.tail`;
+`color.rule`, `color.text-lead`, `color.accent`, `color.focus`;
 `font.family.mono`, `font.family.ja`, `font.size.body`, `font.size.ui`, `font.weight.medium`,
-`font.size.rain`; `border.width.hair`, `border.width.strong`; `space.2`, `space.3`, `space.4`;
-`motion.strand.duration.min`, `.max`.
+`font.size.rain`; `border.width.hair`, `border.width.strong`; `space.2`, `space.3`, `space.4`. On hover
+or focus it sets `--mx-color-rain-body` and `--mx-color-rain-tail` to the accent for Rain's drop
+style to read. The strands' falls are `streamStrands` in `lib`, whose 5s and 11s defaults are the
+values of `motion.strand.duration.min` and `.max`; no file reads the tokens.
 
 ## Accessibility
 

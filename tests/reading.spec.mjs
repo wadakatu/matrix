@@ -4,15 +4,14 @@
 import { expect, test } from "@playwright/test";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { ORIGIN, axe, root, serve } from "./support/serve.mjs";
-import { ratio } from "../scripts/gates.mjs";
+import { ORIGIN, root, serve } from "./support/serve.mjs";
 
-const DIRS = { "/assets/": "assets", "/": "dist-specimens" };
+const DIRS = { "/assets/": "assets", "/specimens/": "dist-specimens" };
 const tokens = JSON.parse(readFileSync(join(root, "dist/tokens.json"), "utf8"));
-const ARTICLES = { a: "/article-a.html", b: "/article-b.html", c: "/article-c.html" };
+const ARTICLES = { a: "/specimens/article-a.html", b: "/specimens/article-b.html", c: "/specimens/article-c.html" };
 const CONTEXTS = { "phosphor-night": "", "phosphor-day": "theme=day", "operator-night": "palette=operator", "operator-day": "palette=operator&theme=day" };
 const rgb = (hex) => `rgb(${[1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16)).join(", ")})`;
-const ELEMENTS = (url) => url.pathname.startsWith("/_astro/") && url.pathname.endsWith(".js");
+const ELEMENTS = (url) => url.pathname.startsWith("/specimens/_astro/") && url.pathname.endsWith(".js");
 
 async function open(page, path, { block } = {}) {
   const errors = [];
@@ -110,7 +109,7 @@ test.describe("5.1 masthead, contents, post foot, share, index", () => {
     await serve(page, DIRS);
     // The rule the engine would not have: dropped from the stylesheet before the page sees it.
     await page.route(/\/_astro\/.*\.css$/, async (r) => {
-      const file = join(root, "dist-specimens", new URL(r.request().url()).pathname);
+      const file = join(root, "dist-specimens", new URL(r.request().url()).pathname.replace(/^\/specimens\//, ""));
       const body = readFileSync(file, "utf8").replaceAll("selector(::details-content)", "selector(::not-a-thing)");
       return r.fulfill({ body, contentType: "text/css" });
     });
@@ -184,19 +183,19 @@ test.describe("5.1 masthead, contents, post foot, share, index", () => {
   test("post foot: A and B are each other's Newer and Older; the ways back; the index lists every article", async ({ page }) => {
     const pager = () => page.evaluate(() => [...document.querySelectorAll(".mx-pager a")].map((a) => [a.rel, a.getAttribute("href")]));
     await open(page, ARTICLES.a);
-    expect(await pager()).toEqual([["next", "/article-b.html"]]);
-    expect(await page.locator(".mx-ways a").evaluateAll((as) => as.map((a) => a.getAttribute("href")))).toEqual(["/blog.html", "/human-home.html", "/home.html?run=cat+%7E%2Fposts%2F3fa91c07d2b8e6.md"]);
+    expect(await pager()).toEqual([["next", "/specimens/article-b.html"]]);
+    expect(await page.locator(".mx-ways a").evaluateAll((as) => as.map((a) => a.getAttribute("href")))).toEqual(["/specimens/blog.html", "/specimens/human-home.html", "/specimens/home.html?run=cat+%7E%2Fposts%2F3fa91c07d2b8e6.md"]);
     await open(page, ARTICLES.b);
-    expect(await pager()).toEqual([["prev", "/article-a.html"]]);
-    await open(page, "/blog.html");
-    expect(await page.locator(".mx-index a").evaluateAll((as) => as.map((a) => a.getAttribute("href")))).toEqual(["/article-c.html", "/article-b.html", "/article-a.html"]);
+    expect(await pager()).toEqual([["prev", "/specimens/article-a.html"]]);
+    await open(page, "/specimens/blog.html");
+    expect(await page.locator(".mx-index a").evaluateAll((as) => as.map((a) => a.getAttribute("href")))).toEqual(["/specimens/article-c.html", "/specimens/article-b.html", "/specimens/article-a.html"]);
     expect(await page.locator(".mx-index time").allTextContents()).toEqual(["2026-01-20", "2025-12-10", "2025-07-31"]);
   });
 
   test("the switch shows 人間用 as current; its 機械用 side opens the shell at the file", async ({ page }) => {
     await open(page, ARTICLES.b);
     const sides = await page.locator(".mx-header .mx-switch-side").evaluateAll((as) => as.map((a) => [a.dataset.to, a.getAttribute("aria-current"), a.getAttribute("href")]));
-    expect(sides).toEqual([["human", "true", "/article-b.html"], ["machine", null, "/home.html?run=cat+%7E%2Fposts%2Fb6e20d4f9a13c8.md"]]);
+    expect(sides).toEqual([["human", "true", "/specimens/article-b.html"], ["machine", null, "/specimens/home.html?run=cat+%7E%2Fposts%2Fb6e20d4f9a13c8.md"]]);
     expect(await page.evaluate(() => document.documentElement.dataset.reading)).toBeUndefined();
   });
 });
@@ -454,7 +453,7 @@ test.describe("5.4 print", () => {
     const after = (sel) => page.locator(sel).first().evaluate((a) => getComputedStyle(a, "::after").content);
     expect(await after('.mx-prose p a[href^="https://"]:not(.mx-ref)')).toBe('" (https://example.com/fixture/elsewhere)"');
     expect(await page.locator('.mx-prose p a[href^="https://"]:not(.mx-ref)').first().evaluate((a) => [getComputedStyle(a, "::after").fontFamily.split(",")[0], getComputedStyle(a, "::after").fontSize])).toEqual(['"IBM Plex Mono"', "13px"]);
-    expect(await after('.mx-prose a[href="/blog.html"]')).toBe("none");
+    expect(await after('.mx-prose a[href="/specimens/blog.html"]')).toBe("none");
     expect(await after('.mx-prose a[href="#tables"]')).toBe("none");
     expect(await after(".mx-prose [data-footnote-ref]")).toBe('"]" / ""');
     expect(await page.locator("[data-footnote-backref]").first().evaluate((a) => getComputedStyle(a).display)).toBe("none");
@@ -498,63 +497,8 @@ test.describe("5.4 print", () => {
 // ---------- The verification matrix (05), automated rows, on the Article specimens ----------
 
 test.describe("verification matrix on the articles", () => {
-  for (const [name, path] of Object.entries({ ...ARTICLES, index: "/blog.html" })) {
-    test(`${name}: no other origin, no page error, no horizontal overflow at nine widths`, async ({ page }) => {
-      for (const width of [320, 360, 390, 601, 719, 720, 1100, 1360, 1440]) {
-        await page.setViewportSize({ width, height: 900 });
-        const { errors, requests } = await open(page, path);
-        expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), `${width}px`).toBe(true);
-        expect(requests.filter((u) => !u.startsWith(ORIGIN))).toEqual([]);
-        expect(errors).toEqual([]);
-      }
-    });
-  }
-
-  for (const [w, h] of [[1440, 900], [390, 844]]) {
-    for (const [name, path] of Object.entries({ ...ARTICLES, index: "/blog.html" })) {
-      test(`axe at ${w}, ${name}, with and without scripts`, async ({ page, browser }) => {
-        await page.setViewportSize({ width: w, height: h });
-        await open(page, path);
-        await defined(page);
-        expect(await axe(page)).toEqual([]);
-        // axe needs timers, which a page without JavaScript does not run: the no-JS DOM, its scripts removed.
-        const [ctx, off] = await nojs(browser, { viewport: { width: w, height: h } });
-        await open(off, path);
-        const html = (await off.content()).replace(/<script\b[\s\S]*?<\/script>/g, "");
-        await ctx.close();
-        const audit = await browser.newPage({ viewport: { width: w, height: h } });
-        await serve(audit, DIRS);
-        await audit.route(`${ORIGIN}/__nojs.html`, (r) => r.fulfill({ contentType: "text/html", body: html }));
-        await audit.goto(`${ORIGIN}/__nojs.html`);
-        expect(await axe(audit)).toEqual([]);
-        await audit.close();
-      });
-    }
-  }
-
-  for (const [context, q] of Object.entries(CONTEXTS)) {
-    test(`rendered contrast of the article's text in ${context}`, async ({ page }) => {
-      await page.setViewportSize({ width: 1440, height: 900 });
-      await open(page, `${ARTICLES.c}?${q}`);
-      // Each text's colour against the first painted surface under it.
-      const pairs = await page.evaluate(() => {
-        const bg = (el) => {
-          for (let e = el; e; e = e.parentElement) {
-            const c = getComputedStyle(e).backgroundColor;
-            if (c !== "rgba(0, 0, 0, 0)") return c;
-          }
-          return getComputedStyle(document.documentElement).backgroundColor;
-        };
-        const sel = ".mx-masthead-id :is(a, span, h1, time, li), .mx-toc :is(a, summary), .mx-prose :is(p, li, h2, h3, h4, a, strong, code, th, td, blockquote, summary, .mx-callout-label, .mx-code-title, .line span, .mx-ref-host, .mx-ref-path), .mx-copy button, .mx-postfoot :is(p, a, span, code)";
-        return [...document.querySelectorAll(sel)].filter((e) => e.textContent.trim() && e.getClientRects().length).map((e) => [getComputedStyle(e).color, bg(e), e.className || e.tagName]);
-      });
-      const hex = (c) => `#${c.match(/\d+/g).slice(0, 3).map((n) => Number(n).toString(16).padStart(2, "0")).join("")}`;
-      const low = pairs.filter(([fg, b]) => ratio(hex(fg), hex(b)) < 4.5).map(([fg, b, what]) => `${what}: ${fg} on ${b} = ${ratio(hex(fg), hex(b)).toFixed(2)}`);
-      console.log(`${context}: ${pairs.length} texts checked, ${low.length} under 4.5:1`);
-      expect(low).toEqual([]);
-    });
-  }
-
+  // Overflow at nine widths, axe with and without scripts, rendered contrast, reduced motion and Hold
+  // run on every specimen in tests/matrix.spec.mjs (05, "Where each row runs").
   test("keyboard path through an article at 1440: skip link, header, contents, body, foot, in order", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await open(page, ARTICLES.a);
@@ -586,20 +530,6 @@ test.describe("verification matrix on the articles", () => {
       );
       expect(small, `${width}px`).toEqual([]);
     }
-  });
-
-  test("reduced motion and Hold: nothing runs on an article", async ({ browser }) => {
-    const ctx = await browser.newContext({ reducedMotion: "reduce" });
-    const page = await ctx.newPage();
-    await open(page, ARTICLES.a);
-    expect(await page.evaluate(() => document.getAnimations().filter((a) => a.playState === "running").length)).toBe(0);
-    await ctx.close();
-    const held = await browser.newPage();
-    await open(held, ARTICLES.a);
-    await defined(held);
-    await held.locator('[data-action="hold"]').click();
-    expect(await held.evaluate(() => document.getAnimations().filter((a) => a.playState === "running" && a.effect.getComputedTiming().iterations === Infinity).length)).toBe(0);
-    await held.close();
   });
 
   test("forced colours: no rain, the diff's signs, the current section's rule", async ({ browser }) => {

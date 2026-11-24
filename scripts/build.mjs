@@ -14,7 +14,7 @@ execFileSync("node_modules/.bin/tz", ["build", "--quiet"], { stdio: "inherit" })
 execFileSync("node_modules/.bin/tsc", ["-p", "tsconfig.json"], { stdio: "inherit" });
 
 // 3. One flattened stylesheet, in layer order. Components and effects join this list as they arrive.
-export const COMPONENTS = ["root", "logo", "mark", "nav", "control", "header", "menu", "lang", "footer", "panel", "lede", "figures", "inline-list", "log", "meta", "moved", "switch", "name", "stream", "streams", "readings", "terminal", "guide", "prompt", "run", "fetch", "login", "swatch", "takeover", "chips", "modeline", "masthead", "toc", "prose", "ref", "code", "callout", "details", "share", "postfoot", "index"];
+export const COMPONENTS = ["root", "logo", "mark", "nav", "control", "header", "menu", "lang", "footer", "panel", "lede", "figures", "inline-list", "log", "meta", "moved", "notice", "switch", "name", "stream", "streams", "readings", "terminal", "guide", "prompt", "run", "fetch", "login", "swatch", "takeover", "chips", "modeline", "masthead", "toc", "prose", "ref", "code", "callout", "details", "share", "postfoot", "index"];
 export const EFFECTS = ["rain", "scanlines", "boot", "curtain", "rewards"];
 const STYLESHEETS = ["src/css/index.css", "dist/tokens.css", "src/css/reset.css", "src/css/base.css", ...COMPONENTS.map((c) => `src/components/${c}/${c}.css`), ...EFFECTS.map((e) => `src/effects/${e}/${e}.css`), "src/css/utilities.css"];
 writeFileSync("dist/matrix.css", STYLESHEETS.map((f) => readFileSync(f, "utf8")).join("\n"));

@@ -3,6 +3,7 @@ name: Terminal
 status: approved
 class: mx-terminal
 element: mx-terminal
+attributes: [data-shell, data-keyboard, data-zoom, data-overlay, data-tone]
 tokens: [color.text-muted, color.text-lead, color.accent, color.panel, color.ground, color.rule, font.size.ui, font.leading.terminal, font.weight.medium, space.1-5, space.3, space.4, space.6, layer.overlay]
 ---
 

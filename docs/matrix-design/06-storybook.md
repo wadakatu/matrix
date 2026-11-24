@@ -87,11 +87,39 @@ Surfaces/                   Panel, Figures, Log, Inline list
 Signature/                  Name, Rain, Stream, Streams, Readings, Boot, Curtain, Scan lines, Decode
 Terminal/                   Terminal, Prompt, Chips, Fetch card, Login card, Takeover
 Reading/                    Masthead, Contents, Prose, Code block, Callout, Details, Reference link, Post foot, Index
-Specimens/                  Machine landing, Human home, Projects (both readings), Article (A, B and C; 04), Blog index, Moved
+Specimens/                  Machine landing, Human home, Projects (both readings), Article (A, B and C; 04), Blog index, Moved, Not found, Offline
 Changelog
 ```
 
-The sidebar follows the inventory in 04 one to one.
+The sidebar follows the inventory in 04 one to one. Notice (04), the component of the last
+two specimens, has its stories beside Moved's.
+
+### How a specimen is shown (task 6.1)
+
+A specimen is a whole document, and a story is rendered into the preview's own document, so a
+specimen cannot be a story (Moved's stories show its body for the same reason). At `0803d93`
+the built Storybook has no Specimens section and no Changelog page; both are in the list
+above and are added in Phase 6.
+
+- The Astro build of the specimens is served inside the Storybook under `/specimens/`,
+  copied in through the static directories like the other files beside it ("What is
+  published").
+- Each entry under `Specimens/` is a Docs page: one sentence naming the pattern it shows
+  (04), a link that opens the page by itself, and the page live in a frame. Projects has two
+  frames and Article three.
+- The specimen build therefore takes `/specimens/` as its base, and every address one
+  specimen writes to another is made from that base by one helper. Astro's `base` is the
+  prefix for what the build emits, and written links are the author's to prefix
+  ([docs](https://docs.astro.build/en/reference/configuration-reference/#base)). The logo
+  keeps its address, `/assets/logo/`, which the Storybook serves already. The tests serve
+  the same build at the same path.
+- A framed specimen is a real page on the Storybook's origin: it reads the flags in its own
+  address and keeps `mx-theme` and the tab's keys as the site would (03). The stories still
+  read no storage, and the toolbar does not reach into the frame.
+- The Changelog page renders `CHANGELOG.md`, the one source.
+
+Accept: in the static build each Specimens page shows its specimen live, the links from one
+specimen to another work inside the frame, and no request leaves the origin.
 
 ## Toolbar globals
 
@@ -227,10 +255,30 @@ the domain
 /llms-full.txt        the whole reference in one file
 /docs/*.md            Markdown mirrors of every doc page
 /tokens/              the DTCG sources, the resolver, tokens.css, tokens.json
+/specimens/           the specimen pages, which the Specimens section frames
 ```
 
 One site, one deployment. The files beside Storybook are copied in through Storybook's
 static directories.
+
+### Before the gate (task 6.5)
+
+What can be made ready without publishing anything, so that clearing the gate adds the
+deploy job and nothing else:
+
+- The static build already has the shape above. The agent-docs script (07) writes the files
+  beside Storybook into a build directory that is not committed: `llms.txt` and
+  `llms-full.txt` with their links pointing at `docs/<name>.md`, those mirrors, the index
+  beside them, and `tokens/`. The static directories copy that directory and the specimens in.
+- A test on the static build: each path in "What is published" answers, a link in
+  `/llms.txt` leads to a mirror that answers, the build works from the root of an origin,
+  nothing is requested from another origin, and no service worker is registered.
+- CI keeps uploading `storybook-static` as an artefact on every run, which is how it is
+  reviewed until the gate is cleared.
+
+Not before the gate, by anyone but wadakatu or on his word: a deploy job, either Pages
+action, a `CNAME` file, a Pages setting, a DNS record, or the repository's homepage. The
+homepage stays empty until `https://matrix.wadakatu.dev/` answers.
 
 ### Deployment
 

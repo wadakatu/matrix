@@ -1,0 +1,23 @@
+---
+/** Notice's body on its own, for its stories: a whole document cannot be a story (as MovedLine is for Moved). */
+import { strings, type Lang } from "../../strings/index.ts";
+export interface NoticeLink {
+  label: string;
+  href: string;
+}
+interface Props {
+  kind: "not-found" | "offline";
+  /** The site's links, as the footer's are. Offline puts "Try again" before them. */
+  links: NoticeLink[];
+  lang?: Lang;
+}
+const { kind, links, lang = "en" } = Astro.props;
+const t = strings[lang].notice;
+// "Try again" is a link to the page's own address: no script, no dead control (05).
+const all = kind === "offline" ? [{ label: t.offline.retry, href: "" }, ...links] : links;
+---
+<main>
+  <h1>{t[kind].title}</h1>
+  <p>{t[kind].text}</p>
+  <ul>{all.map((l) => <li><a href={l.href}>{l.label}</a></li>)}</ul>
+</main>

@@ -2,6 +2,7 @@
 name: Curtain
 status: approved
 class: mx-curtain
+attributes: [data-on]
 tokens: [color.ground, color.rain.body, color.rain.head, font.family.dot, font.size.rain, font.leading.tight, layer.curtain]
 ---
 

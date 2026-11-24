@@ -34,6 +34,10 @@ export const fixture = {
     ],
     log: ["feat: add the fixture station", "fix: keep the fixture panel solid", "docs: describe the fixture corpus"],
     meta: "TypeScript · 2026-11-15",
+    notice: [
+      { label: "Home", href: "https://example.com/" },
+      { label: "Blog", href: "https://example.com/blog/" },
+    ],
   },
   ja: {
     mark: { href: "/ja/", label: "fixture_", logo },
@@ -66,6 +70,10 @@ export const fixture = {
     ],
     log: ["見本の局を追加", "見本のパネルを塗りつぶしたままにする", "見本のコーパスを説明する"],
     meta: "見本 · 2026-11-15",
+    notice: [
+      { label: "ホーム", href: "https://example.com/ja/" },
+      { label: "ブログ", href: "https://example.com/blog/" },
+    ],
   },
 };
 

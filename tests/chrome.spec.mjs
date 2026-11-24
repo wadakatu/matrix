@@ -6,12 +6,12 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { ORIGIN, axe, root, serve } from "./support/serve.mjs";
 
-const DIRS = { "/assets/": "assets", "/": "dist-specimens" };
+const DIRS = { "/assets/": "assets", "/specimens/": "dist-specimens" };
 const tokens = JSON.parse(readFileSync(join(root, "dist/tokens.json"), "utf8"));
 const rgb = (hex) => (hex.startsWith("rgb") ? hex : `rgb(${[1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16)).join(", ")})`);
-const EN = `${ORIGIN}/chrome.html`;
-const JA = `${ORIGIN}/chrome.ja.html`;
-const ELEMENTS = (url) => url.pathname.startsWith("/_astro/") && url.pathname.endsWith(".js");
+const EN = `${ORIGIN}/specimens/chrome.html`;
+const JA = `${ORIGIN}/specimens/chrome.ja.html`;
+const ELEMENTS = (url) => url.pathname.startsWith("/specimens/_astro/") && url.pathname.endsWith(".js");
 const CONTEXTS = [
   ["phosphor", "night", ""],
   ["phosphor", "day", "theme=day"],
@@ -421,12 +421,12 @@ for (const [lang, url] of [["en", EN], ["ja", JA]]) {
 
 test("Moved: refresh, canonical and a visible link; with scripts the query and fragment come along", async ({ page, browser }) => {
   await serve(page, DIRS);
-  await page.goto(`${ORIGIN}/moved.html?palette=operator#main`);
+  await page.goto(`${ORIGIN}/specimens/moved.html?palette=operator#main`);
   await page.waitForURL(`${EN}?palette=operator#main`);
   const off = await browser.newPage({ javaScriptEnabled: false });
   await serve(off, DIRS);
-  await off.goto(`${ORIGIN}/moved.html?palette=operator`, { waitUntil: "commit" });
+  await off.goto(`${ORIGIN}/specimens/moved.html?palette=operator`, { waitUntil: "commit" });
   const head = await off.evaluate(() => ({ refresh: document.querySelector('meta[http-equiv="refresh"]')?.content, canonical: document.querySelector('link[rel="canonical"]')?.href, link: document.querySelector(".mx-moved a")?.getAttribute("href") }));
-  expect(head).toEqual({ refresh: "0; url=/chrome.html", canonical: "https://example.com/chrome.html", link: "/chrome.html" });
+  expect(head).toEqual({ refresh: "0; url=/specimens/chrome.html", canonical: "https://example.com/chrome.html", link: "/specimens/chrome.html" });
   await off.close();
 });

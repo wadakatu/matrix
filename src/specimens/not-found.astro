@@ -1,0 +1,8 @@
+---
+// The 404 specimen (04, "The specimen set"). It links the fonts as a site would: the import puts
+// fonts.css in the head. Nothing else is fetched.
+import "../../dist/fonts.css";
+import Notice from "../components/notice/Notice.astro";
+import { fixture } from "../fixtures/corpus.ts";
+---
+<Notice kind="not-found" site="matrix fixture" links={fixture.en.notice} />

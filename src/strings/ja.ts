@@ -14,6 +14,10 @@ export default {
   reading: "表示",
   status: { machine: "機械用で表示中", human: "人間用で表示中" },
   moved: { title: "移動しました", text: "このページは移動しました。" },
+  notice: {
+    "not-found": { title: "見つかりません", text: "このアドレスにはページがありません。" },
+    offline: { title: "オフライン", text: "ネットワークに接続されていません。", retry: "もう一度試す" },
+  },
   other: { lang: "en", label: "English" },
   guide: { live: { before: " ", after: " と入力するか、下のコマンドを押してください。" }, way: "普通のページとして読む: ", hide: "この案内を隠す" },
   post: {

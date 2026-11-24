@@ -25,6 +25,7 @@ import Terminal from "../components/terminal/Terminal.astro";
 import { chips, demo, login, sessions } from "../fixtures/terminal.ts";
 import { fixture, signature } from "../fixtures/corpus.ts";
 import { corpus, splitJa } from "../lib/index.ts";
+import { at } from "./base.ts";
 interface Props {
   page: "home" | "projects";
   reading: "human" | "machine";
@@ -32,7 +33,7 @@ interface Props {
 const { page, reading } = Astro.props;
 const f = fixture.en;
 const { person, projects, posts, commits, pairs, phrases } = signature;
-const route = (p: "home" | "projects", v: "human" | "machine") => `/${v === "human" ? "human-" : ""}${p}.html`;
+const route = (p: "home" | "projects", v: "human" | "machine") => at(`/${v === "human" ? "human-" : ""}${p}.html`);
 const to = (p: "home" | "projects") => ({ human: route(p, "human"), machine: route(p, "machine") });
 const here = to(page);
 const base = page === "home" ? [person.heading, person.role] : ["Projects", person.heading];

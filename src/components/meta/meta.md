@@ -2,6 +2,7 @@
 name: Meta
 status: approved
 class: mx-meta
+attributes: []
 tokens: [color.text-muted, font.size.meta, space.1]
 ---
 

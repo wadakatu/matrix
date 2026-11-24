@@ -7,9 +7,9 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { ORIGIN, axe, root, serve } from "./support/serve.mjs";
 
-const DIRS = { "/assets/": "assets", "/": "dist-specimens" };
-const HOME = "/home.html";
-const PROJECTS = "/projects.html";
+const DIRS = { "/assets/": "assets", "/specimens/": "dist-specimens" };
+const HOME = "/specimens/home.html";
+const PROJECTS = "/specimens/projects.html";
 const tokens = JSON.parse(readFileSync(join(root, "dist/tokens.json"), "utf8"))["phosphor-night"];
 const FALLBACK = parseInt(tokens["motion.shell.fallback"]);
 /** The specimens' own start script: the one that gives the element its interpreter. */
@@ -206,7 +206,7 @@ test.describe("4.2 mx-terminal", () => {
     await expect(field(page)).toBeFocused();
     await type(page, "exit");
     await page.waitForFunction(() => document.documentElement.dataset.reading === "human" && !document.querySelector("[aria-busy]"));
-    expect(new URL(page.url()).pathname).toBe("/human-home.html");
+    expect(new URL(page.url()).pathname).toBe("/specimens/human-home.html");
   });
 
   test("the block cursor: on the caret, lit with focus, hollow without, five blinks", async ({ page }) => {
@@ -370,8 +370,8 @@ test.describe("4.3 viewport", () => {
     for (const s of [".mx-prompt", ".mx-chips", ".mx-guide-hide", ".mx-modeline-time"]) await expect(page.locator(s)).toBeHidden();
     await expect(page.locator(".mx-terminal-tty")).toContainText("This is a recorded session. The live prompt needs JavaScript.");
     await expect(page.locator(".mx-terminal-tty")).toContainText("fixture-five");
-    expect(await page.locator(".mx-guide-way").getAttribute("href")).toBe("/human-home.html");
-    expect(await page.locator(".mx-modeline-way").getAttribute("href")).toBe("/human-home.html");
+    expect(await page.locator(".mx-guide-way").getAttribute("href")).toBe("/specimens/human-home.html");
+    expect(await page.locator(".mx-modeline-way").getAttribute("href")).toBe("/specimens/human-home.html");
     await expect(page.locator(".mx-footer")).toBeVisible();
     await ctx.close();
   });

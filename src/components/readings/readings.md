@@ -2,6 +2,7 @@
 name: Readings
 status: approved
 element: mx-readings
+attributes: [data-reading, aria-busy]
 tokens: [font.size.ui, font.leading.terminal, space.1]
 ---
 

@@ -17,8 +17,9 @@ Tools are pinned in `mise.toml` (Node) and `package-lock.json`.
 | `npm ci` | Install |
 | `npm run build` | Tokens, the flattened stylesheet and the fonts, into `dist/` |
 | `npm run check` | Every gate that needs no browser. Needs `npm run build` first |
-| `npm run docs` | Regenerate `docs/tokens.md` after a token change; commit it |
-| `npm run test:specimens` | Astro builds `src/specimens/`, then Playwright: flags, chrome, no-JS, axe. Needs `npm run build` and `npx playwright install chromium` |
+| `npm run docs` | Regenerate `docs/tokens.md`, `docs/components.json`, `llms.txt` and `llms-full.txt`; commit them |
+| `npm run test:specimens` | Astro builds `src/specimens/`, then Playwright in Chromium: the verification matrix on every specimen, the budgets, each phase's tests. Needs `npm run build` and `npx playwright install chromium` |
+| `npm run test:engines` | The verification matrix (`tests/matrix.spec.mjs`) in Playwright's Firefox and WebKit. Needs `npx playwright install firefox webkit` |
 | `npm run storybook` / `npm run build-storybook` | Storybook, development and static (`storybook-static/`). Need `npm run build` |
 | `npm run test:stories` | Every story in Chromium, accessibility at `error`, contracts checked |
 | `npm run test:visual` | Screenshots in the pinned Playwright Docker image; a missing baseline fails |
@@ -37,7 +38,7 @@ Tools are pinned in `mise.toml` (Node) and `package-lock.json`.
 ## Before writing anything
 
 - Read the component's `<name>.md`. Search `docs/components.json` before creating a
-  component (it is generated once components exist, 07).
+  component. After changing a page or a stylesheet, `npm run docs` regenerates it.
 - Use tokens only: `docs/tokens.md` lists every one, with what it is for.
 
 ## Where things go

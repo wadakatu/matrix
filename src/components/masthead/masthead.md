@@ -2,6 +2,7 @@
 name: Masthead
 status: approved
 class: mx-masthead
+attributes: [aria-current]
 tokens: [color.accent, color.text-lead, color.text-muted, font.family.ja, font.family.mono, font.size.title.min, font.size.title.max, font.size.meta, font.weight.medium, font.leading.title, font.leading.ui, size.measure.read, size.measure.read-compact, size.rail, space.0-5, space.1, space.1-5, space.6, space.7]
 ---
 

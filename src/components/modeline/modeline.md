@@ -2,6 +2,7 @@
 name: Status line
 status: approved
 class: mx-modeline
+attributes: []
 tokens: [color.accent, color.on-accent, font.size.meta, font.weight.medium, layer.status, space.1]
 ---
 

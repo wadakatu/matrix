@@ -2,6 +2,7 @@
 name: Chips
 status: approved
 class: mx-chips
+attributes: [data-key]
 tokens: [color.text-muted, color.text-lead, color.accent, color.ground, color.rule, color.control-border, font.size.meta, radius.control, border.width.hair, space.0-5, space.1-5, space.2, space.3]
 ---
 

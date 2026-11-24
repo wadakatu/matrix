@@ -5,6 +5,9 @@ import { join } from "node:path";
 import { CONTEXTS } from "./terrazzo-matrix.mjs";
 import { readSources, renderTokensDoc } from "./tokens-doc.mjs";
 import * as gate from "./gates.mjs";
+import * as agent from "./agent-docs.mjs";
+import { known as knownToMatrix } from "./drift.mjs";
+import * as budget from "./budgets.mjs";
 
 process.chdir(join(import.meta.dirname, ".."));
 if (!existsSync("dist/tokens.json")) {
@@ -68,11 +71,35 @@ run("unknown token", () => gate.unknownTokens(sourceFiles, built));
 
 run("freshness: docs/tokens.md", () => gate.freshness(read("docs/tokens.md"), renderTokensDoc(sources, built), "docs/tokens.md"));
 
+// The agent layer (07, "The freshness checks").
+const generated = agent.generate();
+run("freshness: docs/components.json, llms.txt, llms-full.txt", () =>
+  Object.entries(generated).flatMap(([f, text]) => gate.freshness(existsSync(f) ? read(f) : "", text, f)));
+const ids = Object.keys(built[CONTEXTS[0]]);
+const pages = agent.readPages();
+run("pages: one per directory, seven headings, front matter", () =>
+  [...agent.pageErrors(pages), ...agent.nameErrors([...pages.pages.map((p) => p.path), ...agent.MIRRORED])]);
+run("tokens on a page: listed if read, read if listed", () => agent.tokenErrors(pages.pages, ids));
+const forAgents = Object.fromEntries(["llms.txt", "skills/matrix/SKILL.md", "skills/matrix/references/index.md"].map((f) => [f, read(f)]));
+run("links: llms.txt and the skill point at files in the package", () => agent.linkErrors(forAgents, agent.packed()));
+run("tokens and classes in prose: llms.txt and the skill", () => agent.proseErrors(forAgents, ids, knownToMatrix()));
+run("the skill: name, description, length", () => agent.skillErrors(read("skills/matrix/SKILL.md")));
+run("AGENTS.md: under 100 lines, real commands; CLAUDE.md imports it", () =>
+  agent.agentsErrors({ agents: read("AGENTS.md"), claude: read("CLAUDE.md"), scripts: JSON.parse(read("package.json")).scripts }));
+run("drift: unknown --mx-* property or mx-* class in src/", () => command("node", ["scripts/drift.mjs", "src"]));
+
 run("package contents: npm pack --dry-run", () => {
   const [pack] = JSON.parse(execFileSync("npm", ["pack", "--dry-run", "--json", "--ignore-scripts"], { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }));
   return gate.packageContents(pack.files.map((f) => f.path));
 });
 
+// The two size budgets (05, task 6.3): ceilings and recorded figures in docs/verification/budgets.md.
+const ceilings = budget.budgets();
+run("budget: stylesheet, gzip", () => budget.sizeGate("dist/matrix.css", budget.stylesheetSize(), ceilings.stylesheet));
+run("budget: terminal element, gzip", () => budget.sizeGate("mx-terminal.js and its relative imports", budget.terminalSize().bytes, ceilings.terminal));
+
+run("astro barrel: every component is exported from src/astro.ts", () =>
+  gate.astroBarrel(JSON.parse(read("docs/components.json")), read("src/astro.ts"), existsSync));
 run("version consistency", () =>
   gate.versionConsistency({
     pkg: JSON.parse(read("package.json")),
@@ -82,6 +109,7 @@ run("version consistency", () =>
   }));
 
 run("gate tests: node --test", () => command("node", ["--test", "tests/gates.test.mjs"]));
+run("agent layer tests: node --test (task 6.4)", () => command("node", ["--test", "tests/agent-docs.test.mjs"]));
 run("lib tests: node --test (task 3.1)", () => command("node", ["--test", "tests/lib.test.mjs"]));
 run("terminal tests: node --test (task 4.1)", () => command("node", ["--test", "tests/terminal.test.mjs"]));
 

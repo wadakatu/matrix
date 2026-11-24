@@ -2,6 +2,7 @@
 name: Header
 status: approved
 class: mx-header
+attributes: []
 tokens: [color.ground, color.rule, font.size.ui, border.width.hair, space.2, space.3, space.7]
 ---
 

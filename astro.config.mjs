@@ -2,6 +2,7 @@
 // config Storybook's Astro framework applies. Specimens are dev only and not in the package.
 import { defineConfig } from "astro/config";
 import { readdirSync } from "node:fs";
+import { BASE } from "./src/specimens/base.ts";
 
 const specimens = {
   name: "matrix-specimens",
@@ -20,6 +21,7 @@ const specimens = {
 
 export default defineConfig({
   outDir: "dist-specimens",
+  base: BASE,
   build: { format: "file" },
   integrations: [specimens],
   devToolbar: { enabled: false },

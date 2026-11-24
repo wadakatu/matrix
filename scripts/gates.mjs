@@ -173,16 +173,23 @@ const ALLOWED = [
   /^dist\/fonts\/[\w.-]+\.woff2$/,
   /^dist\/fonts\/[\w-]+\.LICENSE\.txt$/,
   /^tokens\/(matrix\.resolver|base\.tokens|context\/[\w-]+\.tokens)\.json$/,
-  /^src\/css\/[\w-]+\.css$/,
+  /^src\/css\/([\w-]+\.css|foundations\.md)$/,
   /^dist\/(elements|head\/head|lib\/[\w-]+|strings\/[\w-]+|components\/[\w-]+\/mx-[\w-]+|effects\/[\w-]+\/(mx-)?[\w-]+)\.(js|d\.ts)$/,
   /^src\/components\/[\w-]+\/([\w-]+\.(css|md)|[A-Z]\w*\.astro|mx-[\w-]+\.ts)$/,
   /^src\/effects\/[\w-]+\/([\w-]+\.(css|md|ts)|[A-Z]\w*\.astro)$/,
-  /^src\/head\/(head\.ts|Head\.astro)$/,
+  /^src\/head\/(head\.(ts|md)|Head\.astro)$/,
   /^src\/strings\/[\w-]+\.ts$/,
   /^src\/lib\/[\w-]+\.ts$/,
   /^src\/astro\.ts$/,
+  /^stylelint\/index\.mjs$/,
+  // The agent layer (07): the index, llms.txt, the skill and the drift check a consumer runs.
+  /^docs\/components\.json$/,
+  /^llms(-full)?\.txt$/,
+  /^skills\/matrix\/(SKILL|references\/[\w-]+)\.md$/,
+  /^scripts\/drift\.mjs$/,
 ];
-const REQUIRED = ["dist/elements.js", "dist/head/head.js", "dist/lib/index.js", "dist/strings/index.js", "src/astro.ts", "dist/tokens.css", "dist/tokens.json", "dist/tokens.d.ts", "dist/matrix.css", "dist/fonts.css", "tokens/matrix.resolver.json", "LICENSE",
+const REQUIRED = ["dist/elements.js", "dist/head/head.js", "dist/lib/index.js", "dist/strings/index.js", "src/astro.ts", "dist/tokens.css", "dist/tokens.json", "dist/tokens.d.ts", "dist/matrix.css", "dist/fonts.css", "tokens/matrix.resolver.json", "LICENSE", "stylelint/index.mjs",
+  "docs/components.json", "llms.txt", "llms-full.txt", "skills/matrix/SKILL.md", "skills/matrix/references/index.md", "scripts/drift.mjs",
   // OFL-1.1: each font's copyright notice and licence ships with its files.
   ...["dotgothic16", "ibm-plex-mono", "m-plus-1-code"].map((f) => `dist/fonts/${f}.LICENSE.txt`)];
 
@@ -196,6 +203,16 @@ export function packageContents(paths) {
   }
   for (const r of REQUIRED) if (!paths.includes(r)) errors.push(`${r}: missing from the package`);
   return errors;
+}
+
+// ---------- the Astro barrel ----------
+
+/** Every indexed component with a `<dir>/<Name>.astro` is exported from `@wadakatu/matrix/astro` (src/astro.ts). */
+export function astroBarrel(components, barrel, exists) {
+  return components
+    .map((c) => `${c.doc.replace(/\/[^/]+$/, "")}/${c.name}.astro`)
+    .filter((f) => exists(f) && !barrel.includes(`"./${f.replace(/^src\//, "")}"`))
+    .map((f) => `${f}: not exported from src/astro.ts`);
 }
 
 // ---------- version consistency ----------

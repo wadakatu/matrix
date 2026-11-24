@@ -5,7 +5,8 @@
 // follows `visualViewport`. If it never goes live, the head script gives the recorded session its
 // scrolling page back after `motion.shell.fallback`; going live later takes the viewport back.
 // Ported from the prototype's `_term.ts`.
-import { render, renderEcho, renderLogin, type Interpreter, type Item, type Result, type Takeover } from "../../lib/index.ts";
+// From the module itself, not the lib barrel: the element does not ship the build-time helpers or the demo (05, the terminal budget).
+import { render, renderEcho, renderLogin, type Interpreter, type Item, type Result, type Takeover } from "../../lib/terminal.ts";
 import { strings, type Lang } from "../../strings/index.ts";
 
 const d = document.documentElement;

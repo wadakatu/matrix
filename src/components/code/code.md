@@ -3,6 +3,7 @@ name: Code block
 status: approved
 class: mx-code
 element: mx-copy
+attributes: [data-diff]
 tokens: [color.accent, color.ground, color.on-accent, color.rule, color.text, color.text-lead, color.text-muted, font.family.mono, font.size.ui, font.size.label, font.leading.code, font.weight.medium, font.weight.regular, border.width.hair, space.0-5, space.3, space.4, space.10]
 ---
 
