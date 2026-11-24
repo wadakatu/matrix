@@ -31,5 +31,10 @@ Unreleased. The foundation: an empty but real package.
   cursor, effects for the site's interpreter; Prompt, Guide, Chips, Status line, Takeover,
   Fetch card, Login card, Swatches, Run. The interpreter contract, the one renderer and a demo
   interpreter in `@wadakatu/matrix/lib`.
+- Reading: Masthead and the article frame, Contents (`<mx-toc>`), Prose, Reference link, Code
+  block with Copy (`<mx-copy>`), Share (`<mx-share>`), Post foot and Index; Shiki's
+  `css-variables` theme mapped to the roles. Drafts, awaiting approval: code title, diff, callout,
+  details, table, task list, footnotes. A print layer for articles: no rain, no chrome, the day
+  ink on white, link addresses after absolute links.
 - `npm run check`: token validity, contrast, golden values, no raw values, unknown tokens,
   freshness, the Baseline ledger, package contents and version consistency.
