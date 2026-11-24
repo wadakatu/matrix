@@ -1,0 +1,32 @@
+---
+/** The Blog index specimen (04): the masthead's title and a meta line, then the fixture's posts, newest first. */
+import "../../dist/fonts.css";
+import "../../dist/matrix.css";
+import Layout from "../components/layout/Layout.astro";
+import Rain from "../effects/rain/Rain.astro";
+import Switch from "../components/switch/Switch.astro";
+import Masthead from "../components/masthead/Masthead.astro";
+import Index from "../components/index/Index.astro";
+import { articles, order } from "../fixtures/articles.ts";
+import { fixture, signature } from "../fixtures/corpus.ts";
+const f = fixture.en;
+const human = "/human-home.html";
+const nav = [
+  { label: "Home", href: human, to: { human, machine: "/home.html" } },
+  { label: "Projects", href: "/human-projects.html", to: { human: "/human-projects.html", machine: "/projects.html" } },
+  { label: "Blog", href: "/blog.html", current: "page" as const },
+  { label: "About", href: "/about/" },
+];
+const posts = order.map((k) => ({ date: articles[k].date, title: articles[k].title, href: `/article-${k}.html` }));
+---
+<Layout title="Blog | fixture_" lang="en" mark={{ ...f.mark, href: human, to: { human, machine: "/home.html" } }} nav={nav} footer={f.footer} corpus={signature.phrases}>
+  <Rain slot="rain" variant="band" phrases={signature.phrases} />
+  <Switch slot="switch" to={{ human: "/blog.html", machine: `/home.html?${new URLSearchParams({ run: "ls -l ~/posts" })}` }} current="human" />
+  <div class="mx-post">
+    <Masthead title="Blog"><p class="mx-meta">{posts.length} fixture posts, newest first.</p></Masthead>
+    <Index posts={posts} />
+  </div>
+  <script>
+    import "../elements.ts";
+  </script>
+</Layout>
