@@ -1,0 +1,29 @@
+---
+/**
+ * A fence as the site's Markdown step would write it (04, "Code block: the wrapper"): Astro's Shiki
+ * highlighting with the `css-variables` theme and wrapping, inside the reference wrapper. For a diff,
+ * each line's own first character marks it `add` or `del`.
+ */
+import { Code } from "astro:components";
+import CodeBlock from "../components/code/CodeBlock.astro";
+import type { Lang } from "../strings/index.ts";
+interface Props {
+  code: string;
+  /** The fence's language; none gives `plaintext`. */
+  language?: string;
+  title?: string;
+  diff?: boolean;
+  lang?: Lang;
+}
+const { code, language = "plaintext", title, diff, lang } = Astro.props;
+const lines = code.split("\n");
+const signs = {
+  name: "fixture-diff",
+  line(node: { properties: Record<string, unknown> }, n: number) {
+    const sign = lines[n - 1]?.[0];
+    if (sign === "+") node.properties["data-diff"] = "add";
+    else if (sign === "-") node.properties["data-diff"] = "del";
+  },
+};
+---
+<CodeBlock title={title} diff={diff} lang={lang}><Code code={code} lang={language as "plaintext"} theme="css-variables" wrap transformers={diff ? [signs] : []} /></CodeBlock>

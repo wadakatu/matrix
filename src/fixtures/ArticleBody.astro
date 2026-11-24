@@ -1,0 +1,62 @@
+---
+/**
+ * The fixture's article body (articles.ts) in the markup the site's Markdown step writes (04): GFM's,
+ * with the contracts of the Code block, the Reference link and the drafts. `inline` renders a run.
+ */
+import CodeFixture from "./CodeFixture.astro";
+import Ref from "../components/ref/Ref.astro";
+import Callout from "../components/callout/Callout.astro";
+import Details from "../components/details/Details.astro";
+import Table from "../components/prose/Table.astro";
+import { strings, type Lang } from "../strings/index.ts";
+import type { Block, Inline } from "./articles.ts";
+interface Props {
+  blocks?: Block[];
+  inline?: Inline[];
+  lang?: Lang;
+}
+const { blocks = [], inline, lang = "ja" } = Astro.props;
+const Self = Astro.self;
+const t = strings[lang].footnotes;
+---
+{inline ? (
+  inline.map((r) =>
+    typeof r === "string" ? r
+    : r[0] === "code" ? <code>{r[1]}</code>
+    : r[0] === "strong" ? <strong>{r[1]}</strong>
+    : r[0] === "a" ? <a href={r[2]}>{r[1]}</a>
+    : r[0] === "ref" ? <Ref href={r[1]} />
+    : r[0] === "img" ? <img src={r[1].src} alt={r[1].alt} width={r[1].width} height={r[1].height} />
+    : r[0] === "fn" ? <sup><a href={`#user-content-fn-${r[1]}`} id={`user-content-fnref-${r[1]}`} data-footnote-ref aria-describedby="footnote-label">{r[1]}</a></sup>
+    : r[0] === "ul" ? <ul>{r[1].map((li) => <li><Self inline={li} lang={lang} /></li>)}</ul>
+    : <ol>{r[1].map((li) => <li><Self inline={li} lang={lang} /></li>)}</ol>,
+  )
+) : (
+  blocks.map((b) =>
+    "h" in b ? (b.h === 2 ? <h2 id={b.id}>{b.text}</h2> : b.h === 3 ? <h3 id={b.id}>{b.text}</h3> : <h4 id={b.id}>{b.text}</h4>)
+    : "p" in b ? <p><Self inline={b.p} lang={lang} /></p>
+    : "ul" in b ? <ul>{b.ul.map((li) => <li><Self inline={li} lang={lang} /></li>)}</ul>
+    : "ol" in b ? <ol>{b.ol.map((li) => <li><Self inline={li} lang={lang} /></li>)}</ol>
+    : "code" in b ? <CodeFixture code={b.code} language={b.language} title={b.title} diff={b.diff} lang={lang} />
+    : "hr" in b ? <hr />
+    : "img" in b ? <img src={b.img.src} alt={b.img.alt} width={b.img.width} height={b.img.height} />
+    : "quote" in b ? <blockquote><Self blocks={b.quote} lang={lang} /></blockquote>
+    : "callout" in b ? <Callout variant={b.alert ? "alert" : undefined} lang={lang}><Self blocks={b.callout} lang={lang} /></Callout>
+    : "details" in b ? <Details summary={b.details} open={b.open}><Self blocks={b.body} lang={lang} /></Details>
+    : "table" in b ? (
+      <Table lang={lang}>
+        <table>
+          <thead><tr>{b.table.head.map((h, i) => <th align={b.table.align?.[i] ?? undefined}>{h}</th>)}</tr></thead>
+          <tbody>{b.table.rows.map((row) => <tr>{row.map((c, i) => <td align={b.table.align?.[i] ?? undefined}>{c}</td>)}</tr>)}</tbody>
+        </table>
+      </Table>
+    )
+    : "tasks" in b ? <ul class="contains-task-list">{b.tasks.map(([done, text]) => <li class="task-list-item"><label><input type="checkbox" disabled checked={done} /> {text}</label></li>)}</ul>
+    : (
+      <section data-footnotes class="footnotes">
+        <h2 class="sr-only" id="footnote-label">{t.label}</h2>
+        <ol>{b.footnotes.map((f, i) => <li id={`user-content-fn-${i + 1}`}><p><Self inline={f} lang={lang} /> <a href={`#user-content-fnref-${i + 1}`} data-footnote-backref="" aria-label={`${t.back} ${i + 1}`} class="data-footnote-backref">↩</a></p></li>)}</ol>
+      </section>
+    ),
+  )
+)}

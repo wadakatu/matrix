@@ -1,0 +1,19 @@
+---
+/** Code blocks from the fixture, for the Code block's stories: one of each kind, or all of them. */
+import CodeFixture from "./CodeFixture.astro";
+import type { Lang } from "../strings/index.ts";
+interface Props {
+  kind?: "default" | "titled" | "diff" | "titled-diff" | "plaintext" | "all";
+  lang?: Lang;
+}
+const { kind = "default", lang = "en" } = Astro.props;
+const KINDS = {
+  default: { code: "# 見本の道具を入れる\nfixture-pkg install fx\nfixture-tool stations add fixture-station -- fixturex --from git+https://example.com/fixture/station fixture-station start --ctx fx", language: "bash" },
+  titled: { code: "<?php\n\nreturn [\n    'station' => 'fixture-station',\n];", language: "php", title: "config/fixture.php" },
+  diff: { code: " const station = 'fixture';\n-const readings = 1;\n+const readings = 2;\n export { station, readings };", language: "js", diff: true },
+  "titled-diff": { code: " fixture:\n-  rain: falling\n+  rain: held\n   theme: night", language: "yaml", title: "src/fixtures/fixture-station.yml", diff: true },
+  plaintext: { code: "見本の局で、見本の場所を最初から読み込んで" },
+};
+const list = kind === "all" ? Object.values(KINDS) : [KINDS[kind]];
+---
+<div class="mx-frame fixture-stack">{list.map((k) => <CodeFixture {...k} lang={lang} />)}</div>

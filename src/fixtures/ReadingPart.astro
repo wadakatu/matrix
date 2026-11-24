@@ -1,0 +1,52 @@
+---
+/**
+ * One Reading component from the Article fixture (articles.ts), for its stories: as on the Article
+ * specimens, inside the frame. Article text is Japanese whatever the chrome's language, so it carries
+ * `lang="ja"` on an English page (L6).
+ */
+import Masthead from "../components/masthead/Masthead.astro";
+import Toc from "../components/toc/Toc.astro";
+import Prose from "../components/prose/Prose.astro";
+import Ref from "../components/ref/Ref.astro";
+import Share from "../components/share/Share.astro";
+import PostFoot from "../components/postfoot/PostFoot.astro";
+import Index from "../components/index/Index.astro";
+import ArticleBody from "./ArticleBody.astro";
+import { articles, order, type Block } from "./articles.ts";
+import type { Lang } from "../strings/index.ts";
+interface Props {
+  part: "masthead" | "index-head" | "toc" | "prose" | "ref" | "share" | "postfoot" | "index";
+  /** For `prose`: which blocks of which article (default: Article A's opening). */
+  blocks?: Block[];
+  /** Post foot: which neighbours. */
+  pager?: "newer" | "older" | "both";
+  lang?: Lang;
+}
+const { part, blocks, pager = "newer", lang = "en" } = Astro.props;
+const a = articles.a;
+const file = `${a.slug}.md`;
+const headings = a.body.flatMap((b) => ("h" in b ? [{ depth: b.h, slug: b.id, text: b.text }] : []));
+const ja = lang === "ja" ? undefined : "ja";
+const near = (k: "b" | "c") => ({ href: `/blog/${articles[k].slug}/`, title: articles[k].title });
+---
+<div class="mx-frame">
+  {part === "masthead" && (
+    <article class="mx-post">
+      <Masthead title={a.title} lang={lang} path={{ home: "/human/", index: "/blog/", file }} date={a.date} category={a.category} minutes={a.minutes} tags={a.tags} />
+      <div class="mx-post-grid"></div>
+    </article>
+  )}
+  {part === "index-head" && (
+    <div class="mx-post"><Masthead title="Blog" lang={lang}><p class="mx-meta">3 fixture posts, newest first.</p></Masthead></div>
+  )}
+  {part === "toc" && (
+    <div class="mx-post"><div class="mx-post-grid"><Toc headings={headings} lang={lang} /></div></div>
+  )}
+  {part === "prose" && <div lang={ja}><Prose><ArticleBody blocks={blocks ?? a.body.slice(0, 13)} lang={lang} /></Prose></div>}
+  {part === "ref" && <div class="mx-prose mx-panel"><p><Ref href="https://example.com/fixture/station/README.md#using-fixturex" /></p></div>}
+  {part === "share" && <Share url={`https://example.com/blog/${a.slug}/`} title={a.title} lang={lang} />}
+  {part === "postfoot" && (
+    <PostFoot url={`https://example.com/blog/${a.slug}/`} title={a.title} file={file} newer={pager !== "older" ? near("b") : undefined} older={pager !== "newer" ? near("c") : undefined} ways={{ all: "/blog/", human: "/human/", machine: `/?run=${encodeURIComponent(`cat ~/posts/${file}`)}` }} lang={lang} />
+  )}
+  {part === "index" && <div class="mx-post"><Index posts={order.map((k) => ({ date: articles[k].date, title: articles[k].title, href: `/blog/${articles[k].slug}/` }))} lang={lang} /></div>}
+</div>
