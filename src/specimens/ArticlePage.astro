@@ -1,0 +1,57 @@
+---
+/**
+ * The Article specimens (04, "The Article specimens"; Phase 5 exit): an article page as the site
+ * composes it, from the fixture. One reading: the switch shows 人間用 as current, and its 機械用 side is a
+ * link into the shell at the article's file. Rain as a band; no boot and no curtain.
+ */
+import "../../dist/fonts.css";
+import "../../dist/matrix.css";
+import Layout from "../components/layout/Layout.astro";
+import Switch from "../components/switch/Switch.astro";
+import Rain from "../effects/rain/Rain.astro";
+import Masthead from "../components/masthead/Masthead.astro";
+import Toc from "../components/toc/Toc.astro";
+import Prose from "../components/prose/Prose.astro";
+import PostFoot from "../components/postfoot/PostFoot.astro";
+import ArticleBody from "../fixtures/ArticleBody.astro";
+import { articles, type ArticleKey } from "../fixtures/articles.ts";
+import { fixture, signature } from "../fixtures/corpus.ts";
+interface Props {
+  article: ArticleKey;
+}
+const { article } = Astro.props;
+const a = articles[article];
+const f = fixture.ja;
+const route = (k: ArticleKey) => `/article-${k}.html`;
+const file = `${a.slug}.md`;
+const here = route(article);
+const shell = `/home.html?${new URLSearchParams({ run: `cat ~/posts/${file}` })}`;
+const human = "/human-home.html";
+const index = "/blog.html";
+// A and B are each other's neighbours, as the two prototyped posts are; C has none (04).
+const neighbour = (k: ArticleKey) => ({ href: route(k), title: articles[k].title });
+const pager = { a: { newer: neighbour("b") }, b: { older: neighbour("a") }, c: {} }[article];
+const nav = [
+  { label: "ホーム", href: human, to: { human, machine: "/home.html" } },
+  { label: "プロジェクト", href: "/human-projects.html", to: { human: "/human-projects.html", machine: "/projects.html" } },
+  { label: "ブログ", href: index, current: "true" as const },
+  { label: "概要", href: "/about/" },
+];
+const mark = { ...f.mark, href: human, to: { human, machine: "/home.html" } };
+const headings = a.body.flatMap((b) => ("h" in b ? [{ depth: b.h, slug: b.id, text: b.text }] : []));
+---
+<Layout title={`${a.title} | fixture_`} lang="ja" mark={mark} nav={nav} footer={f.footer} corpus={signature.phrases}>
+  <Rain slot="rain" variant="band" phrases={[...signature.phrases, a.title]} />
+  <Switch slot="switch" to={{ human: here, machine: shell }} current="human" lang="ja" />
+  <article class="mx-post">
+    <Masthead title={a.title} lang="ja" path={{ home: human, index, file }} date={a.date} category={a.category} minutes={a.minutes} tags={a.tags} />
+    <div class="mx-post-grid">
+      <Toc headings={headings} lang="ja" />
+      <Prose><ArticleBody blocks={a.body} lang="ja" /></Prose>
+    </div>
+    <PostFoot url={`https://example.com/blog/${a.slug}/`} title={a.title} file={file} {...pager} ways={{ all: index, human, machine: shell }} lang="ja" />
+  </article>
+  <script>
+    import "../elements.ts";
+  </script>
+</Layout>
