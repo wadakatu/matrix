@@ -430,6 +430,24 @@ test.describe("5.4 print", () => {
     }
   }
 
+  test("at desk width the body is not left in the Contents rail: one column, plain flow at the measure", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await open(page, ARTICLES.a);
+    await page.emulateMedia({ media: "print" });
+    const g = await page.evaluate(() => {
+      const box = (sel) => document.querySelector(sel).getBoundingClientRect();
+      const [head, prose] = [box(".mx-masthead"), box(".mx-prose")];
+      return {
+        columns: getComputedStyle(document.querySelector(".mx-post-grid")).gridTemplateColumns.split(" ").length,
+        left: prose.left - head.left,
+        widths: [head.width, prose.width],
+        padding: getComputedStyle(document.querySelector(".mx-prose")).paddingLeft,
+      };
+    });
+    const measure = parseFloat(tokens["phosphor-night"]["size.measure.read"]);
+    expect(g).toEqual({ columns: 1, left: 0, widths: [measure, measure], padding: "0px" });
+  });
+
   test("addresses: after a link to another site; not after a Reference link, a link to this site, or one to this page", async ({ page }) => {
     await open(page, ARTICLES.c);
     await page.emulateMedia({ media: "print" });

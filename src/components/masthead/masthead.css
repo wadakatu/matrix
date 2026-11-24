@@ -5,7 +5,7 @@
   .mx-post .mx-panel { margin-top: 0; }
   .mx-post-grid { display: grid; gap: var(--mx-space-6); align-items: start; }
   .mx-post-grid > * { min-width: 0; }
-  @media (width >= 1100px) {
+  @media screen and (width >= 1100px) {
     .mx-post-grid { grid-template-columns: var(--mx-size-rail) minmax(0, 1fr); }
   }
 
@@ -56,7 +56,7 @@
     .mx-masthead .mx-strand:nth-child(4) { display: block; }
   }
   /* Desk width: the masthead spans the contents and the body. */
-  @media (width >= 1100px) {
+  @media screen and (width >= 1100px) {
     .mx-post:has(> .mx-post-grid) > :is(.mx-masthead, .mx-postfoot) {
       max-width: calc(var(--mx-size-rail) + var(--mx-space-6) + var(--mx-measure) + 2 * var(--mx-inset));
     }
@@ -64,7 +64,8 @@
   /* On paper the masthead stays whole, its path line included; its strip is rain (05, "Print"). */
   @media print {
     .mx-masthead > .mx-stream-fall { display: none; }
-    /* The article's panels are plain flow at the measure on paper (Panel's print rule, over their own padding). */
-    .mx-post .mx-panel { padding-inline: 0; }
+    /* The article's panels are plain flow at the measure on paper (Panel's print rule, over their own
+       padding); the desk-width columns are screen only, so Contents leaves no rail behind. */
+    .mx-post .mx-panel { max-width: var(--mx-measure); padding-inline: 0; }
   }
 }
