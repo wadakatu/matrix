@@ -98,6 +98,8 @@ const ceilings = budget.budgets();
 run("budget: stylesheet, gzip", () => budget.sizeGate("dist/matrix.css", budget.stylesheetSize(), ceilings.stylesheet));
 run("budget: terminal element, gzip", () => budget.sizeGate("mx-terminal.js and its relative imports", budget.terminalSize().bytes, ceilings.terminal));
 
+run("astro barrel: every component is exported from src/astro.ts", () =>
+  gate.astroBarrel(JSON.parse(read("docs/components.json")), read("src/astro.ts"), existsSync));
 run("version consistency", () =>
   gate.versionConsistency({
     pkg: JSON.parse(read("package.json")),

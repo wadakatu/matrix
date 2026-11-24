@@ -151,6 +151,15 @@ test("package contents: the logo, a stray file, or a missing output fails", () =
   assert.deepEqual(gate.packageContents(ok.filter((p) => p !== "dist/fonts/ibm-plex-mono.LICENSE.txt")), ["dist/fonts/ibm-plex-mono.LICENSE.txt: missing from the package"]);
 });
 
+test("astro barrel: the shipped barrel exports Notice, and a component left out of it fails", () => {
+  const components = JSON.parse(readFileSync("docs/components.json", "utf8"));
+  const barrel = readFileSync("src/astro.ts", "utf8");
+  const exists = (f) => f === "src/components/notice/Notice.astro" || f === "src/components/panel/Panel.astro";
+  assert.deepEqual(gate.astroBarrel(components, barrel, exists), []);
+  const without = barrel.replace(/^export \{ default as Notice \}.*\n/m, "");
+  assert.deepEqual(gate.astroBarrel(components, without, exists), ["src/components/notice/Notice.astro: not exported from src/astro.ts"]);
+});
+
 test("version consistency: package, lockfile, changelog and tag must agree", () => {
   const pkg = { version: "1.0.0-alpha.0" };
   const lock = { version: "1.0.0-alpha.0", packages: { "": { version: "1.0.0-alpha.0" } } };

@@ -16,6 +16,7 @@ export { default as Log } from "./components/log/Log.astro";
 export { default as Meta } from "./components/meta/Meta.astro";
 export { default as Status } from "./components/status/Status.astro";
 export { default as Moved } from "./components/moved/Moved.astro";
+export { default as Notice } from "./components/notice/Notice.astro";
 export { default as LangLink } from "./components/lang/LangLink.astro";
 export { default as Name } from "./components/name/Name.astro";
 export { default as Stream } from "./components/stream/Stream.astro";

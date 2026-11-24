@@ -205,6 +205,16 @@ export function packageContents(paths) {
   return errors;
 }
 
+// ---------- the Astro barrel ----------
+
+/** Every indexed component with a `<dir>/<Name>.astro` is exported from `@wadakatu/matrix/astro` (src/astro.ts). */
+export function astroBarrel(components, barrel, exists) {
+  return components
+    .map((c) => `${c.doc.replace(/\/[^/]+$/, "")}/${c.name}.astro`)
+    .filter((f) => exists(f) && !barrel.includes(`"./${f.replace(/^src\//, "")}"`))
+    .map((f) => `${f}: not exported from src/astro.ts`);
+}
+
 // ---------- version consistency ----------
 
 /** package.json, the lockfile, the changelog's latest entry and (on a tag) the tag agree. */
