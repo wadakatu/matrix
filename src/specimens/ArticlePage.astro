@@ -16,28 +16,30 @@ import PostFoot from "../components/postfoot/PostFoot.astro";
 import ArticleBody from "../fixtures/ArticleBody.astro";
 import { articles, type ArticleKey } from "../fixtures/articles.ts";
 import { fixture, signature } from "../fixtures/corpus.ts";
+import { at } from "./base.ts";
 interface Props {
   article: ArticleKey;
 }
 const { article } = Astro.props;
 const a = articles[article];
 const f = fixture.ja;
-const route = (k: ArticleKey) => `/article-${k}.html`;
+const route = (k: ArticleKey) => at(`/article-${k}.html`);
 const file = `${a.slug}.md`;
 const here = route(article);
-const shell = `/home.html?${new URLSearchParams({ run: `cat ~/posts/${file}` })}`;
-const human = "/human-home.html";
-const index = "/blog.html";
+const shell = `${at("/home.html")}?${new URLSearchParams({ run: `cat ~/posts/${file}` })}`;
+const human = at("/human-home.html");
+const machine = at("/home.html");
+const index = at("/blog.html");
 // A and B are each other's neighbours, as the two prototyped posts are; C has none (04).
 const neighbour = (k: ArticleKey) => ({ href: route(k), title: articles[k].title });
 const pager = { a: { newer: neighbour("b") }, b: { older: neighbour("a") }, c: {} }[article];
 const nav = [
-  { label: "ホーム", href: human, to: { human, machine: "/home.html" } },
-  { label: "プロジェクト", href: "/human-projects.html", to: { human: "/human-projects.html", machine: "/projects.html" } },
+  { label: "ホーム", href: human, to: { human, machine } },
+  { label: "プロジェクト", href: at("/human-projects.html"), to: { human: at("/human-projects.html"), machine: at("/projects.html") } },
   { label: "ブログ", href: index, current: "true" as const },
   { label: "概要", href: "/about/" },
 ];
-const mark = { ...f.mark, href: human, to: { human, machine: "/home.html" } };
+const mark = { ...f.mark, href: human, to: { human, machine } };
 const headings = a.body.flatMap((b) => ("h" in b ? [{ depth: b.h, slug: b.id, text: b.text }] : []));
 ---
 <Layout title={`${a.title} | fixture_`} lang="ja" mark={mark} nav={nav} footer={f.footer} corpus={signature.phrases}>

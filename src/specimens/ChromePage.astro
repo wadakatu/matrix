@@ -10,6 +10,7 @@ import InlineList from "../components/inline-list/InlineList.astro";
 import Log from "../components/log/Log.astro";
 import Meta from "../components/meta/Meta.astro";
 import { fixture } from "../fixtures/corpus.ts";
+import { at } from "./base.ts";
 interface Props {
   lang: "en" | "ja";
 }
@@ -17,7 +18,7 @@ const { lang } = Astro.props;
 const f = fixture[lang];
 const title = lang === "en" ? "Chrome specimen | matrix fixture" : "クロームの見本 | matrix fixture";
 ---
-<Layout title={title} lang={lang} reading="human" mark={f.mark} nav={f.nav} footer={f.footer} alternate={lang === "en" ? "/chrome.ja.html" : "/chrome.html"}>
+<Layout title={title} lang={lang} reading="human" mark={f.mark} nav={f.nav} footer={f.footer} alternate={at(lang === "en" ? "/chrome.ja.html" : "/chrome.html")}>
   <h1>{lang === "en" ? "Chrome specimen" : "クロームの見本"}</h1>
   <Panel title={f.panel.title} id="fixture-panel">
     <Lede>{f.lede}</Lede>

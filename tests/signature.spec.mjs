@@ -5,10 +5,10 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { ORIGIN, axe, root, serve } from "./support/serve.mjs";
 
-const DIRS = { "/assets/": "assets", "/": "dist-specimens" };
+const DIRS = { "/assets/": "assets", "/specimens/": "dist-specimens" };
 const tokens = JSON.parse(readFileSync(join(root, "dist/tokens.json"), "utf8"))["phosphor-night"];
-const ELEMENTS = (url) => url.pathname.startsWith("/_astro/") && url.pathname.endsWith(".js");
-const PAGES = { human: { home: "/human-home.html", projects: "/human-projects.html" }, machine: { home: "/home.html", projects: "/projects.html" } };
+const ELEMENTS = (url) => url.pathname.startsWith("/specimens/_astro/") && url.pathname.endsWith(".js");
+const PAGES = { human: { home: "/specimens/human-home.html", projects: "/specimens/human-projects.html" }, machine: { home: "/specimens/home.html", projects: "/specimens/projects.html" } };
 const TITLES = {
   home: { machine: "fixture_ | Fixture developer", human: "fixture_, human reading | Fixture developer" },
   projects: { machine: "Projects | fixture_", human: "Projects, human reading | fixture_" },
@@ -348,11 +348,11 @@ test.describe("3.5 switch", () => {
     const page = await ctx.newPage();
     await open(page, PAGES.human.home);
     expect(await page.locator(".mx-header a[data-to]").evaluateAll((as) => as.map((a) => [a.getAttribute("href"), a.getAttribute("aria-current")]))).toEqual([
-      ["/human-home.html", "true"],
-      ["/home.html", null],
+      ["/specimens/human-home.html", "true"],
+      ["/specimens/home.html", null],
     ]);
     await page.locator('.mx-header a[data-to="machine"]').click();
-    await page.waitForURL(`${ORIGIN}/home.html`);
+    await page.waitForURL(`${ORIGIN}/specimens/home.html`);
     expect(await page.evaluate(() => document.documentElement.dataset.reading)).toBe("machine");
     await ctx.close();
   });
@@ -416,8 +416,8 @@ test.describe("3.6 readings", () => {
     await ready(page);
     await press(page);
     await page.waitForTimeout(1900);
-    expect(new URL(page.url()).pathname + new URL(page.url()).search).toBe("/home.html?palette=operator");
-    expect(await page.locator(".mx-nav a").first().getAttribute("href")).toBe(`${ORIGIN}/home.html?palette=operator`);
+    expect(new URL(page.url()).pathname + new URL(page.url()).search).toBe("/specimens/home.html?palette=operator");
+    expect(await page.locator(".mx-nav a").first().getAttribute("href")).toBe(`${ORIGIN}/specimens/home.html?palette=operator`);
     await open(page, `${PAGES.human.home}?motion=0`);
     await ready(page);
     await press(page);
@@ -429,9 +429,9 @@ test.describe("3.6 readings", () => {
     await ready(page);
     await press(page);
     expect(await page.evaluate(() => [document.querySelector(".mx-mark").getAttribute("href"), ...[...document.querySelectorAll(".mx-nav a")].slice(0, 2).map((a) => a.getAttribute("href"))])).toEqual([
-      `${ORIGIN}/home.html?motion=0`,
-      `${ORIGIN}/home.html?motion=0`,
-      `${ORIGIN}/projects.html?motion=0`,
+      `${ORIGIN}/specimens/home.html?motion=0`,
+      `${ORIGIN}/specimens/home.html?motion=0`,
+      `${ORIGIN}/specimens/projects.html?motion=0`,
     ]);
   });
 

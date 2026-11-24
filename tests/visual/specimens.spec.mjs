@@ -11,11 +11,11 @@ for (const [page, still] of Object.entries(PAGES)) {
   for (const [context, query] of Object.entries(CONTEXTS)) {
     for (const width of [1440, 390]) {
       test(`${page} ${context} at ${width}`, async ({ page: p }) => {
-        const requests = await serve(p, { "/assets/": "assets", "/": "dist-specimens" });
+        const requests = await serve(p, { "/assets/": "assets", "/specimens/": "dist-specimens" });
         await p.addInitScript(() => sessionStorage.setItem("mx-boot", "1"));
         await p.setViewportSize({ width, height: width === 390 ? 844 : 900 });
         const q = [still, query].filter(Boolean).join("&");
-        await p.goto(`${ORIGIN}/${page}.html${q && `?${q}`}`);
+        await p.goto(`${ORIGIN}/specimens/${page}.html${q && `?${q}`}`);
         await p.evaluate(() => document.fonts.ready);
         // 機械用: wait for the live shell; its clock is the time of capture, so it is masked.
         if (page === "home" || page === "projects") await p.waitForFunction(() => document.documentElement.dataset.shell === "live");
