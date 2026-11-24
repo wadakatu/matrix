@@ -777,6 +777,41 @@
     "doc": "src/components/nav/nav.md"
   },
   {
+    "name": "Notice",
+    "status": "draft",
+    "class": "mx-notice",
+    "attributes": [],
+    "tokens": [
+      "color.ground",
+      "color.panel",
+      "color.rule",
+      "color.text",
+      "color.text-lead",
+      "color.accent",
+      "color.focus",
+      "font.family.mono",
+      "font.family.ja",
+      "font.size.body",
+      "font.weight.regular",
+      "font.weight.medium",
+      "font.leading.ui",
+      "border.width.hair",
+      "border.width.strong",
+      "space.1",
+      "space.2",
+      "space.4",
+      "space.5",
+      "space.7",
+      "size.measure.lede",
+      "size.target-min"
+    ],
+    "purpose": "The 404 page and the offline page: one panel, no chrome, and nothing to fetch.",
+    "classes": [
+      "mx-notice"
+    ],
+    "doc": "src/components/notice/notice.md"
+  },
+  {
     "name": "Panel",
     "status": "approved",
     "class": "mx-panel",
