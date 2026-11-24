@@ -88,6 +88,6 @@ export default {
     a11y: { test: "error", options: { runOnly: ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"] } },
     layout: "fullscreen",
     viewport: { options: { narrow: { name: "Narrow (390)", styles: { width: "390px", height: "844px" } }, wide: { name: "Wide (1440)", styles: { width: "1440px", height: "900px" } } } },
-    options: { storySort: { order: ["Welcome", "Foundations", ["Colour", "Type", "Space and size", "Motion", "Logo", "Language"], "Chrome", "Surfaces", "Signature", "*"] } },
+    options: { storySort: { order: ["Welcome", "Foundations", ["Colour", "Type", "Space and size", "Motion", "Logo", "Language"], "Chrome", "Surfaces", "Signature", "Terminal", "Reading", ["Masthead", "Contents", "Prose", "Code block", "Callout", "Details", "Reference link", "Post foot", "Share", "Index"], "*"] } },
   },
 };

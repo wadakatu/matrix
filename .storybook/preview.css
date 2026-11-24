@@ -18,3 +18,5 @@ sb-language { display: contents; }
 /* A logo's holder sets its size (logo.md). In the Logo's own stories the frame is its holder,
    at the fetch card's narrowest size, so the 400px file does not overflow a 390 frame. */
 #storybook-root > .mx-logo, .fixture-scope > .mx-logo, .fixture-scope .mx-frame > .mx-logo, #storybook-root > .mx-frame > .mx-logo { width: 112px; }
+/* Several blocks in one story, apart as Prose sets them. */
+.fixture-stack { display: grid; gap: var(--mx-space-5); }
