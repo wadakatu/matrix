@@ -86,8 +86,8 @@ Chrome/                     Header, Mark, Nav, Menu, Control, Switch, Guide, Sta
 Surfaces/                   Panel, Figures, Log, Inline list
 Signature/                  Name, Rain, Stream, Streams, Readings, Boot, Curtain, Scan lines, Decode
 Terminal/                   Terminal, Prompt, Chips, Fetch card, Login card, Takeover
-Reading/                    Masthead, Contents, Prose, Code block, Callout, Reference link, Post foot, Index
-Specimens/                  Machine landing, Human home, Projects (both readings), Article, Blog index, Moved
+Reading/                    Masthead, Contents, Prose, Code block, Callout, Details, Reference link, Post foot, Index
+Specimens/                  Machine landing, Human home, Projects (both readings), Article (A, B and C; 04), Blog index, Moved
 Changelog
 ```
 

@@ -285,7 +285,8 @@ live shell with them, and matches the prototype's stills at 1440 and 390.
 
 ## Phase 5 — Reading
 
-Read 04 ("Reading", "Prose"), `MACHINE-FIRST-AND-BLOG.md` section 3.
+Read 04 ("Reading", "Prose", "Code block: the wrapper", "Reading drafts", "The Article
+specimens"), 05 ("Print"), `MACHINE-FIRST-AND-BLOG.md` section 3.
 
 - [ ] **5.1 Masthead, Contents, Post foot, Share, Index.** ∥ Accept: rail from 1100px and
   disclosure below; current section marked; share sheet only where it exists.
@@ -293,13 +294,15 @@ Read 04 ("Reading", "Prose"), `MACHINE-FIRST-AND-BLOG.md` section 3.
   characters per line within one of the prototype's figures at 390, 768, 1100, 1440; Shiki
   colours follow all four contexts.
 - [ ] **5.3 Drafts: code title, diff, callout, details, table, task list, footnotes.**
-  Designed here from existing tokens. Accept: shown to wadakatu in Storybook and approved
-  before they are marked anything but `draft`; diff is readable without colour.
-- [ ] **5.4 Print layer for articles.** Accept: no rain, no chrome, dark ink on white,
-  link addresses printed.
+  Designed in 04 ("Reading drafts") from existing tokens. Accept: shown to wadakatu in
+  Storybook and approved before they are marked anything but `draft`; diff is readable without
+  colour. The questions listed there are put to him at the same showing.
+- [ ] **5.4 Print layer for articles.** Read 05 ("Print"). Accept: no rain, no chrome, dark
+  ink on white, link addresses printed.
 
-**Exit:** specimen "Article" renders both prototyped posts' structure (with fixture text)
-and passes every automated row of the verification matrix in 05.
+**Exit:** specimen "Article" renders both prototyped posts' structure (with fixture text; the
+structure is listed in 04, "The Article specimens") and passes every automated row of the
+verification matrix in 05.
 
 ## Phase 6 — Proof and publication
 
