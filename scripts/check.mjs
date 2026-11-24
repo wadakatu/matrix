@@ -7,6 +7,7 @@ import { readSources, renderTokensDoc } from "./tokens-doc.mjs";
 import * as gate from "./gates.mjs";
 import * as agent from "./agent-docs.mjs";
 import { known as knownToMatrix } from "./drift.mjs";
+import * as budget from "./budgets.mjs";
 
 process.chdir(join(import.meta.dirname, ".."));
 if (!existsSync("dist/tokens.json")) {
@@ -91,6 +92,11 @@ run("package contents: npm pack --dry-run", () => {
   const [pack] = JSON.parse(execFileSync("npm", ["pack", "--dry-run", "--json", "--ignore-scripts"], { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }));
   return gate.packageContents(pack.files.map((f) => f.path));
 });
+
+// The two size budgets (05, task 6.3): ceilings and recorded figures in docs/verification/budgets.md.
+const ceilings = budget.budgets();
+run("budget: stylesheet, gzip", () => budget.sizeGate("dist/matrix.css", budget.stylesheetSize(), ceilings.stylesheet));
+run("budget: terminal element, gzip", () => budget.sizeGate("mx-terminal.js and its relative imports", budget.terminalSize().bytes, ceilings.terminal));
 
 run("version consistency", () =>
   gate.versionConsistency({

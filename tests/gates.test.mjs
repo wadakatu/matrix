@@ -8,6 +8,7 @@ import { join } from "node:path";
 import { test } from "node:test";
 import stylelint from "stylelint";
 import * as gate from "../scripts/gates.mjs";
+import * as budget from "../scripts/budgets.mjs";
 import { CONTEXTS } from "../scripts/terrazzo-matrix.mjs";
 import { readSources } from "../scripts/tokens-doc.mjs";
 
@@ -159,4 +160,15 @@ test("version consistency: package, lockfile, changelog and tag must agree", () 
   assert.equal(gate.versionConsistency({ pkg, lock, changelog, tag: "v1.0.0-alpha.1" }).length, 1);
   assert.equal(gate.versionConsistency({ pkg, lock, changelog: "## 0.14.1\n" }).length, 1);
   assert.equal(gate.versionConsistency({ pkg, lock: { ...lock, version: "0.0.0" }, changelog }).length, 1);
+});
+
+test("budgets: the ceilings are read from budgets.md, and a size over its ceiling or unrecorded fails", () => {
+  const b = budget.budgets();
+  assert.equal(b.animating, 170);
+  assert.deepEqual(b.endless, ["transform", "background-position", "mask-position", "clip-path"]);
+  assert.ok(b.stylesheet.ceiling > 0 && b.terminal.ceiling > 0 && b.readingChange === 200 && b.longTasks === 0);
+  assert.deepEqual(budget.sizeGate("x", 100, { ceiling: 100, measured: 100 }), []);
+  assert.equal(budget.sizeGate("x", 101, { ceiling: 100, measured: 101 }).length, 1);
+  assert.equal(budget.sizeGate("x", 99, { ceiling: 100, measured: 100 }).length, 1);
+  assert.throws(() => budget.budgets("# Budgets\n"), /no "## Ceilings" section/);
 });
