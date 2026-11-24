@@ -1,0 +1,7 @@
+---
+// The offline specimen (04, "The specimen set"): nothing in the head slot, so the page requests
+// nothing but itself.
+import Notice from "../components/notice/Notice.astro";
+import { fixture } from "../fixtures/corpus.ts";
+---
+<Notice kind="offline" site="matrix fixture" links={fixture.en.notice} />

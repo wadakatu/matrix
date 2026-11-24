@@ -1,0 +1,69 @@
+/* Notice stands by itself (04, "Notice"): the offline page inlines tokens.css and this file and
+   nothing else, so the ground, the body type, the link and the focus ring of base.css are said
+   again here, on .mx-notice and inside it. tests/matrix.spec.mjs keeps the two copies the same. */
+@layer mx.components {
+  .mx-notice {
+    margin: 0;
+    padding-inline: var(--mx-space-4);
+    background: var(--mx-color-ground);
+    color: var(--mx-color-text);
+    font-family: var(--mx-font-family-mono);
+    font-size: var(--mx-font-size-body);
+    font-weight: var(--mx-font-weight-regular);
+    line-height: var(--mx-font-leading-ui);
+  }
+  .mx-notice:lang(ja) {
+    font-family: var(--mx-font-family-ja);
+    line-break: strict;
+  }
+  /* The one panel, 20% of the window down as Moved is. */
+  .mx-notice main {
+    box-sizing: border-box;
+    max-width: calc(var(--mx-size-measure-lede) * 1ch);
+    margin: 20vh auto 0;
+    padding: var(--mx-space-5) clamp(16px, 2.2vw, 28px) var(--mx-space-7);
+    background: var(--mx-color-panel);
+    border: var(--mx-border-width-hair) solid var(--mx-color-rule);
+  }
+  /* Set as a panel's heading is: the page's one visible heading. */
+  .mx-notice h1 {
+    margin: 0 0 var(--mx-space-2);
+    font-size: var(--mx-font-size-body);
+    font-weight: var(--mx-font-weight-medium);
+    line-height: var(--mx-font-leading-ui);
+    color: var(--mx-color-accent);
+  }
+  .mx-notice p { margin: 0; }
+  .mx-notice ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 var(--mx-space-4);
+    margin: var(--mx-space-2) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .mx-notice a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--mx-size-target-min);
+    color: inherit;
+    text-decoration-thickness: var(--mx-border-width-hair);
+    text-underline-offset: var(--mx-space-1);
+  }
+  .mx-notice a:hover {
+    color: var(--mx-color-text-lead);
+    text-decoration-thickness: var(--mx-border-width-strong);
+  }
+  .mx-notice :focus-visible {
+    outline: var(--mx-border-width-strong) solid var(--mx-color-focus);
+    outline-offset: 3px;
+  }
+  /* Paper (05, "Print"): the day ink, no fill, the border kept. */
+  @media print {
+    .mx-notice { color-scheme: light; background: none; }
+    .mx-notice main { background: none; }
+    @supports not (color: light-dark(#000, #fff)) {
+      .mx-notice { --mx-color-text: CanvasText; --mx-color-accent: CanvasText; --mx-color-rule: CanvasText; }
+    }
+  }
+}

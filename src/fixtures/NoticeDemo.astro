@@ -1,0 +1,6 @@
+---
+/** Notice's body inside `.mx-notice`, which Notice.astro puts on the body, for its stories. */
+import NoticeBody from "../components/notice/NoticeBody.astro";
+const props = Astro.props as Parameters<typeof NoticeBody>[0];
+---
+<div class="mx-notice"><NoticeBody {...props} /></div>
